@@ -119,3 +119,37 @@ ScrollReveal().reveal(".download__links", {
   ...scrollRevealOption,
   delay: 1000,
 });
+document.addEventListener('DOMContentLoaded', function () {
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const body = document.body;
+
+  // Check for saved theme in localStorage
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    body.setAttribute('data-theme', savedTheme);
+    updateButtonIcon(savedTheme);
+  }
+
+  themeToggleBtn.addEventListener('click', function () {
+    const currentTheme = body.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
+      body.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    } else {
+      body.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    updateButtonIcon(body.getAttribute('data-theme'));
+  });
+
+  function updateButtonIcon(theme) {
+    const icon = themeToggleBtn.querySelector('i');
+    if (theme === 'dark') {
+      icon.classList.remove('ri-moon-line');
+      icon.classList.add('ri-sun-line'); // Sun icon for light mode
+    } else {
+      icon.classList.remove('ri-sun-line');
+      icon.classList.add('ri-moon-line');
+    }
+  }
+});

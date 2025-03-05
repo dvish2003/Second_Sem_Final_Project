@@ -1,14 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syncopate:wght@400;700&display=swap");
 
 :root {
-  --primary-color: #f5b754;
-  --primary-color-dark: #d6a04a;
-  --text-dark: #15191d;
+  --primary-color: #4CAF50;
+  --primary-color-dark: #388E3C;
+  --text-dark: #000000;
   --text-light: #737373;
-  --extra-light: #e5e5e5;
-  --white: #ffffff;
+  --extra-light: #E0E0E0;
+  --white: #FFFFFF;
+  --background-color: #FFFFFF;
+  --text-color: #000000;
   --max-width: 1200px;
   --header-font: "Syncopate", sans-serif;
+}
+
+[data-theme="dark"] {
+  --background-color: #121212;
+  --text-color: #FFFFFF;
+  --text-dark: #FFFFFF;
+  --text-light: #B0B0B0;
+  --extra-light: #1E1E1E;
+  --white: #121212;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 * {
@@ -27,7 +44,7 @@
   font-size: 3.25rem;
   font-weight: 700;
   font-family: var(--header-font);
-  color: var(--text-dark);
+  color: var(--white);
   letter-spacing: -5px;
   line-height: 4.25rem;
 }
@@ -42,10 +59,65 @@
   border-radius: 10px;
   transition: 0.3s;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+}
+
+.btn:hover::after {
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .btn:hover {
   color: var(--text-dark);
+  background-color: var(--primary-color);
+}
+
+.btn1 {
+  padding: 1rem 1.5rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--white);
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn1::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+}
+
+.btn1:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.btn1:hover {
+  color: var(--white);
   background-color: var(--primary-color);
 }
 
@@ -70,6 +142,8 @@ body {
 
 body {
   font-family: "Poppins", sans-serif;
+  background-color: var(--text-dark);
+  color: var(--white);
 }
 
 header {
@@ -157,7 +231,7 @@ nav {
   font-size: 4.5rem;
   font-weight: 700;
   font-family: var(--header-font);
-  color: var(--text-dark);
+  color: var(--white);
   letter-spacing: -5px;
   line-height: 5rem;
   text-align: center;
@@ -173,7 +247,7 @@ nav {
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
-  background-color: var(--white);
+  background-color: var(--text-dark);
   box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -186,7 +260,7 @@ nav {
 .header__container label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--white);
 }
 
 .header__container input {
@@ -194,7 +268,8 @@ nav {
   outline: none;
   border: none;
   font-size: 1.2rem;
-  color: var(--text-light);
+  color: var(--white);
+  background-color: var(--text-dark);
 }
 
 .header__container input::placeholder {
@@ -272,10 +347,10 @@ nav {
   inset: 0;
   padding: 2rem;
   background-image: linear-gradient(
-    to bottom right,
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0.1) 50%,
-    rgba(0, 0, 0, 0.75)
+          to bottom right,
+          rgba(0, 0, 0, 1),
+          rgba(0, 0, 0, 0.1) 50%,
+          rgba(0, 0, 0, 0.75)
   );
 }
 
@@ -402,7 +477,7 @@ nav {
   justify-content: center;
   gap: 2rem;
   flex-wrap: wrap;
-  background-color: var(--white);
+  background-color: var(--text-dark);
   transform: translateY(50%);
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
 }
@@ -419,7 +494,7 @@ nav {
 .select__price span {
   font-size: 3rem;
   line-height: 3rem;
-  color: var(--text-dark);
+  color: var(--white);
 }
 
 .select__price span:not(#select-price) {
@@ -484,7 +559,7 @@ nav {
   font-weight: 700;
   letter-spacing: -2px;
   line-height: 2rem;
-  color: var(--text-dark);
+  color: var(--white);
 }
 
 .story__card p {
@@ -502,7 +577,6 @@ nav {
   display: flex;
   align-items: center;
   gap: 8rem;
-
   animation: scroll 45s linear infinite;
 }
 
@@ -695,7 +769,7 @@ footer {
   }
 
   .nav__logo a {
-    color: var(--text-dark);
+    color: var(--white);
   }
 
   .nav__menu__btn {
@@ -712,7 +786,7 @@ footer {
   }
 
   .nav__links a {
-    color: var(--text-dark);
+    color: var(--white);
   }
 
   .nav__links a:hover {
@@ -727,7 +801,7 @@ footer {
   }
 
   .nav__btn .btn {
-    color: var(--text-dark);
+    color: var(--white);
     background-color: var(--primary-color);
   }
 
