@@ -1,0 +1,52 @@
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@Getter @Setter
+@MappedSuperclass
+abstract class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name, email, password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+}
+
+class Member extends User {
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Vehicle> vehicles;
+}
+
+@Entity @Getter @Setter
+class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String model, brand, city;
+    private Double pricePerDay;
+    private Boolean available;
+
+    @ManyToOne @JoinColumn(name = "owner_id", nullable = false)
+    private Member owner;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
+}
+
+@Entity @Getter @Setter
+class Booking {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private LocalDate startDate, endDate;
+    private Boolean confirmed;
+
+    @ManyToOne @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
+    @ManyToOne @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+}
+

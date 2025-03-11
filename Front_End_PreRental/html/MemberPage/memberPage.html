@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>MEMBER | DASHBOARD</title>
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar Section -->
+    <aside>
+        <div class="toggle">
+            <div class="logo">
+                <img src="images/logo.png">
+                <h2>Pre<span class="danger">Rental</span></h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-icons-sharp">close</span>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <a href="/Front_end_Rental_Car/car.html" class="nav-link">
+                <span class="material-icons-sharp">dashboard</span>
+                <h3>Dashboard</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">settings</span>
+                <h3>Account Settings</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">event</span>
+                <h3>Bookings</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">history</span>
+                <h3>Booking History</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">payments</span>
+                <h3>Payments</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">post_add</span>
+                <h3>All Ads</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+    <!-- End of Sidebar Section -->
+
+    <!-- Main Content -->
+    <main>
+        <h1>Member Dashboard</h1>
+        <!-- Analyses -->
+        <div class="analyse">
+            <div class="sales">
+                <div class="status">
+                    <div class="info">
+                        <h3>Total Bookings</h3>
+                        <h1>24</h1>
+                    </div>
+                    <div class="progresss">
+                        <svg>
+                            <circle cx="38" cy="38" r="36"></circle>
+                        </svg>
+                        <div class="percentage">
+                            <p>+12%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="visits">
+                <div class="status">
+                    <div class="info">
+                        <h3>Active Bookings</h3>
+                        <h1>5</h1>
+                    </div>
+                    <div class="progresss">
+                        <svg>
+                            <circle cx="38" cy="38" r="36"></circle>
+                        </svg>
+                        <div class="percentage">
+                            <p>-8%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="searches">
+                <div class="status">
+                    <div class="info">
+                        <h3>Pending Payments</h3>
+                        <h1>2</h1>
+                    </div>
+                    <div class="progresss">
+                        <svg>
+                            <circle cx="38" cy="38" r="36"></circle>
+                        </svg>
+                        <div class="percentage">
+                            <p>+3%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Analyses -->
+
+        <!-- Recent Bookings Table -->
+        <div class="recent-orders">
+            <h2>Recent Bookings</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Vehicle</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#12345</td>
+                    <td>Toyota Corolla</td>
+                    <td>2023-10-15</td>
+                    <td class="success">Completed</td>
+                    <td><a href="#" class="primary">View</a></td>
+                </tr>
+                <tr>
+                    <td>#12346</td>
+                    <td>Honda Civic</td>
+                    <td>2023-10-20</td>
+                    <td class="warning">Pending</td>
+                    <td><a href="#" class="primary">View</a></td>
+                </tr>
+                <tr>
+                    <td>#12347</td>
+                    <td>Ford Mustang</td>
+                    <td>2023-10-25</td>
+                    <td class="danger">Cancelled</td>
+                    <td><a href="#" class="primary">View</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <a href="#">Show All</a>
+        </div>
+        <!-- End of Recent Bookings -->
+    </main>
+    <!-- End of Main Content -->
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <div class="nav">
+            <button id="menu-btn">
+                <span class="material-icons-sharp">menu</span>
+            </button>
+            <div class="dark-mode">
+                <span class="material-icons-sharp active">light_mode</span>
+                <span class="material-icons-sharp">dark_mode</span>
+            </div>
+
+            <div class="profile">
+                <div class="info">
+                    <p>Hey, <b>John</b></p>
+                    <small class="text-muted">Member</small>
+                </div>
+                <div class="profile-photo">
+                    <img src="images/profile-1.jpg">
+                </div>
+            </div>
+        </div>
+        <!-- End of Nav -->
+
+        <div class="reminders">
+            <div class="header">
+                <h2>Reminders</h2>
+                <span class="material-icons-sharp">notifications_none</span>
+            </div>
+            <div class="notification">
+                <div class="icon">
+                    <span class="material-icons-sharp">volume_up</span>
+                </div>
+                <div class="content">
+                    <div class="info">
+                        <h3>Upcoming Booking</h3>
+                        <small class="text_muted">2023-11-01</small>
+                    </div>
+                    <span class="material-icons-sharp">more_vert</span>
+                </div>
+            </div>
+            <div class="notification deactive">
+                <div class="icon">
+                    <span class="material-icons-sharp">edit</span>
+                </div>
+                <div class="content">
+                    <div class="info">
+                        <h3>Payment Due</h3>
+                        <small class="text_muted">2023-10-30</small>
+                    </div>
+                    <span class="material-icons-sharp">more_vert</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="MemberScript.js"></script>
+</body>
+</html>

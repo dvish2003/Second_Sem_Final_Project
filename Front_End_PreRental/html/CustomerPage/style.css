@@ -1,0 +1,18 @@
+/* Example CSS for dark mode */
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.dark-mode .navbar {
+    background-color: #343a40 !important;
+}
+
+.dark-mode .nav-link {
+    color: #ffffff !important;
+}
+
+.dark-mode .btn-outline-secondary {
+    color: #ffffff;
+    border-color: #ffffff;
+}
