@@ -117,7 +117,6 @@
           transform: translateY(-2px); /* Slight lift on hover */
       }
 
-      /* Social Login Buttons */
       .social-login {
           display: flex;
           justify-content: center;
@@ -219,7 +218,6 @@
           </div>
       </div>
   </nav>
-    <!-- END nav -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -228,7 +226,6 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <!-- Login Form -->
                   <form id="loginForm">
                       <div class="mb-3">
                           <label for="loginEmail" class="form-label">Email address</label>
@@ -239,22 +236,18 @@
                           <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
                       </div>
                       <div class="mb-3 form-check">
-                          <input type="checkbox" class="form-check-input" id="rememberMe">
+                          <input type="checkbox" class="form-check-input" id="rememberMe" required>
                           <label class="form-check-label" for="rememberMe">Remember me</label>
                       </div>
-                      <button type="submit" class="btn btn-primary w-100">Login</button>
+                      <button id="loginBtn" type="button" class="btn btn-primary w-100" onclick="login()">Login</button>
                   </form>
                   <hr>
-                  <!-- Social Login Options -->
+
                   <div class="text-center">
                       <p class="mb-3">Or login with:</p>
                       <button class="btn btn-outline-secondary w-100 mb-2" onclick="googleLogin()">
                           <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" class="me-2">
                           Login with Google
-                      </button>
-                      <button class="btn btn-outline-secondary w-100" onclick="facebookLogin()">
-                          <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo" class="me-2">
-                          Login with Facebook
                       </button>
                   </div>
                   <p class="text-center mt-3">
@@ -264,7 +257,6 @@
           </div>
       </div>
   </div>
-  <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -273,23 +265,22 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <!-- Register Form -->
                   <form id="registerForm">
                       <div class="mb-3">
                           <label for="registerName" class="form-label">Full Name</label>
-                          <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required>
+                          <input type="text" class="form-control" id="registerName" name="registerName" placeholder="Enter your full name" required>
                       </div>
                       <div class="mb-3">
                           <label for="registerEmail" class="form-label">Email address</label>
-                          <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required>
+                          <input type="email" class="form-control" id="registerEmail" name="registerEmail" placeholder="Enter your email" required>
                       </div>
                       <div class="mb-3">
                           <label for="registerPassword" class="form-label">Password</label>
-                          <input type="password" class="form-control" id="registerPassword" placeholder="Enter your password" required>
+                          <input type="password" class="form-control" id="registerPassword" name="registerPassword" placeholder="Enter your password" required>
                       </div>
                       <div class="mb-3">
                           <label for="confirmPassword" class="form-label">Confirm Password</label>
-                          <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
                       </div>
                       <div class="mb-3 form-check">
                           <input type="checkbox" class="form-check-input" id="acceptTerms" required>
@@ -297,19 +288,14 @@
                               I agree to the <a href="#" class="text-primary">Terms and Conditions</a>
                           </label>
                       </div>
-                      <button type="submit" class="btn btn-primary w-100">Register</button>
+                      <button id="registerBtn" type="button" class="btn btn-primary w-100" onclick="register()">Register</button>
                   </form>
                   <hr>
-                  <!-- Social Register Options -->
                   <div class="text-center">
                       <p class="mb-3">Or register with:</p>
                       <button class="btn btn-outline-secondary w-100 mb-2" onclick="googleLogin()">
                           <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" class="me-2">
                           Register with Google
-                      </button>
-                      <button class="btn btn-outline-secondary w-100" onclick="facebookLogin()">
-                          <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo" class="me-2">
-                          Register with Facebook
                       </button>
                   </div>
                   <p class="text-center mt-3">
@@ -873,7 +859,9 @@
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-  <script src="js/jquery.min.js"></script>
+
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -890,8 +878,80 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
+  <script>
+      function login(){
+          let email = document.getElementById("loginEmail").value;
+          let password = document.getElementById("loginPassword").value;
+          let error = document.getElementById("error");
+
+          $.ajax({
+              url: 'http://localhost:8080/api/v1/auth/authenticate',
+              method: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({
+                  email: email,
+                  password: password
+              }),
+              success: function(response) {
+                  console.log("Login successful");
+                  console.log(response.data.token , "   token");
+                  localStorage.setItem("token", response.data.token);
+                  console.log(localStorage.getItem("token"),  "meka awe local eken");
+                  window.location.href = "car.html";
+              },
+          });
+      }
+
+
+      function register(){
+          let name = document.getElementById("registerName").value;
+          let email = document.getElementById("registerEmail").value;
+          let password = document.getElementById("registerPassword").value;
+          let confirmPassword = document.getElementById("confirmPassword").value;
+          let error = document.getElementById("error");
+
+          if(password !== confirmPassword){
+              alert("password is incorrect")
+              return false;
+          }else{
+              $.ajax({
+                  method: 'POST',
+                  contentType: 'application/json',
+                  url: 'http://localhost:8080/api/v1/user/register',
+                  async: true,
+                  data: JSON.stringify({
+                      "email": email,
+                      "name": name,
+                      "password": password,
+                      "role":"user"
+                  }),
+
+                  success: function(response){
+                      console.log("Registration successful");
+                      console.log(response);
+                      localStorage.setItem("token", response.data.token);
+                      console.log(localStorage.getItem("token"),  "meka awe local eken");
+                      window.location.href = "car.html";
+                      alert("Registration successful!");
+                      return true;
+                  },
+                  error: function(error){
+                      console.log("Registration failed");
+                      console.log(error);
+                      error.responseJSON.message.forEach(function(message){
+                          error.innerHTML += message + "<br>";
+                      });
+                      return false;
+                  }
+              })
+          }
+
+      }
+
+  </script>
   <!-- Bootstrap JS and dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
   </body>
 </html>

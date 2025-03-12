@@ -32,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<ResponseDTO> authenticate(@RequestBody UserDTO userDTO) {
-        System.out.println("jjjj");
+        System.out.println("Come data from JS");
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));

@@ -33,6 +33,9 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
         System.out.println("register");
+        System.out.println(userDTO.getEmail());
+        System.out.println(userDTO.getName());
+        System.out.println(userDTO.getRole());
         try {
             int res = userService.saveUser(userDTO);
             switch (res) {
