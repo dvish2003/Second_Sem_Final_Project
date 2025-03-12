@@ -30,6 +30,17 @@ public class UserController {
         return "test";
     }
 
+    @GetMapping("/getUser")
+    public ResponseEntity<ResponseDTO> getUser(@RequestParam String email) {
+        System.out.println("Get User Use " + email);
+        UserDTO userDTO = userService.searchUser(email);
+        if (userDTO == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                   .body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
+        }
+        return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Success", userDTO));
+    }
+
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
         System.out.println("register");

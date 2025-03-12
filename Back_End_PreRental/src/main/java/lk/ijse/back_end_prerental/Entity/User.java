@@ -16,19 +16,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uid;
-
     @Column(unique = true, nullable = false)
     private String email;
-
     @Column(nullable = false)
     private String name;
-
     @Column(nullable = false)
     private String password;
-
     @Column(nullable = false)
     private String role;
-
+    private String national_id;
+    private String address;
+    private String city;
+    private String postal_code;
+    private String primary_phone_number;
+    private String secondary_phone_number;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Member member;
 
