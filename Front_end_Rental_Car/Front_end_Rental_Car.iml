@@ -2,11 +2,15 @@
 <module version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../Front_End_PreRental" />
+    <content url="file://$MODULE_DIR$/../Front_End_PreRental">
+      <sourceFolder url="file://$MODULE_DIR$/../Front_End_PreRental" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery-3.7.1" level="application" />
     <orderEntry type="library" name="@popperjs/core" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="sweetalert2" level="application" />
+    <orderEntry type="library" name="jwt-decode" level="application" />
   </component>
 </module>

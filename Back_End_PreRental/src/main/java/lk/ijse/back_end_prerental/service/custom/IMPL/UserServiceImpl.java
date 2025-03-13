@@ -60,6 +60,25 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public int updateUser(UserDTO userDTO) {
+        if(userRepository.existsByEmail(userDTO.getEmail())){
+            User user = userRepository.findByEmail(userDTO.getEmail());
+            user.setAddress(userDTO.getAddress());
+            user.setName(userDTO.getName());
+            user.setNational_id(userDTO.getNational_id());
+            user.setPostal_code(userDTO.getPostal_code());
+            user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
+            user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
+            user.setCity(userDTO.getCity());
+            userRepository.save(user);
+            return VarList.OK;
+        }
+        else {
+            return VarList.Not_Found;
+        }
+    }
+
+    @Override
     public int saveUser(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             return VarList.Not_Acceptable;
@@ -69,4 +88,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }
-    }};
+    }
+
+
+};
+

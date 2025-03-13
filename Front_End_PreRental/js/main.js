@@ -446,7 +446,7 @@
 			 if (userRole === "admin") {
 				 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
 			 } else {
-				 window.location.href = "car.html";
+				 window.location.href = "../html/car.html";
 				 getUserData(email);
 			 }
 		 },
@@ -518,7 +518,7 @@
 					 showConfirmButton: false,
 					 timer: 2000
 				 }).then(() => {
-					 window.location.href = "car.html";
+					 window.location.href = "../html/car.html";
 				 });
 			 },
 			 error: function(error) {
@@ -556,7 +556,7 @@
 			 if (userRole === "admin") {
 				 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
 			 } else {
-				 window.location.href = "car.html";
+				 window.location.href = "../html/car.html";
 			 }
 		 },
 		 error: function(xhr, status, error) {

@@ -7,4 +7,5 @@ import lk.ijse.back_end_prerental.service.SuperBO;
 public interface UserService {
     int saveUser(UserDTO userDTO);
     UserDTO searchUser(String username);
+     int updateUser(UserDTO userDTO);
 }
