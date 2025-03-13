@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-
+	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="css/animate.css">
 
@@ -27,44 +28,28 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <style>
-	  /* Glass Morphism Effect for Modal */
-	  .modal-content {
-		  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
-		  backdrop-filter: blur(10px); /* Blur effect for the glass look */
-		  border-radius: 15px; /* Rounded corners */
-		  border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for depth */
-		  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Soft shadow */
-	  }
-
-	  /* Modal Header and Footer Styling */
-	  .modal-header, .modal-footer {
-		  background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
-		  border: none; /* Remove default borders */
-	  }
-
 	  .modal-header {
-		  border-radius: 15px 15px 0 0; /* Rounded top untitledcorners */
+		  background-color: #007bff; /* Blue header */
+		  color: white; /* White text */
 	  }
-
-	  .modal-footer {
-		  border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+	  .btn-primary {
+		  background-color: #007bff; /* Blue button */
+		  border-color: #007bff;
 	  }
-
-	  /* Modal Body Styling */
-	  .modal-body {
-		  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-		  border-radius: 10px; /* Rounded corners */
-		  padding: 20px; /* Add padding */
+	  .btn-primary:hover {
+		  background-color: #0056b3; /* Darker blue on hover */
+		  border-color: #0056b3;
 	  }
-
-	  /* Close Button Styling */
-	  .close {
-		  color: #fff; /* White color for the close button */
-		  opacity: 1; /* Make it fully visible */
+	  .btn-secondary {
+		  background-color: #6c757d; /* Gray button */
+		  border-color: #6c757d;
 	  }
-
-	  .close:hover {
-		  color: #ff4d4d; /* Red color on hover */
+	  .btn-secondary:hover {
+		  background-color: #5a6268; /* Darker gray on hover */
+		  border-color: #5a6268;
+	  }
+	  .form-label {
+		  font-weight: bold; /* Bold labels */
 	  }
   </style>
   <body>
@@ -90,6 +75,91 @@
 	  </div>
   </nav>
     <!-- END nav -->
+  <!--Detail Form-->
+  <!-- Save Customer Details Modal -->
+  <div class="modal fade" id="saveCustomerDetailsModal" tabindex="-1" aria-labelledby="saveCustomerDetailsModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <h5 class="modal-title" id="saveCustomerDetailsModalLabel">Save Customer Details</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+			  <div class="modal-body">
+				  <form id="customerDetailsForm">
+					  <!-- Profile Picture -->
+					  <div class="mb-3">
+						  <label for="profilePicture" class="form-label">Customer Profile Picture</label>
+						  <input type="file" class="form-control" id="profilePicture" accept="image/*">
+					  </div>
+
+					  <!-- NIC -->
+					  <div class="mb-3">
+						  <label for="nic" class="form-label">NIC</label>
+						  <input type="text" class="form-control" id="nic" placeholder="Enter your NIC (12 digits or 9 digits + letter)" required>
+					  </div>
+
+					  <!-- First Name and Last Name -->
+					  <div class="row mb-3">
+						  <div class="col-md-6">
+							  <label for="firstName" class="form-label">First Name</label>
+							  <input type="text" class="form-control" id="firstName" required>
+						  </div>
+						  <div class="col-md-6">
+							  <label for="lastName" class="form-label">Last Name</label>
+							  <input type="text" class="form-control" id="lastName" required>
+						  </div>
+					  </div>
+
+					  <!-- Street Address -->
+					  <div class="mb-3">
+						  <label for="streetAddress" class="form-label">Street Address</label>
+						  <input type="text" class="form-control" id="streetAddress" required>
+					  </div>
+
+					  <!-- City and Postal Code -->
+					  <div class="row mb-3">
+						  <div class="col-md-6">
+							  <label for="city" class="form-label">City</label>
+							  <input type="text" class="form-control" id="city" required>
+						  </div>
+						  <div class="col-md-6">
+							  <label for="postalCode" class="form-label">Postal Code</label>
+							  <input type="text" class="form-control" id="postalCode" required>
+						  </div>
+					  </div>
+
+					  <!-- Primary and Secondary Contact -->
+					  <div class="row mb-3">
+						  <div class="col-md-6">
+							  <label for="primaryContact" class="form-label">Primary Contact</label>
+							  <input type="text" class="form-control" id="primaryContact" required>
+						  </div>
+						  <div class="col-md-6">
+							  <label for="secondaryContact" class="form-label">Secondary Contact</label>
+							  <input type="text" class="form-control" id="secondaryContact">
+						  </div>
+					  </div>
+
+					  <!-- Email -->
+					  <div class="mb-3">
+						  <label for="email" class="form-label">Email</label>
+						  <input type="email" class="form-control" id="email" required>
+					  </div>
+
+					  <!-- Username -->
+					  <div class="mb-3">
+						  <label for="username" class="form-label">Username</label>
+						  <input type="text" class="form-control" id="username" value="" readonly>
+					  </div>
+				  </form>
+			  </div>
+			  <div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary" onclick="saveCustomerDetails()">Save Details</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
   <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 		  <div class="modal-content">
@@ -408,8 +478,7 @@
 
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/popper.min.js"></script>
@@ -427,12 +496,61 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-		// Sample car data
+	getUserData();
+	    function getUserData() {
+			//get token in local storage
+			const token = localStorage.getItem('token');
+			//decoding token
+			const decodedToken = jwt_decode(token);
+			//get email use decorded token
+			const userEmail = decodedToken.email;
+            console.log(userEmail);
+
+			//get all data use email
+			$.ajax({
+				url: 'http://localhost:8080/api/v1/user/getUser',
+				method: 'GET',
+				contentType: 'application/json',
+				async: true,
+				data: {
+					email: userEmail
+				},
+				success: function (response) {
+					console.log("User details fetched successfully");
+					const email = response.data.email;
+					const  name = response.data.name;
+					const nic = response.data.national_id;
+					const address = response.data.address;
+					const city = response.data.city;
+					const postal_code = response.data.postal_code;
+					const primary_phone_number = response.data.primary_phone_number;
+					const secondary_phone_number = response.data.secondary_phone_number;
+					//show console in data
+					console.log(email,name,address,nic,city,secondary_phone_number,primary_phone_number,postal_code);
+
+					//Check All Data Null
+					if(address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null){
+						$('#saveCustomerDetailsModal').modal('show');
+					}
+
+
+				}
+			})
+
+
+
+
+		}
+
+
+
 		const cars = [
 		{ name: "Mercedes Grand Sedan", model: "Cheverolet", price: 500, image: "images/car-1.jpg" },
 		{ name: "Range Rover", model: "Subaru", price: 500, image: "images/car-2.jpg" },
-		// Add more car data here
 		];
 
 		// Function to populate car listings

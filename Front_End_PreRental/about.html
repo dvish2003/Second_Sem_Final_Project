@@ -4,13 +4,15 @@
     <title>Carbook - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
+          rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="css/animate.css">
-    
+
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
@@ -22,307 +24,144 @@
     <link rel="stylesheet" href="css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="css/jquery.timepicker.css">
 
-    
+
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <style>
-
-    /* Modal Styles */
+    .btn-open-modal {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .btn-open-modal:hover {
+      background-color: #0056b3;
+    }
     .modal-content {
-      background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-      backdrop-filter: blur(15px); /* Glass-morphism effect */
-      border-radius: 15px; /* Rounded corners */
-      border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Shadow */
-      padding: 20px;
-      color: #fff;
+      border-radius: 10px;
     }
-
     .modal-header {
-      border-bottom: none; /* Remove default border */
-      padding-bottom: 10px;
+      border-bottom: none;
+      padding-bottom: 0;
+      position: relative;
     }
-
     .modal-title {
       font-size: 24px;
-      font-weight: 600;
-      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+    }
+    .modal-title .pre {
+      color: green;
+    }
+    .modal-title .rental {
+      color: black;
     }
 
+    .modal-subtitle {
+      text-align: center;
+      /* position: relative;
+       top: -29px;*/
+      font-size: 16px;
+      color: #555;
+      margin-top: 5px;
+    }
+    .modal-header .btn-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding-bottom: 2px;
+    }
     .modal-body {
-      padding: 20px 0;
+      padding: 20px;
     }
-
-    /* Form Styles */
-    .form-control {
-      background: rgba(255, 255, 255, 0.1); /* Semi-transparent input background */
-      border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
-      color: #fff;
-      border-radius: 8px;
-      padding: 10px 15px;
-      margin-bottom: 15px;
-      transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-      background: rgba(255, 255, 255, 0.2); /* Slightly lighter background on focus */
-      border-color: rgba(255, 255, 255, 0.4); /* Highlight border on focus */
-      box-shadow: none; /* Remove default Bootstrap shadow */
-    }
-
-    .form-control::placeholder {
-      color: rgba(255, 255, 255, 0.6); /* Placeholder text color */
-    }
-
-    .form-check-input {
-      background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent checkbox */
-      border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
-    }
-
-    .form-check-label {
-      color: rgba(255, 255, 255, 0.8); /* Light text color */
-    }
-
-    /* Button Styles */
-    .btn-primary {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px); /* Slight lift on hover */
-      box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4); /* Shadow on hover */
-    }
-
-    .btn-outline-secondary {
-      background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-      border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
-      color: #fff;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .btn-outline-secondary:hover {
-      background: rgba(255, 255, 255, 0.2); /* Slightly lighter background on hover */
-      transform: translateY(-2px); /* Slight lift on hover */
-    }
-
-    /* Social Login Buttons */
-    .social-login {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .social-login button {
+    .btn-google {
+      background-color: white;
+      color: black;
+      border: solid 1px grey;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s ease;
     }
-
-    .social-login button img {
-      width: 20px;
-      height: 20px;
+    .btn-google img {
+      margin-right: 10px;
     }
-
-    /* Toggle Link Styles */
-    .toggle-link {
-      color: #6a11cb;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s ease;
+    .forgot-password {
+      text-align: center;
+      margin: 1rem 0;
     }
-
-    .toggle-link:hover {
-      color: #2575fc;
-      text-decoration: underline;
+    .signup-link {
+      text-align: center;
+      margin-top: 1rem;
     }
-
-    /* Animated Background */
-    .background {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .login-topic {
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 20px;
+      color: #0b0b0b;
+      font-weight: bold;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.875em;
+      display: none;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
       width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-
-    .shape {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      animation: float 10s infinite ease-in-out;
-    }
-
-    .shape:nth-child(1) {
-      top: 10%;
-      left: 10%;
-      animation-duration: 12s;
-    }
-
-    .shape:nth-child(2) {
-      top: 60%;
-      left: 70%;
-      animation-duration: 15s;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-20px);
-      }
+    /* .row {
+         display: flex;
+         gap: 10px;
+     }*/
+    .row .col-md-6 {
+      flex: 1;
     }
   </style>
   <body>
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container">
-          <a class="navbar-brand" href="index.html">PRE<span>RENTAL</span></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="oi oi-menu"></span> Menu
-          </button>
+    <div class="container">
+      <a class="navbar-brand" href="index.html">PRE<span>RENTAL</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+              aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="oi oi-menu"></span> Menu
+      </button>
 
-          <div class="collapse navbar-collapse" id="ftco-nav">
-              <ul class="navbar-nav ml-auto">
-                  <li class="nav-item "><a href="index.html" class="nav-link">Home</a></li>
-                  <li class="nav-item active"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="services.html" class="nav-link">Service</a></li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    <span class="icon-user"></span> Login
-                  </a>
-                </li>
-              </ul>
-          </div>
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item active"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="services.html" class="nav-link">Service</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">
+              Get Started
+            </a>
+          </li>
+        </ul>
       </div>
+    </div>
   </nav>
   <!-- END nav -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Login</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Login Form -->
-          <form id="loginForm">
-            <div class="mb-3">
-              <label for="loginEmail" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
-            </div>
-            <div class="mb-3">
-              <label for="loginPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="rememberMe">
-              <label class="form-check-label" for="rememberMe">Remember me</label>
-            </div>
-            <button type="button" class="btn btn-primary w-100">Login</button>
-          </form>
-          <hr>
-          <!-- Social Login Options -->
-          <div class="text-center">
-            <p class="mb-3">Or login with:</p>
-            <button class="btn btn-outline-secondary w-100 mb-2" onclick="googleLogin()">
-              <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" class="me-2">
-              Login with Google
-            </button>
-            <button class="btn btn-outline-secondary w-100" onclick="facebookLogin()">
-              <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo" class="me-2">
-              Login with Facebook
-            </button>
-          </div>
-          <p class="text-center mt-3">
-            Don't have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Register here</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Register Modal -->
-  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="registerModalLabel">Register</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Register Form -->
-          <form id="registerForm">
-            <div class="mb-3">
-              <label for="registerName" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required>
-            </div>
-            <div class="mb-3">
-              <label for="registerEmail" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required>
-            </div>
-            <div class="mb-3">
-              <label for="registerPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="registerPassword" placeholder="Enter your password" required>
-            </div>
-            <div class="mb-3">
-              <label for="confirmPassword" class="form-label">Confirm Password</label>
-              <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="acceptTerms" required>
-              <label class="form-check-label" for="acceptTerms">
-                I agree to the <a href="#" class="text-primary">Terms and Conditions</a>
-              </label>
-            </div>
-            <button type="button" class="btn btn-primary w-100">Register</button>
-          </form>
-          <hr>
-          <!-- Social Register Options -->
-          <div class="text-center">
-            <p class="mb-3">Or register with:</p>
-            <button class="btn btn-outline-secondary w-100 mb-2" onclick="googleLogin()">
-              <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" class="me-2">
-              Register with Google
-            </button>
-            <button class="btn btn-outline-secondary w-100" onclick="facebookLogin()">
-              <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo" class="me-2">
-              Register with Facebook
-            </button>
-          </div>
-          <p class="text-center mt-3">
-            Already have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login here</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- END nav -->
-    
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('images/bg_3.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
@@ -339,7 +178,108 @@
     <div class="container">
       <div class="row no-gutters">
         <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/about.jpg);">
-        </div>
+        </div>  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <!-- Login Form -->
+                      <form id="loginForm">
+                          <div class="mb-3">
+                              <label for="loginEmail" class="form-label">Email address</label>
+                              <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="loginPassword" class="form-label">Password</label>
+                              <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+                          </div>
+                          <div class="mb-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="rememberMe">
+                              <label class="form-check-label" for="rememberMe">Remember me</label>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100">Login</button>
+                      </form>
+                      <hr>
+                      <!-- Social Login Options -->
+                      <div class="text-center">
+                          <p class="mb-3">Or login with:</p>
+                          <button class="btn btn-outline-secondary w-100 mb-2" onclick="googleLogin()">
+                              <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" class="me-2">
+                              Login with Google
+                          </button>
+                          <button class="btn btn-outline-secondary w-100" onclick="facebookLogin()">
+                              <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo" class="me-2">
+                              Login with Facebook
+                          </button>
+                      </div>
+                      <p class="text-center mt-3">
+                          Don't have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Register here</a>
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Register Modal -->
+      <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <!-- Register Form -->
+                      <form id="registerForm">
+                          <div class="mb-3">
+                              <label for="registerName" class="form-label">Full Name</label>
+                              <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="registerEmail" class="form-label">Email address</label>
+                              <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="registerPassword" class="form-label">Password</label>
+                              <input type="password" class="form-control" id="registerPassword" placeholder="Enter your password" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="confirmPassword" class="form-label">Confirm Password</label>
+                              <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                          </div>
+                          <div class="mb-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="acceptTerms" required>
+                              <label class="form-check-label" for="acceptTerms">
+                                  I agree to the <a href="#" class="text-primary">Terms and Conditions</a>
+                              </label>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100">Register</button>
+                      </form>
+                      <hr>
+                      <!-- Social Register Options -->
+                      <div class="text-center">
+                          <p class="mb-3">Or register with:</p>
+                          <button class="btn btn-outline-secondary w-100 mb-2" onclick="googleLogin()">
+                              <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google Logo" class="me-2">
+                              Register with Google
+                          </button>
+                          <button class="btn btn-outline-secondary w-100" onclick="facebookLogin()">
+                              <img src="https://img.icons8.com/color/16/000000/facebook-new.png" alt="Facebook Logo" class="me-2">
+                              Register with Facebook
+                          </button>
+                      </div>
+                      <p class="text-center mt-3">
+                          Already have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login here</a>
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- END nav -->
+
         <div class="col-md-6 wrap-about ftco-animate">
           <div class="heading-section heading-section-white pl-md-5">
             <span class="subheading">About us</span>
@@ -546,7 +486,7 @@
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-  <script src="js/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -563,7 +503,10 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- Bootstrap JS and dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ </body>
 </html>

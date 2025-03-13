@@ -368,4 +368,205 @@
  }
 
 /*=================================login And Register================================================================================================================*/
+ function validateEmail(email) {
+	 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	 return emailRegex.test(email);
+ }
+ function validatePassword(password) {
+	 return password.length >= 6;
+ }
 
+ function login() {
+	 let emailUser = document.getElementById("loginEmail").value;
+	 let password = document.getElementById("loginPassword").value;
+	 if (!validateEmail(emailUser)) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Invalid Email',
+			 text: 'Please enter a valid email address.',
+			 showConfirmButton: true
+		 });
+		 return;
+	 }
+	 if (!validatePassword(password)) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Invalid Password',
+			 text: 'Password must be at least 6 characters long.',
+			 showConfirmButton: true
+		 });
+		 return;
+	 }
+
+	 $.ajax({
+		 url: 'http://localhost:8080/api/v1/auth/authenticate',
+		 method: 'POST',
+		 contentType: 'application/json',
+		 data: JSON.stringify({
+			 email: emailUser,
+			 password: password
+		 }),
+		 success: function(response) {
+			 console.log("Login successful");
+			 localStorage.setItem("token", response.data.token);
+			 Swal.fire({
+				 icon: 'success',
+				 title: 'Login Successful!',
+				 text: 'You have successfully logged in.',
+				 showConfirmButton: false,
+				 timer: 2000 // Auto-close after 2 seconds
+			 }).then(() => {
+				 getUserDetails(emailUser);
+			 });
+		 },
+		 error: function(xhr, status, error) {
+			 console.error("Login failed:", error);
+			 Swal.fire({
+				 icon: 'error',
+				 title: 'Login Failed',
+				 text: 'Invalid email or password. Please try again.',
+				 showConfirmButton: true
+			 });
+		 }
+	 });
+ }
+
+ function getUserDetails(email) {
+	 $.ajax({
+		 url: 'http://localhost:8080/api/v1/user/getUser',
+		 method: 'GET',
+		 contentType: 'application/json',
+		 async: true,
+		 data: {
+			 email: email
+		 },
+		 success: function(response) {
+			 console.log("User details fetched successfully");
+			 const userRole = response.data.role;
+			 if (userRole === "admin") {
+				 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
+			 } else {
+				 window.location.href = "car.html";
+				 getUserData(email);
+			 }
+		 },
+		 error: function(xhr, status, error) {
+			 console.error("Failed to fetch user details:", error);
+			 Swal.fire({
+				 icon: 'error',
+				 title: 'Error',
+				 text: 'Failed to fetch user details. Please try again.',
+				 showConfirmButton: true
+			 });
+		 }
+	 });
+ }
+
+ function register() {
+	 let Firstname = document.getElementById("registerFirstName").value;
+	 let Secondname = document.getElementById("registerLastName").value;
+	 let name = Firstname + " " + Secondname;
+	 let email = document.getElementById("registerEmail").value;
+	 let password = document.getElementById("registerPassword").value;
+	 let confirmPassword = document.getElementById("confirmPassword").value;
+	 if (!validateEmail(email)) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Invalid Email',
+			 text: 'Please enter a valid email address.',
+			 showConfirmButton: true
+		 });
+		 return false;
+	 }
+	 if (!validatePassword(password)) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Invalid Password',
+			 text: 'Password must be at least 6 characters long.',
+			 showConfirmButton: true
+		 });
+		 return false;
+	 }
+
+	 if (password !== confirmPassword) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Password Mismatch',
+			 text: 'Passwords do not match. Please try again.',
+			 showConfirmButton: true
+		 });
+		 return false;
+	 } else {
+		 $.ajax({
+			 method: 'POST',
+			 contentType: 'application/json',
+			 url: 'http://localhost:8080/api/v1/user/register',
+			 async: true,
+			 data: JSON.stringify({
+				 "email": email,
+				 "name": name,
+				 "password": password,
+				 "role": "user"
+			 }),
+			 success: function(response) {
+				 console.log("Registration successful");
+				 localStorage.setItem("token", response.data.token);
+				 Swal.fire({
+					 icon: 'success',
+					 title: 'Registration Successful!',
+					 text: 'Your account has been created successfully.',
+					 showConfirmButton: false,
+					 timer: 2000
+				 }).then(() => {
+					 window.location.href = "car.html";
+				 });
+			 },
+			 error: function(error) {
+				 console.error("Registration failed:", error);
+				 let errorMessage = "Registration failed. Please try again.";
+				 if (error.responseJSON && error.responseJSON.message) {
+					 errorMessage = error.responseJSON.message.join("<br>");
+				 }
+				 Swal.fire({
+					 icon: 'error',
+					 title: 'Registration Failed',
+					 html: errorMessage,
+					 showConfirmButton: true
+				 });
+			 }
+		 });
+	 }
+ }
+
+
+ /*===================================Car Rental Page==================================================================================================*/
+  /*Fetch data use by User Email*/
+ function getUserDetailsInCarPage(email) {
+	 $.ajax({
+		 url: 'http://localhost:8080/api/v1/user/getUser',
+		 method: 'GET',
+		 contentType: 'application/json',
+		 async: true,
+		 data: {
+			 email: email
+		 },
+		 success: function(response) {
+			 console.log("User details fetched successfully");
+			 const userRole = response.data.role;
+			 if (userRole === "admin") {
+				 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
+			 } else {
+				 window.location.href = "car.html";
+			 }
+		 },
+		 error: function(xhr, status, error) {
+			 console.error("Failed to fetch user details:", error);
+			 Swal.fire({
+				 icon: 'error',
+				 title: 'Error',
+				 text: 'Failed to fetch user details. Please try again.',
+				 showConfirmButton: true
+			 });
+		 }
+	 });
+ }
