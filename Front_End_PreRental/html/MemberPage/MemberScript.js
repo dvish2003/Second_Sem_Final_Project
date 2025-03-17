@@ -1,3 +1,7 @@
+getName();
+getMemberData();
+//create object
+let User;
 // DOM Elements
 const sideMenu = document.querySelector('aside');
 const menuBtn = document.getElementById('menu-btn');
@@ -18,22 +22,167 @@ darkMode.addEventListener('click', () => {
     darkMode.querySelector('span:nth-child(2)').classList.toggle('active');
 });
 
-/*
-document.addEventListener("DOMContentLoaded", function () {
-    const sidebarLinks = document.querySelectorAll(".sidebar a");
+/*===================================save Member=========================================================*/
+function getMemberData() {
+    //get token in local storage
+    const token = localStorage.getItem('token');
+    //decoding token
+    const decodedToken = jwt_decode(token);
+    //get email use decorded token
+    const userEmail = decodedToken.email;
+    //get password use decorded token
+    console.log(userEmail);
 
-    function setActiveLink(clickedLink) {
-        sidebarLinks.forEach(link => link.classList.remove("active"));
-        clickedLink.classList.add("active");
-    }
+    //get all data use email
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/member/getMemberInfo',
+        method: 'GET',
+        contentType: 'application/json',
+        async: true,
+        data: {
+            email: userEmail
+        },
+        headers: {
+            'Authorization': 'Bearer '+ token
+        },
+        success: function(response) {
+            console.log(response)
+            if (response.data === null) {
+                showModal();
+                userGetData();
+            }
+        },
+    })
+};
 
-    sidebarLinks.forEach(link => {
-        link.addEventListener("click", function (e) {
-            e.preventDefault();
-            setActiveLink(link);
+function userGetData(){
+    //get token in local storage
+    const token = localStorage.getItem('token');
+    //decoding token
+    const decodedToken = jwt_decode(token);
+    //get email use decorded token
+    const userEmail = decodedToken.email;
+    //get all data use email
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/user/getUser',
+        method: 'GET',
+        contentType: 'application/json',
+        async: true,
+        headers: {
+            'Authorization': 'Bearer '+ token
+        },
+        data: {
+            email: userEmail
+        },
+
+        success: function (response) {
+            console.log(response)
+            if (response.data!== null) {
+                User = response.data;
+                //set all field to all data
+                document.getElementById('customerNic').value = response.data.national_id;
+                document.getElementById('customerName').value = response.data.name;
+                document.getElementById('customerAddress').value = response.data.address;
+                document.getElementById('customerCity').value = response.data.city;
+                document.getElementById('customerPostalCode').value = response.data.postal_code;
+                document.getElementById('customerPrimaryNumber').value = response.data.primary_phone_number;
+                document.getElementById('customerEmail').value = response.data.email;
+                /*
+                                    document.getElementById('customerProfilePreview').src = '/api/v1/user/getProfilePic/' + response.data.id;
+                */
+            }
+        }
+    })
+}
+
+
+function saveMemberDetails(){
+    //get all field value
+    const nic = document.getElementById('customerNic').value;
+    const name = document.getElementById('customerName').value;
+    const address = document.getElementById('customerAddress').value;
+    const city = document.getElementById('customerCity').value;
+    const postalCode = document.getElementById('customerPostalCode').value;
+    const primaryNumber = document.getElementById('customerPrimaryNumber').value;
+    const email = document.getElementById('customerEmail').value;
+
+    //validate Mobile Number
+    if (!/^\d{10}$/.test(primaryNumber)) {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Primary contact must be exactly 10 digits',
+            icon: 'error',
+            confirmButtonText: 'Okay'
         });
-    });
+        return;
+    }
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/member/saveMemberInfo',
+        method: 'POST',
+        contentType: 'application/json',
+        async: true,
+        data: JSON.stringify({
+            email: email,
+            name: name,
+            address: address,
+            contact: primaryNumber,
+            NicNumber: nic,
+            userDTO:User
 
-    const defaultLink = document.querySelector(".sidebar a.active");
-    setActiveLink(defaultLink);
-});*/
+        }),
+        headers: {
+            'Authorization': 'Bearer '+ localStorage.getItem('token')
+        },
+        success: function (response) {
+            console.log(response)
+            Swal.fire({
+                title: 'Success!',
+                text: 'Customer details saved successfully',
+                icon:'success',
+                confirmButtonText: 'Okay'
+            });
+            closeModal();
+        },
+    })
+}
+function showModal() {
+    const modal = document.getElementById('saveCustomerDetailsModal');
+    modal.style.display = 'flex';
+}
+function closeModal() {
+    const modal = document.getElementById('saveCustomerDetailsModal');
+    modal.style.display = 'none';
+}
+
+/*===============================================Set Name=====================================================================*/
+function getName() {
+    //get token in local storage
+    const token = localStorage.getItem('token');
+    //decoding token
+    const decodedToken = jwt_decode(token);
+    //get name use decorded token
+    const UserEmail = decodedToken.email;
+    //set name in header
+   $.ajax({
+       url: 'http://localhost:8080/api/v1/user/getUser',
+       method: 'GET',
+       contentType: 'application/json',
+       async: true,
+       headers: {
+           'Authorization': 'Bearer '+ token
+       },
+       data: {
+           email: UserEmail
+       },
+       success: function(response) {
+           const userName = response.data.name;
+           const profileInfo = document.querySelector('.profile .info');
+           if (profileInfo) {
+               profileInfo.querySelector('p').innerHTML = `Hey, <b>${userName}</b>`;
+           } else {
+               console.error("Profile info element not found.");
+           }
+
+       }
+   })
+}

@@ -29,16 +29,20 @@ public class MemberController {
     }
 
     @GetMapping(value = "/getMemberInfo")
-    public ResponseEntity<ResponseDTO> getMemberByUserId(@RequestParam String email){
+    public ResponseEntity<ResponseDTO> getMemberByUserId(@RequestParam String email) {
         System.out.println("Request Accepted");
-        MemberDTO memberDTO = memberService.getMember(email);
-        if(memberDTO == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(VarList.Not_Found, "Member not found ",null));
-        }else{
-            return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Already you are member", memberDTO));
-        }
 
+        MemberDTO memberDTO = memberService.getMember(email);
+
+        if (memberDTO == null) {
+            return ResponseEntity.ok(
+                    new ResponseDTO(VarList.OK, "not found a member", null)
+            );
+        } else {
+            return ResponseEntity.ok(
+                    new ResponseDTO(VarList.OK, "Already a member", memberDTO)
+            );
+        }
     }
 
 
