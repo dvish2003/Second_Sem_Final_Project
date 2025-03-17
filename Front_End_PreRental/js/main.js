@@ -419,6 +419,7 @@
 				 getUserDetails(emailUser);
 			 });
 		 },
+
 		 error: function(xhr, status, error) {
 			 console.error("Login failed:", error);
 			 Swal.fire({
@@ -437,6 +438,9 @@
 		 method: 'GET',
 		 contentType: 'application/json',
 		 async: true,
+		 headers: {
+			 Authorization: 'Bearer '+ localStorage.getItem("token")
+		 },
 		 data: {
 			 email: email
 		 },

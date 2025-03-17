@@ -19,12 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
-
+  /*  @Autowired
+    private MemberRepository memberRepository;*/
     @Autowired
     private UserRepository userRepository;
 
@@ -77,6 +79,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return VarList.Not_Found;
         }
     }
+
+    @Override
+    public int updateUser2(UserDTO userDTO) {
+        return 0;
+    }
+
+    /*public UserDTO getUserMember(UUID uuid){
+        if(userRepository.existsByUserId(uuid)){
+            return null;
+        } else{
+            User user = userRepository.findByUserId(uuid);
+            UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+            return userDTO;
+        }
+    }*/
+
 
     @Override
     public int saveUser(UserDTO userDTO) {

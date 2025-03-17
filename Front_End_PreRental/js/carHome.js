@@ -18,16 +18,32 @@ function getUserData() {
         data: {
             email: userEmail
         },
+        headers: {
+            Authorization: 'Bearer ' + token
+        },
         error: function (jqXHR, textStatus, errorTh){
             console.log("Error: ", errorTh);
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: 'Failed to fetch user data'
-            }).then(()=>{
-                window.location.href = 'index.html';
+                text: 'Failed to fetch user data. Please try again.',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    htmlContainer: 'custom-swal-html',
+                    confirmButton: 'custom-swal-confirm',
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown',
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                },
+            }).then(() => {
+                window.location.href = '../index.html';
             });
         },
+
         success: function (response) {
             console.log("User details fetched successfully");
             const email = response.data.email;
@@ -69,20 +85,70 @@ function saveCustomerDetails() {
     const secondaryContact = $('#customerSecondNumber').val();
 
     /*==========================Validation========================*/
-    if (nic.length !== 10 || !/^\d+$/.test(nic)) {
-        Swal.fire('Error', 'NIC must be exactly 10 digits.', 'error');
+    if (nic.length !== 12 || !/^\d+$/.test(nic)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid NIC',
+            text: 'NIC must be exactly 10 digits.',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                htmlContainer: 'custom-swal-html',
+                confirmButton: 'custom-swal-confirm',
+            },
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown',
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp',
+            },
+        });
         return;
-    }
+
+}
 
     if (primaryContact.length !== 10 || !/^\d+$/.test(primaryContact)) {
-        Swal.fire('Error', 'Primary phone number must be exactly 10 digits.', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Primary Contact',
+            text: 'Primary phone number must be exactly 10 digits.',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                htmlContainer: 'custom-swal-html',
+                confirmButton: 'custom-swal-confirm',
+            },
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown',
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp',
+            },
+        });
         return;
     }
 
     if (secondaryContact && (secondaryContact.length !== 10 || !/^\d+$/.test(secondaryContact))) {
-        Swal.fire('Error', 'Secondary phone number must be exactly 10 digits.', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Secondary Contact',
+            text: 'Secondary phone number must be exactly 10 digits.',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                htmlContainer: 'custom-swal-html',
+                confirmButton: 'custom-swal-confirm',
+            },
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown',
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp',
+            },
+        });
         return;
     }
+
 
     /*=================================Update user====================================*/
     $.ajax({
@@ -102,13 +168,45 @@ function saveCustomerDetails() {
         }),
         success: function (response) {
             console.log("User details saved successfully:", response);
-            Swal.fire('Success', 'Customer details saved successfully!', 'success').then(() => {
-                window.location.href = "car.html"; // Redirect to the home page
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Customer details saved successfully!',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    htmlContainer: 'custom-swal-html',
+                    confirmButton: 'custom-swal-confirm',
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown',
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                },
+            }).then(() => {
+                window.location.href = "car.html";
             });
         },
         error: function (xhr, status, error) {
             console.error("Error saving user data:", error);
-            Swal.fire('Error', 'Failed to save customer details.', 'error');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to save customer details. Please try again.',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    htmlContainer: 'custom-swal-html',
+                    confirmButton: 'custom-swal-confirm',
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown',
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                },
+            });
         }
     });
 }

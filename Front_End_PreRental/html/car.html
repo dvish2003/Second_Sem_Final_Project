@@ -4,7 +4,7 @@
     <title>Carbook - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -28,6 +28,51 @@
     <link rel="stylesheet" href="../css/style.css">
   </head>
   <style>
+	  /* Custom styles for SweetAlert2 popup */
+	  .custom-swal-popup {
+		  border-radius: 10px;
+		  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		  padding: 20px;
+	  }
+
+	  .custom-swal-title {
+		  font-size: 24px;
+		  font-weight: bold;
+		  color: #333;
+		  margin-bottom: 15px;
+	  }
+
+	  .custom-swal-html {
+		  font-size: 16px;
+		  color: #555;
+		  line-height: 1.6;
+	  }
+
+	  .custom-swal-confirm {
+		  font-size: 16px;
+		  font-weight: bold;
+		  padding: 10px 20px;
+		  border-radius: 5px;
+		  background-color: #28a745;
+		  border: none;
+	  }
+
+	  .custom-swal-confirm:hover {
+		  background-color: #218838;
+	  }
+
+	  .custom-swal-cancel {
+		  font-size: 16px;
+		  font-weight: bold;
+		  padding: 10px 20px;
+		  border-radius: 5px;
+		  background-color: #6c757d;
+		  border: none;
+	  }
+
+	  .custom-swal-cancel:hover {
+		  background-color: #5a6268;
+	  }
 	  /* Custom CSS for the modal header */
 	  #saveCustomerDetailsModal .modal-header {
 		  display: flex;
@@ -240,170 +285,7 @@
 		  }
 	  }
   </style>
-<!--  <style>
-	  /* Custom CSS for the modal */
-	  #saveCustomerDetailsModal .header {
-		  text-align: center;
-		  padding: 20px;
-		  background-color: #f8f9fa;
-		  border-bottom: 1px solid #dee2e6;
-	  }
 
-	  #saveCustomerDetailsModal .header .logo {
-		  font-size: 2rem;
-		  font-weight: bold;
-		  color: #000; /* Black color for "Pre" */
-	  }
-
-	  #saveCustomerDetailsModal .header .logo span {
-		  color: #28a745; /* Green color for "Rental" */
-	  }
-
-	  #saveCustomerDetailsModal .header .subtitle {
-		  font-size: 1rem;
-		  color: #6c757d;
-		  margin-top: 5px;
-	  }
-
-	  #saveCustomerDetailsModal hr {
-		  margin: 0;
-		  border-top: 1px solid #dee2e6;
-	  }
-
-	  #saveCustomerDetailsModal .modal-content {
-		  border-radius: 10px;
-	  }
-
-	  #saveCustomerDetailsModal .modal-header {
-		  border-bottom: 1px solid #dee2e6;
-	  }
-
-	  #saveCustomerDetailsModal .modal-title {
-		  font-weight: bold;
-	  }
-
-	  #saveCustomerDetailsModal .modal-body {
-		  padding: 20px;
-	  }
-
-	  #saveCustomerDetailsModal .file-upload {
-		  text-align: center;
-		  margin-bottom: 20px;
-	  }
-
-	  #saveCustomerDetailsModal .profile-preview {
-		  width: 100px;
-		  height: 100px;
-		  margin: 0 auto 10px;
-		  border-radius: 50%; /* Circular image */
-		  overflow: hidden;
-		  border: 2px solid #dee2e6;
-	  }
-
-	  #saveCustomerDetailsModal .profile-preview img {
-		  width: 100%;
-		  height: 100%;
-		  object-fit: cover;
-	  }
-
-	  #saveCustomerDetailsModal .upload-btn {
-		  display: inline-block;
-		  padding: 8px 16px;
-		  background-color: #28a745; /* Green color */
-		  color: #fff;
-		  border-radius: 5px;
-		  cursor: pointer;
-		  transition: background-color 0.3s ease;
-	  }
-
-	  #saveCustomerDetailsModal .upload-btn:hover {
-		  background-color: #218838; /* Darker green on hover */
-	  }
-
-	  #saveCustomerDetailsModal .upload-btn input[type="file"] {
-		  display: none;
-	  }
-
-	  #saveCustomerDetailsModal .form-group {
-		  margin-bottom: 15px;
-	  }
-
-	  #saveCustomerDetailsModal .form-group label {
-		  font-weight: bold;
-		  margin-bottom: 5px;
-		  display: block;
-	  }
-
-	  #saveCustomerDetailsModal .form-group input {
-		  width: 100%;
-		  padding: 8px;
-		  border: 1px solid #dee2e6;
-		  border-radius: 5px;
-		  font-size: 1rem;
-	  }
-
-	  #saveCustomerDetailsModal .input-row {
-		  display: flex;
-		  gap: 15px;
-		  margin-bottom: 15px;
-	  }
-
-	  #saveCustomerDetailsModal .input-row .form-group {
-		  flex: 1;
-	  }
-
-	  #saveCustomerDetailsModal .error-message {
-		  color: #dc3545; /* Red color for error messages */
-		  font-size: 0.875rem;
-		  margin-top: 5px;
-		  display: none;
-	  }
-
-	  #saveCustomerDetailsModal .form-info {
-		  color: #6c757d;
-		  font-size: 0.875rem;
-		  margin-top: 5px;
-	  }
-
-	  #saveCustomerDetailsModal .modal-footer {
-		  border-top: 1px solid #dee2e6;
-		  padding: 15px 20px;
-		  text-align: right;
-	  }
-
-	  #saveCustomerDetailsModal .modal-footer .btn {
-		  padding: 8px 16px;
-		  border-radius: 5px;
-		  font-size: 1rem;
-	  }
-
-	  #saveCustomerDetailsModal .modal-footer .btn-secondary {
-		  background-color: #6c757d;
-		  border-color: #6c757d;
-	  }
-
-	  #saveCustomerDetailsModal .modal-footer .btn-primary {
-		  background-color: #28a745; /* Green color */
-		  border-color: #28a745;
-	  }
-
-	  #saveCustomerDetailsModal .modal-footer .btn-primary:hover {
-		  background-color: #218838; /* Darker green on hover */
-		  border-color: #1e7e34;
-	  }
-
-	  /* Responsive adjustments */
-	  @media (max-width: 768px) {
-		  #saveCustomerDetailsModal .input-row {
-			  flex-direction: column;
-			  gap: 0;
-		  }
-
-		  #saveCustomerDetailsModal .input-row .form-group {
-			  margin-bottom: 15px;
-		  }
-	  }
-  </style>-->
   <body>
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -418,10 +300,10 @@
 				  <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
 				  <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#filterModal">Filter</a></li>
 				  <li class="nav-item"><a href="#" class="nav-link">Bookings</a></li>
-				  <li class="nav-item"><a href="MemberPage/memberPage.html" class="nav-link">Member</a></li>
+				  <li class="nav-item"><a href="MemberPage/memberPage.html" class="nav-link" id="memberLink">Member</a></li>
 				  <li class="nav-item"><a href="#" class="nav-link">Payment</a></li>
 				  <li class="nav-item"><a href="#" class="nav-link">Account Setting</a></li>
-				  <li class="nav-item"><a href="#" class="nav-link">Log Out</a></li>
+				  <li class="nav-item"><a href="../index.html" class="nav-link">Log Out</a></li>
 			  </ul>
 		  </div>
 	  </div>
@@ -770,57 +652,57 @@
     </section>
 
 
-    <footer class="ftco-footer ftco-bg-dark ftco-section">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2"><a href="#" class="logo">Car<span>book</span></a></h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Information</h2>
-              <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Services</a></li>
-                <li><a href="#" class="py-2 d-block">Term and Conditions</a></li>
-                <li><a href="#" class="py-2 d-block">Best Price Guarantee</a></li>
-                <li><a href="#" class="py-2 d-block">Privacy &amp; Cookies Policy</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Customer Support</h2>
-              <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">FAQ</a></li>
-                <li><a href="#" class="py-2 d-block">Payment Option</a></li>
-                <li><a href="#" class="py-2 d-block">Booking Tips</a></li>
-                <li><a href="#" class="py-2 d-block">How it works</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
-            	<div class="block-23 mb-3">
-	              <ul>
-	                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
-	              </ul>
-	            </div>
-            </div>
-          </div>
-        </div>
+  <footer class="ftco-footer ftco-bg-dark ftco-section">
+	  <div class="container">
+		  <div class="row mb-5">
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4">
+					  <h2 class="ftco-heading-2"><a href="#" class="logo">PRE<span>RENTAL</span></a></h2>
+					  <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+					  <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+						  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+						  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+						  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4 ml-md-5">
+					  <h2 class="ftco-heading-2">Information</h2>
+					  <ul class="list-unstyled">
+						  <li><a href="#" class="py-2 d-block">About</a></li>
+						  <li><a href="#" class="py-2 d-block">Services</a></li>
+						  <li><a href="#" class="py-2 d-block">Term and Conditions</a></li>
+						  <li><a href="#" class="py-2 d-block">Best Price Guarantee</a></li>
+						  <li><a href="#" class="py-2 d-block">Privacy &amp; Cookies Policy</a></li>
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4">
+					  <h2 class="ftco-heading-2">Customer Support</h2>
+					  <ul class="list-unstyled">
+						  <li><a href="#" class="py-2 d-block">FAQ</a></li>
+						  <li><a href="#" class="py-2 d-block">Payment Option</a></li>
+						  <li><a href="#" class="py-2 d-block">Booking Tips</a></li>
+						  <li><a href="#" class="py-2 d-block">How it works</a></li>
+						  <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4">
+					  <h2 class="ftco-heading-2">Have a Questions?</h2>
+					  <div class="block-23 mb-3">
+						  <ul>
+							  <li><span class="icon icon-map-marker"></span><span class="text">Kalutara,Sri Lanka</span></li>
+							  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+94 72 503 872 7</span></a></li>
+							  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VisahnChathuranga2003@gmail.com.com</span></a></li>
+						  </ul>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
 		  <div class="row">
 			  <div class="col-md-12 text-center">
 
@@ -828,9 +710,8 @@
 					  Copyright &copy;<script>document.write(new Date().getFullYear());</script> PreRental . All rights reserved</a></p>
 			  </div>
 		  </div>
-      </div>
-    </footer>
-
+	  </div>
+  </footer>
 
 
   <!-- loader -->
@@ -859,122 +740,45 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-	getUserData();
+	document.getElementById('memberLink').addEventListener('click', function(event) {
+		event.preventDefault();
 
-	function getUserData() {
-		//get token in local storage
-		const token = localStorage.getItem('token');
-		//decoding token
-		const decodedToken = jwt_decode(token);
-		//get email use decorded token
-		const userEmail = decodedToken.email;
-		//get password use decorded token
-		console.log(userEmail);
-
-		//get all data use email
-		$.ajax({
-			url: 'http://localhost:8080/api/v1/user/getUser',
-			method: 'GET',
-			contentType: 'application/json',
-			async: true,
-			data: {
-				email: userEmail
+		Swal.fire({
+			title: 'Join Member Program',
+			html: `
+            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
+              By joining our member program, you gain access to exclusive benefits, discounts, and personalized services.
+            </p>
+            <p style="font-size: 14px; color: #777;">
+              Please review our <a href="#" target="_blank" style="color: #28a745; text-decoration: underline;">Terms and Conditions</a> before proceeding.
+            </p>
+          `,
+			icon: 'info',
+			iconColor: '#28a745',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Join Now',
+			cancelButtonText: 'No, Thanks',
+			confirmButtonColor: '#28a745',
+			cancelButtonColor: '#6c757d',
+			customClass: {
+				popup: 'custom-swal-popup',
+				title: 'custom-swal-title',
+				htmlContainer: 'custom-swal-html',
+				confirmButton: 'custom-swal-confirm',
+				cancelButton: 'custom-swal-cancel',
 			},
-			error: function (jqXHR, textStatus, errorTh){
-				console.log("Error: ", errorTh);
-				Swal.fire({
-					icon: 'error',
-					title: 'Error!',
-					text: 'Failed to fetch user data'
-				}).then(()=>{
-					window.location.href = 'index.html';
-				});
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
 			},
-			success: function (response) {
-				console.log("User details fetched successfully");
-				const email = response.data.email;
-				const  name = response.data.name;
-				const password1 = response.data.password;
-				const nic = response.data.national_id;
-				const address = response.data.address;
-				const city = response.data.city;
-				const postal_code = response.data.postal_code;
-				const primary_phone_number = response.data.primary_phone_number;
-				const secondary_phone_number = response.data.secondary_phone_number;
-				//set text feild in data
-				//show console in data
-				console.log(password1,email,name,address,nic,city,secondary_phone_number,primary_phone_number,postal_code);
-
-
-				//Check All Data Null
-				if(address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null){
-					$('#saveCustomerDetailsModal').modal('show');
-					//set data in text field
-					$('#customerEmail').val(email)
-					$('#customerName').val(name)
-
-				}else{
-					console.log("All data are filled");
-				}
-
-			}
-		})
-	}
-	function saveCustomerDetails() {
-		const name = $('#customerName').val();
-		const email = $('#customerEmail').val();
-		const nic = $('#customerNic').val();
-		const address = $('#customerAddress').val();
-		const city = $('#customerCity').val();
-		const postalCode = $('#customerPostalCode').val();
-		const primaryContact = $('#customerPrimaryNumber').val();
-		const secondaryContact = $('#customerSecondNumber').val();
-
-		/*==========================Validation========================*/
-		if (nic.length !== 12 || !/^\d+$/.test(nic)) {
-			Swal.fire('Error', 'NIC must be exactly 10 digits.', 'error');
-			return;
-		}
-
-		if (primaryContact.length !== 10 || !/^\d+$/.test(primaryContact)) {
-			Swal.fire('Error', 'Primary phone number must be exactly 10 digits.', 'error');
-			return;
-		}
-
-		if (secondaryContact && (secondaryContact.length !== 10 || !/^\d+$/.test(secondaryContact))) {
-			Swal.fire('Error', 'Secondary phone number must be exactly 10 digits.', 'error');
-			return;
-		}
-
-		/*=================================Update user====================================*/
-		$.ajax({
-			url: 'http://localhost:8080/api/v1/user/updateUser',
-			method: 'PUT',
-			contentType: 'application/json',
-			data: JSON.stringify({
-				email: email,
-				name: name,
-				role: "user",
-				national_id: nic,
-				address: address,
-				city: city,
-				postal_code: postalCode,
-				primary_phone_number: primaryContact,
-				secondary_phone_number: secondaryContact
-			}),
-			success: function (response) {
-				console.log("User details saved successfully:", response);
-				Swal.fire('Success', 'Customer details saved successfully!', 'success').then(() => {
-					window.location.href = "car.html"; // Redirect to the home page
-				});
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
 			},
-			error: function (xhr, status, error) {
-				console.error("Error saving user data:", error);
-				Swal.fire('Error', 'Failed to save customer details.', 'error');
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = 'MemberPage/memberPage.html';
 			}
 		});
-	}
-
+	});
 	const cars = [
 		{ name: "Mercedes Grand Sedan", model: "Cheverolet", price: 500, image: "images/car-1.jpg" },
 		{ name: "Range Rover", model: "Subaru", price: 500, image: "images/car-2.jpg" },
@@ -1033,3 +837,5 @@
 </script>
   </body>
 </html>
+
+<!---->

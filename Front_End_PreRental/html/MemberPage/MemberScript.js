@@ -18,6 +18,7 @@ darkMode.addEventListener('click', () => {
     darkMode.querySelector('span:nth-child(2)').classList.toggle('active');
 });
 
+/*
 document.addEventListener("DOMContentLoaded", function () {
     const sidebarLinks = document.querySelectorAll(".sidebar a");
 
@@ -35,4 +36,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const defaultLink = document.querySelector(".sidebar a.active");
     setActiveLink(defaultLink);
-});
+});*/

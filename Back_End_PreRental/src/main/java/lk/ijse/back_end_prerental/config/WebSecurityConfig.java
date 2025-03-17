@@ -132,7 +132,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/authenticate",
-                                "/api/v1/user/getUser",
                                 "/api/v1/user/register",
                                 "/api/v1/user/updateUser",
                                 "/api/v1/auth/refreshToken",

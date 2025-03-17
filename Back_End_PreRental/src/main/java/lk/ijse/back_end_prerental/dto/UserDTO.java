@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class UserDTO {
+    private UUID uid;
     private String email;
     private String name;
     private String password;
