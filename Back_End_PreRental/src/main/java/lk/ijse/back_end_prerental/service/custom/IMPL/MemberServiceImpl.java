@@ -5,6 +5,7 @@ import lk.ijse.back_end_prerental.dto.MemberDTO;
 import lk.ijse.back_end_prerental.repo.MemberRepository;
 import lk.ijse.back_end_prerental.repo.UserRepository;
 import lk.ijse.back_end_prerental.service.custom.MemberService;
+import lk.ijse.back_end_prerental.util.VarList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,24 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public MemberDTO getMember(String email){
-        if(memberRepository.existsByEmail(email)){
+    public MemberDTO getMember(String email) {
+        if (memberRepository.existsByEmail(email)) {
             Member member = memberRepository.findByEmail(email);
             return modelMapper.map(member, MemberDTO.class);
-            } else {
+        } else {
             return null;
         }
-
-   }
+    }
+    @Override
+    public int saveMember(MemberDTO memberDTO) {
+        if(memberRepository.existsByEmail(memberDTO.getEmail())){
+            return VarList.Not_Acceptable;
+        }
+        else {
+            Member member = modelMapper.map(memberDTO, Member.class);
+            memberRepository.save(member);
+            return VarList.Created;
+        }
+    }
 
 }

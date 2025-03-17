@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="../css/animate.css">
+	  <link rel="stylesheet" href="../css/style.css">
 
     <link rel="stylesheet" href="../css/owl.carousel.min.css">
     <link rel="stylesheet" href="../css/owl.theme.default.min.css">
@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="../css/flaticon.css">
     <link rel="stylesheet" href="../css/icomoon.css">
-    <link rel="stylesheet" href="../css/style.css">
+
   </head>
   <style>
 	  /* Custom styles for SweetAlert2 popup */
@@ -74,22 +74,35 @@
 		  background-color: #5a6268;
 	  }
 	  /* Custom CSS for the modal header */
+	  /* Smaller Modal */
+	  #saveCustomerDetailsModal .modal-dialog {
+		  max-width: 500px; /* Adjust the width as needed */
+		  margin: 1.75rem auto;
+	  }
+
+	  #saveCustomerDetailsModal .modal-content {
+		  border-radius: 10px;
+		  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	  }
+
 	  #saveCustomerDetailsModal .modal-header {
 		  display: flex;
 		  flex-direction: column;
 		  align-items: center;
 		  text-align: center;
-		  padding: 20px;
+		  padding: 15px; /* Reduced padding */
 		  background-color: #f8f9fa;
 		  border-bottom: 1px solid #dee2e6;
-		  position: relative; /* For positioning the close button */
+		  position: relative;
+		  border-top-left-radius: 10px;
+		  border-top-right-radius: 10px;
 	  }
 
 	  #saveCustomerDetailsModal .modal-header .logo {
-		  font-size: 2rem;
+		  font-size: 1.5rem; /* Reduced logo size */
 		  font-weight: bold;
 		  color: #000; /* Black color for "Pre" */
-		  margin-bottom: 10px; /* Space between logo and subtitle */
+		  margin-bottom: 5px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .modal-header .logo span {
@@ -97,86 +110,48 @@
 	  }
 
 	  #saveCustomerDetailsModal .modal-header .subtitle {
-		  font-size: 1rem;
+		  font-size: 0.875rem; /* Reduced subtitle size */
 		  color: #6c757d;
-		  margin-bottom: 15px; /* Space between subtitle and modal title */
-	  }
-
-	  #saveCustomerDetailsModal .modal-header .modal-title {
-		  font-size: 1.5rem;
-		  font-weight: bold;
-		  color: #000; /* Black color for the modal title */
-		  margin-bottom: 0; /* Remove extra margin */
+		  margin-bottom: 10px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .modal-header .btn-close {
 		  position: absolute;
-		  top: 15px;
-		  right: 15px;
-		  margin: 0; /* Remove default margin */
+		  top: 10px; /* Adjusted position */
+		  right: 10px; /* Adjusted position */
+		  margin: 0;
 		  padding: 0.5rem;
 		  background-color: transparent;
 		  border: none;
 		  cursor: pointer;
+		  font-size: 1.25rem; /* Adjusted size */
 	  }
 
 	  #saveCustomerDetailsModal .modal-header .btn-close:hover {
-		  opacity: 0.8; /* Slightly fade the close button on hover */
-	  }
-	  #saveCustomerDetailsModal .header {
-		  text-align: center;
-		  padding: 20px;
-		  background-color: #f8f9fa;
-		  border-bottom: 1px solid #dee2e6;
-	  }
-
-	  #saveCustomerDetailsModal .header .logo {
-		  font-size: 2rem;
-		  font-weight: bold;
-		  color: #000; /* Black color for "Pre" */
-	  }
-
-	  #saveCustomerDetailsModal .header .logo span {
-		  color: #28a745; /* Green color for "Rental" */
-	  }
-
-	  #saveCustomerDetailsModal .header .subtitle {
-		  font-size: 1rem;
-		  color: #6c757d;
-		  margin-top: 5px;
-	  }
-
-	  #saveCustomerDetailsModal hr {
-		  margin: 0;
-		  border-top: 1px solid #dee2e6;
-	  }
-
-	  #saveCustomerDetailsModal .modal-content {
-		  border-radius: 10px;
-	  }
-
-	  #saveCustomerDetailsModal .modal-header {
-		  border-bottom: 1px solid #dee2e6;
-	  }
-
-	  #saveCustomerDetailsModal .modal-title {
-		  font-weight: bold;
+		  opacity: 0.8;
 	  }
 
 	  #saveCustomerDetailsModal .modal-body {
-		  padding: 20px;
+		  padding: 15px; /* Reduced padding */
+	  }
+
+	  #saveCustomerDetailsModal .modal-title {
+		  font-size: 1.25rem; /* Reduced title size */
+		  font-weight: bold;
+		  color: #000;
+		  margin-bottom: 10px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .file-upload {
 		  text-align: center;
-		  margin-bottom: 20px;
+		  margin-bottom: 15px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .profile-preview {
-		  width: 100px;
-		  height: 100px;
-		  margin: 0 auto 10px;
-		  border-radius: 50%; /* Circular image */
+		  width: 80px; /* Reduced profile picture size */
+		  height: 80px;
+		  margin: 0 auto 10px; /* Reduced margin */
+		  border-radius: 50%;
 		  overflow: hidden;
 		  border: 2px solid #dee2e6;
 	  }
@@ -189,12 +164,13 @@
 
 	  #saveCustomerDetailsModal .upload-btn {
 		  display: inline-block;
-		  padding: 8px 16px;
+		  padding: 6px 12px; /* Reduced padding */
 		  background-color: #28a745; /* Green color */
 		  color: #fff;
 		  border-radius: 5px;
 		  cursor: pointer;
 		  transition: background-color 0.3s ease;
+		  font-size: 0.875rem; /* Reduced font size */
 	  }
 
 	  #saveCustomerDetailsModal .upload-btn:hover {
@@ -206,27 +182,28 @@
 	  }
 
 	  #saveCustomerDetailsModal .form-group {
-		  margin-bottom: 15px;
+		  margin-bottom: 10px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .form-group label {
 		  font-weight: bold;
 		  margin-bottom: 5px;
 		  display: block;
+		  font-size: 0.875rem; /* Reduced font size */
 	  }
 
 	  #saveCustomerDetailsModal .form-group input {
 		  width: 100%;
-		  padding: 8px;
+		  padding: 6px; /* Reduced padding */
 		  border: 1px solid #dee2e6;
 		  border-radius: 5px;
-		  font-size: 1rem;
+		  font-size: 0.875rem; /* Reduced font size */
 	  }
 
 	  #saveCustomerDetailsModal .input-row {
 		  display: flex;
-		  gap: 15px;
-		  margin-bottom: 15px;
+		  gap: 10px; /* Reduced gap */
+		  margin-bottom: 10px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .input-row .form-group {
@@ -235,27 +212,27 @@
 
 	  #saveCustomerDetailsModal .error-message {
 		  color: #dc3545; /* Red color for error messages */
-		  font-size: 0.875rem;
-		  margin-top: 5px;
+		  font-size: 0.75rem; /* Reduced font size */
+		  margin-top: 3px; /* Reduced margin */
 		  display: none;
 	  }
 
 	  #saveCustomerDetailsModal .form-info {
 		  color: #6c757d;
-		  font-size: 0.875rem;
-		  margin-top: 5px;
+		  font-size: 0.75rem; /* Reduced font size */
+		  margin-top: 3px; /* Reduced margin */
 	  }
 
 	  #saveCustomerDetailsModal .modal-footer {
 		  border-top: 1px solid #dee2e6;
-		  padding: 15px 20px;
+		  padding: 10px 15px; /* Reduced padding */
 		  text-align: right;
 	  }
 
 	  #saveCustomerDetailsModal .modal-footer .btn {
-		  padding: 8px 16px;
+		  padding: 6px 12px; /* Reduced padding */
 		  border-radius: 5px;
-		  font-size: 1rem;
+		  font-size: 0.875rem; /* Reduced font size */
 	  }
 
 	  #saveCustomerDetailsModal .modal-footer .btn-secondary {
@@ -275,13 +252,17 @@
 
 	  /* Responsive adjustments */
 	  @media (max-width: 768px) {
+		  #saveCustomerDetailsModal .modal-dialog {
+			  max-width: 90%; /* Full width on smaller screens */
+		  }
+
 		  #saveCustomerDetailsModal .input-row {
 			  flex-direction: column;
 			  gap: 0;
 		  }
 
 		  #saveCustomerDetailsModal .input-row .form-group {
-			  margin-bottom: 15px;
+			  margin-bottom: 10px; /* Reduced margin */
 		  }
 	  }
   </style>
@@ -315,15 +296,15 @@
 	  <hr>
 	  <div class="modal-dialog modal-lg">
 		  <div class="modal-content">
+			  <!-- Modal Header -->
 			  <div class="modal-header">
 				  <div class="logo">Pre<span>Rental</span></div>
 				  <p class="subtitle">Hire And Enjoy Your Journey</p>
-
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			  </div>
+
 			  <div class="modal-body">
-				  <h5 class="modal-title" id="saveCustomerDetailsModalLabel">Save Customer Details</h5>
-				  <form id="customerDetailsForm">
+				 		  <form id="customerDetailsForm">
 					  <!-- Profile Picture -->
 					  <div class="file-upload">
 						  <div class="profile-preview">
@@ -485,7 +466,7 @@
 	    						<span class="cat">Subaru</span>
 	    						<p class="price ml-auto">$500 <span>/day</span></p>
     						</div>
-    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    						<p class="d-flex mb-0 d-block"><a href="#" cla	console.log("huttige putha");ss="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
     					</div>
     				</div>
     			</div>
@@ -732,27 +713,59 @@
   <script src="../js/bootstrap-datepicker.js"></script>
   <script src="../js/jquery.timepicker.min.js"></script>
   <script src="../js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="../js/google-map.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/carHome.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-	document.getElementById('memberLink').addEventListener('click', function(event) {
-		event.preventDefault();
 
+
+	function CheckExistMember(){
+		const token = localStorage.getItem('token');
+
+		//decode token
+		const decoded = jwt_decode(token);
+
+		//get email address
+		const userEmail = decoded.email;
+
+		//check if member exists
+		$.ajax({
+			url: 'http://localhost:8080/api/v1/member/getMemberInfo',
+			method: 'GET',
+			contentType: 'application/json',
+			async: true,
+			data: {
+				email: userEmail
+			},
+			headers: {
+				'Authorization': 'Bearer '+ token
+			},
+			success: (response) => {
+				if(response.status === 200){
+                    //member exists
+                    console.log('Member Exists');
+                } else {
+                    //member does not exist
+                    console.log('Member does not exist');
+                    PopUp();
+                }
+			}
+		})
+	}
+
+	function PopUp() {
 		Swal.fire({
 			title: 'Join Member Program',
 			html: `
             <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
-              By joining our member program, you gain access to exclusive benefits, discounts, and personalized services.
+                By joining our member program, you gain access to exclusive benefits, discounts, and personalized services.
             </p>
             <p style="font-size: 14px; color: #777;">
-              Please review our <a href="#" target="_blank" style="color: #28a745; text-decoration: underline;">Terms and Conditions</a> before proceeding.
+                Please review our <a href="#" target="_blank" style="color: #28a745; text-decoration: underline;">Terms and Conditions</a> before proceeding.
             </p>
-          `,
+        `,
 			icon: 'info',
 			iconColor: '#28a745',
 			showCancelButton: true,
@@ -778,8 +791,13 @@
 				window.location.href = 'MemberPage/memberPage.html';
 			}
 		});
-	});
-	const cars = [
+	}
+
+
+
+
+
+	/*const cars = [
 		{ name: "Mercedes Grand Sedan", model: "Cheverolet", price: 500, image: "images/car-1.jpg" },
 		{ name: "Range Rover", model: "Subaru", price: 500, image: "images/car-2.jpg" },
 		];
@@ -833,7 +851,7 @@
 	}
 
 		// Initial population of car listings
-		populateCarListings(cars);
+		populateCarListings(cars);*/
 </script>
   </body>
 </html>

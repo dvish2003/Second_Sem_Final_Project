@@ -26,7 +26,7 @@ function getUserData() {
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: 'Failed to fetch user data. Please try again.',
+                text: 'You are not logged in. Please log in to continue.',
                 customClass: {
                     popup: 'custom-swal-popup',
                     title: 'custom-swal-title',

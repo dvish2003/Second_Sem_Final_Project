@@ -30,24 +30,40 @@ public class MemberController {
 
     @GetMapping(value = "/getMemberInfo")
     public ResponseEntity<ResponseDTO> getMemberByUserId(@RequestParam String email){
+        System.out.println("Request Accepted");
         MemberDTO memberDTO = memberService.getMember(email);
         if(memberDTO == null){
-            System.out.println("member not found");
-            return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Member not found", null));
-        }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO(VarList.Not_Found, "Already you are member ", memberDTO));
+                    .body(new ResponseDTO(VarList.Not_Found, "Member not found ",null));
+        }else{
+            return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Already you are member", memberDTO));
         }
 
     }
 
 
     @PostMapping(value ="/saveMemberInfo")
-    public ResponseEntity<ResponseDTO> saveMember(@RequestBody @Valid MemberDTO memberDTO){
-        System.out.println("ddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaffffffffffffffffffffffffffffffffffff");
-        System.out.println(memberDTO.getName());
-        System.out.println(memberDTO.getUserDTO().getRole()+"dhhhhhhhhhhhhhhhhhhhhhh");
-        System.out.println(memberDTO.getAddress());
-        return null;
+    public ResponseEntity<ResponseDTO> saveMember(@RequestBody MemberDTO memberDTO){
+        System.out.println(memberDTO);
+        MemberDTO memberDTO1 = memberDTO;
+        memberDTO1.setNicNumber(memberDTO.getUserDTO().getNational_id());
+       try{
+           int res = memberService.saveMember(memberDTO1);
+           switch(res){
+               case VarList.Created:
+                   System.out.println("Member saved successfully");
+                   return ResponseEntity.ok(new ResponseDTO(VarList.Created, "Member saved successfully", memberDTO1));
+               case VarList.Not_Found:
+                   System.out.println("Member already exists");
+                   return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                          .body(new ResponseDTO(VarList.Not_Found, "Member already exists", null));
+               default:
+                   System.out.println("Error saving member");
+                   return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                          .body(new ResponseDTO(VarList.Internal_Server_Error, "Error saving member", null));
+           }
+       } catch (Exception e) {
+           throw new RuntimeException(e);
+       }
     }
 }

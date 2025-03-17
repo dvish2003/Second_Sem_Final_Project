@@ -1,5 +1,6 @@
 package lk.ijse.back_end_prerental.service.custom;
 
+import jakarta.validation.Valid;
 import lk.ijse.back_end_prerental.dto.MemberDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 
@@ -16,4 +17,6 @@ public interface MemberService {
 
 
     MemberDTO getMember(String email);
+
+    int saveMember(MemberDTO memberDTO);
 }
