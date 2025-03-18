@@ -6,6 +6,7 @@ import lk.ijse.back_end_prerental.dto.AuthDTO;
 import lk.ijse.back_end_prerental.dto.ResponseDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 import lk.ijse.back_end_prerental.repo.UserRepository;
+import lk.ijse.back_end_prerental.service.custom.IMPL.UserServiceImpl;
 import lk.ijse.back_end_prerental.service.custom.UserService;
 import lk.ijse.back_end_prerental.util.JwtUtil;
 import lk.ijse.back_end_prerental.util.VarList;
@@ -30,6 +31,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+
 
     //constructor injection
     public UserController(UserService userService, UserRepository userRepository, JwtUtil jwtUtil) {

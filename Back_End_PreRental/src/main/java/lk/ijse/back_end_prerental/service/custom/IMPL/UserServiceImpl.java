@@ -3,12 +3,14 @@ package lk.ijse.back_end_prerental.service.custom.IMPL;
 
 
 import lk.ijse.back_end_prerental.Entity.User;
+import lk.ijse.back_end_prerental.config.VerificationCodeGenerator;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 import lk.ijse.back_end_prerental.repo.UserRepository;
 import lk.ijse.back_end_prerental.service.custom.UserService;
 import lk.ijse.back_end_prerental.util.VarList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,6 +35,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private EmailService emailService;
+
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -151,8 +161,35 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }*/
 
-
     @Override
+    public int verifyUser(String email, String code) {
+        User user = userRepository.findByEmail(email);
+        if (user != null && user.getVerificationCode().equals(code)) {
+            user.setVerified(true);
+            user.setVerificationCode(null);
+            userRepository.save(user);
+            return VarList.OK;
+        }
+        return VarList.Not_Found;
+    }
+    @Override
+    public int saveUser(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            return VarList.Not_Acceptable;
+        } else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            String verificationCode = VerificationCodeGenerator.generateCode(6);
+            userDTO.setVerificationCode(verificationCode);
+            userDTO.setVerified(false);
+            userRepository.save(modelMapper.map(userDTO, User.class));
+            emailService.sendVerificationEmail(userDTO.getEmail(), verificationCode);
+
+            return VarList.Created;
+        }
+    }
+
+  /*  @Override
     public int saveUser(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             return VarList.Not_Acceptable;
@@ -162,7 +199,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }
-    }
+    }*/
 
 
 };

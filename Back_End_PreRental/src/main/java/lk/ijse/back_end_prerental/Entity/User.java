@@ -39,7 +39,10 @@ public class User {
     @Lob
     private byte[] data;
 
-    /*====================================================*/
+    /*======================== Verification============================*/
+    private boolean verified;
+    private String verificationCode;
+    /*==============================================================*/
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 }

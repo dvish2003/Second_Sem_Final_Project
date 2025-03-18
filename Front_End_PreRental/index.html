@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="Icon" type="image/x-icon" href="images/215451966.png">
     <title>PreRental - Happy Ride</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -30,7 +31,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <style>
-     .modal-content {
+   /*  .modal-content {
         background-color: #fff;
         border-radius: 10px;
         width: 90%;
@@ -136,19 +137,374 @@
         border: 1px solid #ccc;
         border-radius: 4px;
     }
-   /* .row {
+   !* .row {
         display: flex;
         gap: 10px;
     }
     .row .col-md-6 {
         flex: 1;
-    }*/
+    }*!
     .privacy-text {
         font-size: 12px;
         color: #666;
         text-align: center;
         margin-top: 10px;
     }
+     !* General Input Field Styling *!
+     .form-control {
+         font-size: 15px;
+         padding: 10px 15px;
+         border: 1px solid #ddd;
+         border-radius: 8px;
+         transition: all 0.3s ease;
+         box-shadow: none;
+         outline: none;
+     }
+
+     .form-control:focus {
+         border-color: #007bff;
+         box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+     }
+
+     !* Error Message Styling *!
+     .error-message {
+         font-size: 13px;
+         color: #dc3545;
+         margin-top: 5px;
+         display: none; !* Hide by default *!
+     }
+
+     !* Input Field with Error *!
+     .form-control.error {
+         border-color: #dc3545;
+     }
+
+     !* Placeholder Styling *!
+     .form-control::placeholder {
+         color: #999;
+         font-size: 14px;
+     }
+
+     !* Button Styling *!
+     .btn-primary {
+         background-color: #007bff;
+         border: none;
+         border-radius: 8px;
+         padding: 10px 15px;
+         font-size: 15px;
+         transition: all 0.3s ease;
+     }
+
+     .btn-primary:hover {
+         background-color: #0056b3;
+     }
+
+     !* Google Button Styling *!
+     .btn-google {
+         background-color: #fff;
+         border: 1px solid #ddd;
+         border-radius: 8px;
+         padding: 10px 15px;
+         font-size: 15px;
+         color: #333;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transition: all 0.3s ease;
+     }
+
+     .btn-google img {
+         margin-right: 10px;
+     }
+
+     .btn-google:hover {
+         background-color: #f8f9fa;
+         border-color: #ccc;
+     }
+     .modal-content {
+         border-radius: 15px;
+         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+     }
+     .header {
+         background: #6a11cb;
+         color: white;
+         border-radius: 15px 15px 0 0;
+     }
+     .header h5 {
+         font-weight: bold;
+     }
+     .body {
+         padding: 30px;
+     }
+     .form-control {
+         border-radius: 10px;
+         padding: 10px;
+         font-size: 16px;
+     }
+     .btn-primary {
+         background: #6a11cb;
+         border: none;
+         border-radius: 10px;
+         padding: 10px;
+         font-size: 16px;
+         width: 100%;
+         transition: background 0.3s ease;
+     }
+     .btn-primary:hover {
+         background: #2575fc;
+     }
+     .resend-link {
+         text-align: center;
+         margin-top: 15px;
+     }
+     .resend-link a {
+         color: #6a11cb;
+         text-decoration: none;
+         font-weight: bold;
+     }
+     .resend-link a:hover {
+         text-decoration: underline;
+     }
+
+     !* Custom CSS using ID selectors *!
+     #otp {
+         border: 1px solid #ccc;
+         padding: 10px;
+         font-size: 16px;
+         border-radius: 10px;
+         width: 100%;
+         margin-bottom: 15px;
+     }
+     #otp:focus {
+         border-color: #6a11cb;
+         box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+     }
+     #resendOtp {
+         color: #6a11cb;
+         text-decoration: none;
+         font-weight: bold;
+     }
+     #resendOtp:hover {
+         text-decoration: underline;
+     }*/
+   /* General Modal Styling */
+   .modal-content {
+       background-color: #fff;
+       border-radius: 15px;
+       width: 90%;
+       max-width: 600px;
+       padding: 20px;
+       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+       animation: slideIn 0.3s ease-in-out;
+       margin: 0 auto;
+   }
+
+   @keyframes slideIn {
+       from { transform: translateY(-20px); opacity: 0; }
+       to { transform: translateY(0); opacity: 1; }
+   }
+
+   /* Modal Header */
+   .modal-header {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       text-align: center;
+       padding: 20px;
+       background: #6a11cb;
+       color: white;
+       border-radius: 15px 15px 0 0;
+       border-bottom: none;
+       position: relative;
+   }
+
+   .modal-header .logo {
+       font-size: 2rem;
+       font-weight: bold;
+       color: white;
+       margin-bottom: 10px;
+   }
+
+   .modal-header .logo span {
+       color: #28a745;
+   }
+
+   .modal-header .subtitle {
+       font-size: 1rem;
+       color: rgba(255, 255, 255, 0.8);
+       margin-bottom: 15px;
+   }
+
+   .modal-header .btn-close {
+       position: absolute;
+       top: 15px;
+       right: 15px;
+       background-color: transparent;
+       border: none;
+       cursor: pointer;
+       font-size: 1.5rem;
+       color: white;
+   }
+
+   .modal-header .btn-close:hover {
+       opacity: 0.8;
+   }
+
+   /* Modal Body */
+   .modal-body {
+       padding: 30px;
+   }
+
+   /* Form Styling */
+   .form-group {
+       margin-bottom: 15px;
+   }
+
+   .form-group label {
+       display: block;
+       margin-bottom: 5px;
+       font-weight: bold;
+       color: #333;
+   }
+
+   .form-control {
+       width: 100%;
+       padding: 10px 15px;
+       font-size: 16px;
+       border: 1px solid #ddd;
+       border-radius: 10px;
+       transition: all 0.3s ease;
+       box-shadow: none;
+       outline: none;
+   }
+
+   .form-control:focus {
+       border-color: #6a11cb;
+       box-shadow: 0 0 5px rgba(106, 17, 203, 0.3);
+   }
+
+   .form-control::placeholder {
+       color: #999;
+       font-size: 14px;
+   }
+
+   /* Error Message Styling */
+   .error-message {
+       font-size: 13px;
+       color: #dc3545;
+       margin-top: 5px;
+       display: none; /* Hide by default */
+   }
+
+   .form-control.error {
+       border-color: #dc3545;
+   }
+
+   /* Button Styling */
+   .btn-primary {
+       background: #6a11cb;
+       border: none;
+       border-radius: 10px;
+       padding: 10px;
+       font-size: 16px;
+       width: 100%;
+       transition: background 0.3s ease;
+       color: white;
+   }
+
+   .btn-primary:hover {
+       background: #2575fc;
+   }
+
+   /* Resend OTP Link */
+   .resend-link {
+       text-align: center;
+       margin-top: 15px;
+   }
+
+   .resend-link a {
+       color: #6a11cb;
+       text-decoration: none;
+       font-weight: bold;
+   }
+
+   .resend-link a:hover {
+       text-decoration: underline;
+   }
+
+   /* Google Button Styling */
+   .btn-google {
+       background-color: #fff;
+       border: 1px solid #ddd;
+       border-radius: 8px;
+       padding: 10px 15px;
+       font-size: 15px;
+       color: #333;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.3s ease;
+       width: 100%;
+       margin-bottom: 15px;
+   }
+
+   .btn-google img {
+       margin-right: 10px;
+   }
+
+   .btn-google:hover {
+       background-color: #f8f9fa;
+       border-color: #ccc;
+   }
+
+   /* Privacy Text */
+   .privacy-text {
+       font-size: 12px;
+       color: #666;
+       text-align: center;
+       margin-top: 10px;
+   }
+
+   /* Login Topic */
+   .login-topic {
+       text-align: center;
+       font-size: 25px;
+       margin-bottom: 20px;
+       color: #0b0b0b;
+       font-weight: bold;
+   }
+
+   /* Forgot Password Link */
+   .forgot-password {
+       text-align: center;
+       margin: 1rem 0;
+   }
+
+   .forgot-password a {
+       color: #6a11cb;
+       text-decoration: none;
+       font-weight: bold;
+   }
+
+   .forgot-password a:hover {
+       text-decoration: underline;
+   }
+
+   /* Signup Link */
+   .signup-link {
+       text-align: center;
+       margin-top: 1rem;
+   }
+
+   .signup-link a {
+       color: #6a11cb;
+       text-decoration: none;
+       font-weight: bold;
+   }
+
+   .signup-link a:hover {
+       text-decoration: underline;
+   }
 
 </style>
 <body>
@@ -216,7 +572,32 @@
         </div>
     </div>
 </div>
-
+<!--================================================== Verify Model=================================================================-->
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title" id="verificationModalLabel">Verify Your Email</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="verifyForm">
+                    <div class="mb-4">
+                        <label for="otp" class="form-label fw-bold">Verification Code</label>
+                        <input type="text" class="form-control form-control-lg" id="otp" name="code" placeholder="Enter 6-digit code" required>
+                        <small class="form-text text-muted">Check your email for the verification code.</small>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg w-100" onclick="verifyTheAccount()">Verify</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="text-muted">Didn't receive the code? <a href="#" id="resendOtp" class="text-decoration-none fw-bold">Resend OTP</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Register Modal -->
 <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -260,7 +641,7 @@
                         <input style="font-size: 15px" type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
                         <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 mb-3" onclick="register()">Create Account</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-3" onclick="register()">  Verify Your Email </button>
                     <div class="divider text-center mb-3">
                         <span>OR</span>
                     </div>
@@ -817,6 +1198,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="js/jquery-migrate-3.0.1.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -830,8 +1212,6 @@
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.timepicker.min.js"></script>
 <script src="js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="js/google-map.js"></script>
 <script src="js/main.js"></script>
 
 <!-- Bootstrap JS and dependencies -->

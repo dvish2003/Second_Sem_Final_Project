@@ -170,7 +170,7 @@ function closeModal() {
     const modal = document.getElementById('saveCustomerDetailsModal');
     modal.style.display = 'none';
 }
-
+n
 /*===============================================Set Name=====================================================================*/
 function getName() {
     //get token in local storage

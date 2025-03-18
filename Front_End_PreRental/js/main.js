@@ -375,6 +375,13 @@
  function validatePassword(password) {
 	 return password.length >= 6;
  }
+ function validateEmail(email) {
+	 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	 return emailRegex.test(email);
+ }
+ function validatePassword(password) {
+	 return password.length >= 6;
+ }
 
  function login() {
 	 let emailUser = document.getElementById("loginEmail").value;
@@ -409,15 +416,15 @@
 		 success: function(response) {
 			 console.log("Login successful");
 			 localStorage.setItem("token", response.data.token);
-			 Swal.fire({
+			 /*Swal.fire({
 				 icon: 'success',
 				 title: 'Login Successful!',
 				 text: 'You have successfully logged in.',
 				 showConfirmButton: false,
 				 timer: 2000 // Auto-close after 2 seconds
-			 }).then(() => {
+			 }).then(() => {*/
 				 getUserDetails(emailUser);
-			 });
+			 // });
 		 },
 
 		 error: function(xhr, status, error) {
@@ -447,12 +454,35 @@
 		 success: function(response) {
 			 console.log("User details fetched successfully");
 			 const userRole = response.data.role;
-			 if (userRole === "admin") {
-				 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
-			 } else {
-				 window.location.href = "../html/car.html";
-				 getUserData(email);
+			 if(response.data.verified === true) {
+				 Swal.fire({
+				 icon: 'success',
+				 title: 'Login Successful!',
+				 text: 'You have successfully logged in.',
+				 showConfirmButton: false,
+				 timer: 2000
+			 }).then(() => {
+					 if (userRole === "admin") {
+						 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
+					 } else {
+						 window.location.href = "../html/car.html";
+						 getUserData(email);
+					 }
+				 });
+			 }else{
+				 Swal.fire({
+                     icon: 'error',
+                     title: 'Email not verified',
+                     text: 'Please verify your email address to proceed.',
+                     showConfirmButton: false,
+					 timer: 2000
+                 }).then(() => {
+					 $('#loginModal').modal('hide');
+
+					 $('#verificationModal').modal('show');
+				 });
 			 }
+
 		 },
 		 error: function(xhr, status, error) {
 			 console.error("Failed to fetch user details:", error);
@@ -465,6 +495,123 @@
 		 }
 	 });
  }
+/* function login() {
+	 let emailUser = document.getElementById("loginEmail").value;
+	 let password = document.getElementById("loginPassword").value;
+
+	 // Validate email
+	 if (!validateEmail(emailUser)) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Invalid Email',
+			 text: 'Please enter a valid email address.',
+			 showConfirmButton: true
+		 });
+		 return;
+	 }
+
+	 // Validate password
+	 if (!validatePassword(password)) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Invalid Password',
+			 text: 'Password must be at least 6 characters long.',
+			 showConfirmButton: true
+		 });
+		 return;
+	 }
+
+	 // Perform login request
+	 $.ajax({
+		 url: 'http://localhost:8080/api/v1/auth/authenticate',
+		 method: 'POST',
+		 contentType: 'application/json',
+		 data: JSON.stringify({
+			 email: emailUser,
+			 password: password
+		 }),
+		 success: function(response) {
+			 console.log("Login successful");
+			 localStorage.setItem("token", response.data.token);
+
+			 // Decode the token to get user details
+			 const token = localStorage.getItem('token');
+			 const decodedToken = jwt_decode(token);
+			 const email = decodedToken.email;
+
+			 // Fetch user details
+			 getUserDetails(email);
+		 },
+		 error: function(xhr, status, error) {
+			 console.error("Login failed:", error);
+			 Swal.fire({
+				 icon: 'error',
+				 title: 'Login Failed',
+				 text: 'Invalid email or password. Please try again.',
+				 showConfirmButton: true
+			 });
+		 }
+	 });
+ }
+
+ function getUserDetails(email) {
+	 $.ajax({
+		 url: 'http://localhost:8080/api/v1/user/getUser',
+		 method: 'GET',
+		 contentType: 'application/json',
+		 async: true,
+		 headers: {
+			 Authorization: 'Bearer ' + localStorage.getItem("token")
+		 },
+		 data: {
+			 email: email
+		 },
+		 success: function(response) {
+			 console.log("User details fetched successfully");
+
+			 // Check if the user's email is verified
+			 if (response.data.verified === true) {
+				 Swal.fire({
+					 icon: 'success',
+					 title: 'Login Successful!',
+					 text: 'You have successfully logged in.',
+					 showConfirmButton: false,
+					 timer: 2000 // Auto-close after 2 seconds
+				 }).then(() => {
+					 const userRole = response.data.role;
+
+					 // Redirect based on user role
+					 if (userRole === "admin") {
+						 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
+					 } else {
+						 window.location.href = "../html/car.html";
+						 getUserData(email); // Fetch additional user data if needed
+					 }
+				 });
+			 } else {
+				 Swal.fire({
+					 icon: 'error',
+					 title: 'Email Not Verified',
+					 text: 'Please verify your email address before logging in.',
+					 showConfirmButton: true
+				 }).then((result) => {
+					 if (result.isConfirmed) {
+						 $('#verificationModal').modal('show');
+					 }
+				 });
+			 }
+		 },
+		 error: function(xhr, status, error) {
+			 console.error("Failed to fetch user details:", error);
+			 Swal.fire({
+				 icon: 'error',
+				 title: 'Error',
+				 text: 'Failed to fetch user details. Please try again.',
+				 showConfirmButton: true
+			 });
+		 }
+	 });
+ }*/
 
  function register() {
 	 let Firstname = document.getElementById("registerFirstName").value;
@@ -515,14 +662,22 @@
 			 success: function(response) {
 				 console.log("Registration successful");
 				 localStorage.setItem("token", response.data.token);
+
+				 // Show success message with SweetAlert
 				 Swal.fire({
 					 icon: 'success',
 					 title: 'Registration Successful!',
-					 text: 'Your account has been created successfully.',
-					 showConfirmButton: false,
-					 timer: 2000
-				 }).then(() => {
-					 window.location.href = "../html/car.html";
+					 text: 'Your account has been created successfully. Please verify your email.',
+					 showConfirmButton: true, // Show a button to proceed
+					 confirmButtonText: 'Verify Email', // Customize the button text
+				 }).then((result) => {
+					 if (result.isConfirmed) {
+						 // Hide the register modal
+						 $('#registerModal').modal('hide');
+
+						 // Show the verification modal
+						 $('#verificationModal').modal('show');
+					 }
 				 });
 			 },
 			 error: function(error) {
@@ -542,9 +697,80 @@
 	 }
  }
 
+/*============================================Verify the code===========================================================================================*/
+ function verifyTheAccount() {
+	 // Get token from local storage
+	 const token = localStorage.getItem('token');
+	 if (!token) {
+		 Swal.fire({
+			 icon: 'error',
+			 title: 'Error',
+			 text: 'No token found. Please log in again.',
+			 showConfirmButton: true
+		 });
+		 return;
+	 }
+	 const decodedToken = jwt_decode(token);
+	 const email = decodedToken.email;
+
+	 console.log("email ",email);
+
+	 // Get the OTP code from the input field
+	 const code = document.getElementById("otp").value;
+	 // Send verification request to the server
+	 $.ajax({
+		 url: 'http://localhost:8080/api/v1/verifyUser/verify',
+		 method: 'POST',
+		 contentType: 'application/json',
+		 headers: {
+			 Authorization: 'Bearer ' + token
+		 },
+		 data: JSON.stringify({
+			 email: email,
+			 code: code
+		 }),
+		 success: function(response) {
+			 if (response.code === 200) {
+				 Swal.fire({
+					 icon: 'success',
+					 title: 'Email Verification Successful!',
+					 text: 'Your email has been verified successfully. You can now log in.',
+					 showConfirmButton: true
+				 }).then(() => {
+					 $('#verificationModal').modal('hide');
+					 $('#loginModal').modal('show');
+				 });
+			 } else if (response.code === 404) {
+				 Swal.fire({
+					 icon: 'error',
+					 title: 'User Not Found',
+					 text: 'The user associated with this email does not exist.',
+					 showConfirmButton: true
+				 });
+			 } else if (response.code === 406) {
+				 Swal.fire({
+					 icon: 'error',
+					 title: 'Invalid Verification Code',
+					 text: 'The verification code you entered is invalid. Please try again.',
+					 showConfirmButton: true
+				 });
+			 }
+		 },
+		 error: function(xhr, status, error) {
+			 console.error("Verification failed:", error);
+			 Swal.fire({
+				 icon: 'error',
+				 title: 'Verification Failed',
+				 text: 'An error occurred while verifying your email. Please try again.',
+				 showConfirmButton: true
+			 });
+		 }
+	 });
+ }
 
  /*===================================Car Rental Page==================================================================================================*/
   /*Fetch data use by User Email*/
+/*
  function getUserDetailsInCarPage(email) {
 	 $.ajax({
 		 url: 'http://localhost:8080/api/v1/user/getUser',
@@ -573,4 +799,4 @@
 			 });
 		 }
 	 });
- }
+ }*/
