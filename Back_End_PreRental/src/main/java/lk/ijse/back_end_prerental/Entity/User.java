@@ -32,7 +32,14 @@ public class User {
     private String secondary_phone_number;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Member member;
+    /*====================================================*/
+    //profile picture upload
+    private String fileName;
+    private String filetype;
+    @Lob
+    private byte[] data;
 
+    /*====================================================*/
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 }

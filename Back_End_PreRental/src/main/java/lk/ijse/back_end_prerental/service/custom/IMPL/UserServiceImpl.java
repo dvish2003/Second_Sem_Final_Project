@@ -16,10 +16,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 
 @Service
@@ -63,22 +64,77 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public int updateUser(UserDTO userDTO) {
-        if(userRepository.existsByEmail(userDTO.getEmail())){
-            User user = userRepository.findByEmail(userDTO.getEmail());
-            user.setAddress(userDTO.getAddress());
-            user.setName(userDTO.getName());
-            user.setNational_id(userDTO.getNational_id());
-            user.setPostal_code(userDTO.getPostal_code());
-            user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
-            user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
-            user.setCity(userDTO.getCity());
-            userRepository.save(user);
-            return VarList.OK;
-        }
-        else {
-            return VarList.Not_Found;
+        return 0;
+    }
+
+    @Override
+    public int updateUser(UserDTO userDTO, MultipartFile file) {
+        try {
+            if (userRepository.existsByEmail(userDTO.getEmail())) {
+                User user = userRepository.findByEmail(userDTO.getEmail());
+
+                // Update file details if file is present
+                if (file != null && !file.isEmpty()) {
+                    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                    user.setFileName(fileName);
+                    user.setFiletype(file.getContentType());
+                    user.setData(file.getBytes());
+                }
+
+                // Update user details
+                user.setAddress(userDTO.getAddress());
+                user.setName(userDTO.getName());
+                user.setNational_id(userDTO.getNational_id());
+                user.setPostal_code(userDTO.getPostal_code());
+                user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
+                user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
+                user.setCity(userDTO.getCity());
+
+                userRepository.save(user);
+                return VarList.OK;
+            } else {
+                return VarList.Not_Found;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating user: " + e.getMessage(), e);
         }
     }
+
+/*
+    @Override
+    public int updateUser(UserDTO userDTO, MultipartFile file) {
+        try {
+            if(userRepository.existsByEmail(userDTO.getEmail())){
+                User user = userRepository.findByEmail(userDTO.getEmail());
+                */
+/*====================================================================*//*
+
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                user.setFileName(fileName);
+                user.setFiletype(file.getContentType());
+                user.setData(file.getBytes());
+                */
+/*===================================================================*//*
+
+                user.setAddress(userDTO.getAddress());
+                user.setName(userDTO.getName());
+                user.setNational_id(userDTO.getNational_id());
+                user.setPostal_code(userDTO.getPostal_code());
+                user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
+                user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
+                user.setCity(userDTO.getCity());
+
+                userRepository.save(user);
+                return VarList.OK;
+            }
+            else {
+                return VarList.Not_Found;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+*/
 
     @Override
     public int updateUser2(UserDTO userDTO) {

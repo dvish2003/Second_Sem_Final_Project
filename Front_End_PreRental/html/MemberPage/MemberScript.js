@@ -1,8 +1,24 @@
 getName();
 getMemberData();
+getProfilePicture();
 //create object
 let User;
 // DOM Elements
+
+function getProfilePicture() {
+    //get token in local storage
+    const token = localStorage.getItem('token');
+    //decoding token
+    const decodedToken = jwt_decode(token);
+    //get email use decorded token
+    const userEmail = decodedToken.email;
+    //get password use decorded token
+    console.log(userEmail);
+    fetchAndSetProfilePicture(userEmail);
+
+}
+
+
 const sideMenu = document.querySelector('aside');
 const menuBtn = document.getElementById('menu-btn');
 const closeBtn = document.getElementById('close-btn');
@@ -87,6 +103,7 @@ function userGetData(){
                 document.getElementById('customerPostalCode').value = response.data.postal_code;
                 document.getElementById('customerPrimaryNumber').value = response.data.primary_phone_number;
                 document.getElementById('customerEmail').value = response.data.email;
+                console.log("dddddddddddddddddddd",response.data.uid)
                 /*
                                     document.getElementById('customerProfilePreview').src = '/api/v1/user/getProfilePic/' + response.data.id;
                 */
@@ -186,3 +203,31 @@ function getName() {
        }
    })
 }
+
+
+/*=====================================================Set Profile picture=========================================================================*/
+function fetchAndSetProfilePicture(userEmail) {
+    const token = localStorage.getItem('token');
+    const profilePhotoElement = document.getElementById('profilePhoto');
+    fetch(`http://localhost:8080/api/v1/user/getProfilePic/${userEmail}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer '+ token
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch profile picture');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const imageUrl = URL.createObjectURL(blob);
+            profilePhotoElement.src = imageUrl;
+        })
+        .catch(error => {
+            console.error('Error fetching profile picture:', error);
+            profilePhotoElement.src = 'images/profile-1.jpg';
+        });
+}
+

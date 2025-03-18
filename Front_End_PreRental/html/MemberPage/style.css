@@ -55,7 +55,39 @@ body {
     color: var(--color-dark);
     background-color: var(--color-background);
 }
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
+.profile .info {
+    text-align: right;
+}
+
+.profile .info p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.profile .info small {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.profile-photo {
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+    border-radius: 50%; /* Makes the image circular */
+    overflow: hidden; /* Ensures the image stays within the circular boundary */
+    border: 2px solid #ddd; /* Optional: Adds a border */
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire area */
+}
 a {
     color: var(--color-dark);
 }
@@ -709,5 +741,20 @@ main .recent-orders a {
 
     .right-section .nav button span {
         font-size: 2rem;
+    }
+}
+@media screen and (max-width: 768px) {
+    .profile {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile .info {
+        text-align: left;
+    }
+
+    .profile-photo {
+        width: 40px;
+        height: 40px;
     }
 }
