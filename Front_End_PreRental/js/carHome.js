@@ -1,4 +1,84 @@
 getUserData();
+document.getElementById('memberLink').addEventListener('click', function(){
+getUserData1();
+});
+
+
+
+function CheckExistMember(){
+    const token = localStorage.getItem('token');
+
+    //decode token
+    const decoded = jwt_decode(token);
+
+    //get email address
+    const userEmail = decoded.email;
+
+    //check if member exists
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/member/getMemberInfo',
+        method: 'GET',
+        contentType: 'application/json',
+        async: true,
+        data: {
+            email: userEmail
+        },
+        headers: {
+            'Authorization': 'Bearer '+ token
+        },
+        success: function(response){
+            console.log(response);
+            if(response.data === null){
+                PopUp();
+            }else{
+                window.location.href = 'html/MemberPage/memberPage.html';
+            }
+        }
+
+
+    })
+}
+
+function PopUp() {
+    Swal.fire({
+        title: 'Join Member Program',
+        html: `
+            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
+                By joining our member program, you gain access to exclusive benefits, discounts, and personalized services.
+            </p>
+            <p style="font-size: 14px; color: #777;">
+                Please review our <a href="#" target="_blank" style="color: #28a745; text-decoration: underline;">Terms and Conditions</a> before proceeding.
+            </p>
+        `,
+        icon: 'info',
+        iconColor: '#28a745',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Join Now',
+        cancelButtonText: 'No, Thanks',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        customClass: {
+            popup: 'custom-swal-popup',
+            title: 'custom-swal-title',
+            htmlContainer: 'custom-swal-html',
+            confirmButton: 'custom-swal-confirm',
+            cancelButton: 'custom-swal-cancel',
+        },
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown',
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp',
+        },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'html/MemberPage/memberPage.html';
+        }
+    });
+}
+
+
+
 function previewImage(input, previewId) {
     const preview = document.getElementById(previewId);
     const file = input.files[0];
@@ -13,6 +93,82 @@ function previewImage(input, previewId) {
     } else {
         preview.src = "/api/placeholder/100/100";
     }
+}
+function getUserData1() {
+    //get token in local storage
+    const token = localStorage.getItem('token');
+    //decoding token
+    const decodedToken = jwt_decode(token);
+    //get email use decorded token
+    const userEmail = decodedToken.email;
+    //get password use decorded token
+    console.log(userEmail);
+
+    //get all data use email
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/user/getUser',
+        method: 'GET',
+        contentType: 'application/json',
+        async: true,
+        data: {
+            email: userEmail
+        },
+        headers: {
+            Authorization: 'Bearer ' + token
+        },
+        error: function (jqXHR, textStatus, errorTh){
+            console.log("Error: ", errorTh);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'You are not logged in. Please log in to continue.',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    htmlContainer: 'custom-swal-html',
+                    confirmButton: 'custom-swal-confirm',
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown',
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                },
+            }).then(() => {
+                window.location.href = '../index.html';
+            });
+        },
+
+        success: function (response) {
+            console.log("User details fetched successfully");
+            const email = response.data.email;
+            const  name = response.data.name;
+            const password1 = response.data.password;
+            const nic = response.data.national_id;
+            const address = response.data.address;
+            const city = response.data.city;
+            const postal_code = response.data.postal_code;
+            const primary_phone_number = response.data.primary_phone_number;
+            const secondary_phone_number = response.data.secondary_phone_number;
+            //set text feild in data
+            //show console in data
+            console.log(password1,email,name,address,nic,city,secondary_phone_number,primary_phone_number,postal_code);
+
+
+            //Check All Data Null
+            if(address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null){
+                $('#saveCustomerDetailsModal').modal('show');
+                //set data in text field
+                $('#customerEmail').val(email)
+                $('#customerName').val(name)
+
+            }else{
+                   CheckExistMember();
+            }
+
+        }
+    })
+
 }
 function getUserData() {
     //get token in local storage
@@ -178,14 +334,15 @@ function saveCustomerDetails() {
         postal_code: postalCode,
         primary_phone_number: primaryContact,
         secondary_phone_number: secondaryContact
-    })], { type: 'application/json' }));
+    })],
+        { type: 'application/json' }));
 
     $.ajax({
         url: 'http://localhost:8080/api/v1/user/updateUser',
         method: 'PUT',
         data: formData,
-        processData: false,  // Prevent jQuery from processing data
-        contentType: false,  // Prevent jQuery from setting content type
+        processData: false,
+        contentType: false,
         headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
         },
