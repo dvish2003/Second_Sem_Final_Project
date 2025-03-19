@@ -3,6 +3,7 @@ package lk.ijse.back_end_prerental.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +44,8 @@ public class User {
     private boolean verified;
     private String verificationCode;
     /*==============================================================*/
+    private Date joinDate;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 }

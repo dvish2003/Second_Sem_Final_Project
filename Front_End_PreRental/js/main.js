@@ -463,9 +463,9 @@
 				 timer: 2000
 			 }).then(() => {
 					 if (userRole === "admin") {
-						 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
-					 } else {
-						 window.location.href = "../html/car.html";
+						 window.location.href = "../car1.html";
+					 } else if(userRole === "user"){
+						 window.location.href = "../car.html";
 						 getUserData(email);
 					 }
 				 });
@@ -663,13 +663,12 @@
 				 console.log("Registration successful");
 				 localStorage.setItem("token", response.data.token);
 
-				 // Show success message with SweetAlert
 				 Swal.fire({
 					 icon: 'success',
 					 title: 'Registration Successful!',
 					 text: 'Your account has been created successfully. Please verify your email.',
-					 showConfirmButton: true, // Show a button to proceed
-					 confirmButtonText: 'Verify Email', // Customize the button text
+					 showConfirmButton: true,
+					 confirmButtonText: 'Verify Email',
 				 }).then((result) => {
 					 if (result.isConfirmed) {
 						 // Hide the register modal

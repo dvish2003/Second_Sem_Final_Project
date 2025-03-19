@@ -9,6 +9,7 @@ import lk.ijse.back_end_prerental.repo.UserRepository;
 import lk.ijse.back_end_prerental.service.custom.UserService;
 import lk.ijse.back_end_prerental.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -99,6 +101,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
                 user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
                 user.setCity(userDTO.getCity());
+                user.setJoinDate(userDTO.getJoinDate());
 
                 userRepository.save(user);
                 return VarList.OK;
@@ -151,15 +154,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return 0;
     }
 
-    /*public UserDTO getUserMember(UUID uuid){
-        if(userRepository.existsByUserId(uuid)){
-            return null;
-        } else{
-            User user = userRepository.findByUserId(uuid);
-            UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-            return userDTO;
-        }
-    }*/
+
+    //get last 4 users
+    @Override
+    public List<UserDTO> getLast4Users() {
+      /*  List<User> users = userRepository.findLast4MembersByJoinDate();
+        return modelMapper.map(users, new TypeToken<List<UserDTO>>() {}.getType());*/
+
+        return List.of();
+    }
+
 
     @Override
     public int verifyUser(String email, String code) {
@@ -184,8 +188,24 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userDTO.setVerified(false);
             userRepository.save(modelMapper.map(userDTO, User.class));
             emailService.sendVerificationEmail(userDTO.getEmail(), verificationCode);
-
             return VarList.Created;
+        }
+    }
+    
+    @Override
+    public List<UserDTO> getUsers(){
+        List<User> users = userRepository.findAll();
+        return modelMapper.map(users, new TypeToken<List<UserDTO>>() {}.getType());
+    }
+
+    @Override
+    public int deleteUser(String email) {
+        if(userRepository.existsByEmail(email)){
+            userRepository.deleteByEmail(email);
+            return VarList.OK;
+        }
+        else {
+            return VarList.Not_Found;
         }
     }
 

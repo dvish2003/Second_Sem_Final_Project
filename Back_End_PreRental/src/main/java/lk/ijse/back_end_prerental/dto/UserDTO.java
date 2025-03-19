@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.util.UUID;
 
 
@@ -27,4 +28,5 @@ public class UserDTO {
     private String profilePicture;
    private boolean verified;
     private String verificationCode;
+    private Date joinDate;
 }

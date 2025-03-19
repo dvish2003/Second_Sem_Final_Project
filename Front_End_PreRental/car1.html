@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Carbook - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+	  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+
+  </head>
+  <style>
+	  /* Custom styles for SweetAlert2 popup */
+	  .custom-swal-popup {
+		  border-radius: 10px;
+		  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		  padding: 20px;
+	  }
+
+	  .custom-swal-title {
+		  font-size: 24px;
+		  font-weight: bold;
+		  color: #333;
+		  margin-bottom: 15px;
+	  }
+
+	  .custom-swal-html {
+		  font-size: 16px;
+		  color: #555;
+		  line-height: 1.6;
+	  }
+
+	  .custom-swal-confirm {
+		  font-size: 16px;
+		  font-weight: bold;
+		  padding: 10px 20px;
+		  border-radius: 5px;
+		  background-color: #28a745;
+		  border: none;
+	  }
+
+	  .custom-swal-confirm:hover {
+		  background-color: #218838;
+	  }
+
+	  .custom-swal-cancel {
+		  font-size: 16px;
+		  font-weight: bold;
+		  padding: 10px 20px;
+		  border-radius: 5px;
+		  background-color: #6c757d;
+		  border: none;
+	  }
+
+	  .custom-swal-cancel:hover {
+		  background-color: #5a6268;
+	  }
+	  /* Custom CSS for the modal header */
+	  /* Smaller Modal */
+	  #saveCustomerDetailsModal .modal-dialog {
+		  max-width: 500px; /* Adjust the width as needed */
+		  margin: 1.75rem auto;
+	  }
+
+	  #saveCustomerDetailsModal .modal-content {
+		  border-radius: 10px;
+		  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	  }
+
+	  #saveCustomerDetailsModal .modal-header {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  text-align: center;
+		  padding: 15px; /* Reduced padding */
+		  background-color: #f8f9fa;
+		  border-bottom: 1px solid #dee2e6;
+		  position: relative;
+		  border-top-left-radius: 10px;
+		  border-top-right-radius: 10px;
+	  }
+
+	  #saveCustomerDetailsModal .modal-header .logo {
+		  font-size: 1.5rem; /* Reduced logo size */
+		  font-weight: bold;
+		  color: #000; /* Black color for "Pre" */
+		  margin-bottom: 5px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .modal-header .logo span {
+		  color: #28a745; /* Green color for "Rental" */
+	  }
+
+	  #saveCustomerDetailsModal .modal-header .subtitle {
+		  font-size: 0.875rem; /* Reduced subtitle size */
+		  color: #6c757d;
+		  margin-bottom: 10px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .modal-header .btn-close {
+		  position: absolute;
+		  top: 10px; /* Adjusted position */
+		  right: 10px; /* Adjusted position */
+		  margin: 0;
+		  padding: 0.5rem;
+		  background-color: transparent;
+		  border: none;
+		  cursor: pointer;
+		  font-size: 1.25rem; /* Adjusted size */
+	  }
+
+	  #saveCustomerDetailsModal .modal-header .btn-close:hover {
+		  opacity: 0.8;
+	  }
+
+	  #saveCustomerDetailsModal .modal-body {
+		  padding: 15px; /* Reduced padding */
+	  }
+
+	  #saveCustomerDetailsModal .modal-title {
+		  font-size: 1.25rem; /* Reduced title size */
+		  font-weight: bold;
+		  color: #000;
+		  margin-bottom: 10px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .file-upload {
+		  text-align: center;
+		  margin-bottom: 15px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .profile-preview {
+		  width: 80px; /* Reduced profile picture size */
+		  height: 80px;
+		  margin: 0 auto 10px; /* Reduced margin */
+		  border-radius: 50%;
+		  overflow: hidden;
+		  border: 2px solid #dee2e6;
+	  }
+
+	  #saveCustomerDetailsModal .profile-preview img {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+	  }
+
+	  #saveCustomerDetailsModal .upload-btn {
+		  display: inline-block;
+		  padding: 6px 12px; /* Reduced padding */
+		  background-color: #28a745; /* Green color */
+		  color: #fff;
+		  border-radius: 5px;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease;
+		  font-size: 0.875rem; /* Reduced font size */
+	  }
+
+	  #saveCustomerDetailsModal .upload-btn:hover {
+		  background-color: #218838; /* Darker green on hover */
+	  }
+
+	  #saveCustomerDetailsModal .upload-btn input[type="file"] {
+		  display: none;
+	  }
+
+	  #saveCustomerDetailsModal .form-group {
+		  margin-bottom: 10px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .form-group label {
+		  font-weight: bold;
+		  margin-bottom: 5px;
+		  display: block;
+		  font-size: 0.875rem; /* Reduced font size */
+	  }
+
+	  #saveCustomerDetailsModal .form-group input {
+		  width: 100%;
+		  padding: 6px; /* Reduced padding */
+		  border: 1px solid #dee2e6;
+		  border-radius: 5px;
+		  font-size: 0.875rem; /* Reduced font size */
+	  }
+
+	  #saveCustomerDetailsModal .input-row {
+		  display: flex;
+		  gap: 10px; /* Reduced gap */
+		  margin-bottom: 10px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .input-row .form-group {
+		  flex: 1;
+	  }
+
+	  #saveCustomerDetailsModal .error-message {
+		  color: #dc3545; /* Red color for error messages */
+		  font-size: 0.75rem; /* Reduced font size */
+		  margin-top: 3px; /* Reduced margin */
+		  display: none;
+	  }
+
+	  #saveCustomerDetailsModal .form-info {
+		  color: #6c757d;
+		  font-size: 0.75rem; /* Reduced font size */
+		  margin-top: 3px; /* Reduced margin */
+	  }
+
+	  #saveCustomerDetailsModal .modal-footer {
+		  border-top: 1px solid #dee2e6;
+		  padding: 10px 15px; /* Reduced padding */
+		  text-align: right;
+	  }
+
+	  #saveCustomerDetailsModal .modal-footer .btn {
+		  padding: 6px 12px; /* Reduced padding */
+		  border-radius: 5px;
+		  font-size: 0.875rem; /* Reduced font size */
+	  }
+
+	  #saveCustomerDetailsModal .modal-footer .btn-secondary {
+		  background-color: #6c757d;
+		  border-color: #6c757d;
+	  }
+
+	  #saveCustomerDetailsModal .modal-footer .btn-primary {
+		  background-color: #28a745; /* Green color */
+		  border-color: #28a745;
+	  }
+
+	  #saveCustomerDetailsModal .modal-footer .btn-primary:hover {
+		  background-color: #218838; /* Darker green on hover */
+		  border-color: #1e7e34;
+	  }
+
+	  /* Responsive adjustments */
+	  @media (max-width: 768px) {
+		  #saveCustomerDetailsModal .modal-dialog {
+			  max-width: 90%; /* Full width on smaller screens */
+		  }
+
+		  #saveCustomerDetailsModal .input-row {
+			  flex-direction: column;
+			  gap: 0;
+		  }
+
+		  #saveCustomerDetailsModal .input-row .form-group {
+			  margin-bottom: 10px; /* Reduced margin */
+		  }
+	  }
+  </style>
+
+  <body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	  <div class="container">
+		  <a class="navbar-brand" href="index.html">Pre<span>Rental</span></a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="oi oi-menu"></span> Menu
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="ftco-nav">
+			  <ul class="navbar-nav ml-auto">
+				  <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+				  <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#filterModal">Filter</a></li>
+				  <li class="nav-item"><a href="#" class="nav-link">Bookings</a></li>
+				  <li class="nav-item"><a class="nav-link" href="html/AdminDashBoard/AdminDashBoard.html">Admin DashBoard</a></li>
+				  <li class="nav-item"><a href="index.html" class="nav-link">Log Out</a></li>
+			  </ul>
+		  </div>
+	  </div>
+  </nav>
+    <!-- END nav -->
+  <!--Detail Form-->
+  <!-- Save Customer Details Modal -->
+  <div class="modal fade" id="saveCustomerDetailsModal" tabindex="-1" aria-labelledby="saveCustomerDetailsModalLabel" aria-hidden="true">
+	  <hr>
+	  <div class="modal-dialog modal-lg">
+		  <div class="modal-content">
+			  <!-- Modal Header -->
+			  <div class="modal-header">
+				  <div class="logo">Pre<span>Rental</span></div>
+				  <p class="subtitle">Hire And Enjoy Your Journey</p>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+
+			  <div class="modal-body">
+				 		  <form id="customerDetailsForm">
+					  <!-- Profile Picture -->
+							  <div class="file-upload">
+								  <div class="profile-preview">
+									  <img id="customerProfilePreview" src="/api/placeholder/100/100" alt="Profile picture">
+								  </div>
+								  <label class="upload-btn">
+									  Upload Profile Picture
+									  <input type="file" id="customerProfilePic" accept="image/*" onchange="previewImage(this, 'customerProfilePreview')">
+								  </label>
+							  </div>
+
+
+					  <!-- NIC -->
+					  <div class="form-group">
+						  <label for="customerNic">NIC</label>
+						  <input type="text" id="customerNic" name="customerNic" placeholder="Enter your NIC (12 digits or 9 digits + letter)" required>
+						  <div class="error-message" id="customerNicError">NIC must be a valid Sri Lankan NIC (9 digits with a letter or 12 digits)</div>
+						  <div class="form-info">Format: 123456789V or 123456789012</div>
+					  </div>
+
+					  <!-- First Name and Last Name -->
+					  <div class="input-row">
+						  <div class="form-group">
+							  <label for="customerName">Full Name</label>
+							  <input type="text" id="customerName" name="customerName" placeholder="Last Name" readonly>
+						  </div>
+					  </div>
+
+					  <!-- Street Address -->
+					  <div class="form-group">
+						  <label for="customerAddress">Street Address</label>
+						  <input type="text" id="customerAddress" name="customerAddress" placeholder="Street Address" required>
+					  </div>
+
+					  <div class="input-row">
+						  <div class="form-group">
+							  <label for="customerCity">City</label>
+							  <input type="text" id="customerCity" name="customerCity" placeholder="City" required>
+						  </div>
+
+						  <div class="form-group">
+							  <label for="customerPostalCode">Postal Code</label>
+							  <input type="text" id="customerPostalCode" name="customerPostalCode" placeholder="Postal Code" required>
+						  </div>
+					  </div>
+
+					  <!-- Primary and Secondary Contact -->
+					  <div class="input-row">
+						  <div class="form-group">
+							  <label for="customerPrimaryNumber">Primary Contact</label>
+							  <input type="tel" id="customerPrimaryNumber" name="customerPrimaryNumber" placeholder="Primary Contact" required>
+							  <div class="error-message" id="customerContact1Error">Contact must be exactly 10 digits</div>
+						  </div>
+
+						  <div class="form-group">
+							  <label for="customerSecondNumber">Secondary Contact</label>
+							  <input type="tel" id="customerSecondNumber" name="customerSecondNumber" placeholder="Secondary Contact" required>
+							  <div class="error-message" id="customerContact2Error">Contact must be exactly 10 digits</div>
+						  </div>
+					  </div>
+
+					  <div class="form-group">
+						  <label for="customerEmail">Email</label>
+						  <input type="email" id="customerEmail" name="customerEmail" placeholder="Email" readonly>
+						  <div class="error-message" id="customerEmailError">Please enter a valid email address</div>
+					  </div>
+				  </form>
+			  </div>
+			  <div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				  <button type="submit" class="btn btn-primary" onclick="saveCustomerDetails()">Save Details</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+  <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <h5 class="modal-title" id="filterModalLabel">Filter Cars</h5>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+				  </button>
+			  </div>
+			  <div class="modal-body">
+				  <form id="filterForm">
+					  <div class="form-group">
+						  <label for="location">Location</label>
+						  <input type="text" class="form-control" id="location" placeholder="Enter location">
+					  </div>
+					  <div class="form-group">
+						  <label>Price Range</label>
+						  <div class="row">
+							  <div class="col">
+								  <input type="number" class="form-control" id="priceMin" placeholder="Min Price">
+							  </div>
+							  <div class="col">
+								  <input type="number" class="form-control" id="priceMax" placeholder="Max Price">
+							  </div>
+						  </div>
+					  </div>
+					  <div class="form-group">
+						  <label for="vehicleModel">Vehicle Model</label>
+						  <select class="form-control" id="vehicleModel">
+							  <option value="">Select Model</option>
+							  <option>Mercedes Grand Sedan</option>
+							  <option>Range Rover</option>
+							  <option>Cheverolet</option>
+							  <option>Subaru</option>
+						  </select>
+					  </div>
+				  </form>
+			  </div>
+			  <div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('images/bg_3.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+          <div class="col-md-9 ftco-animate pb-5">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Cars <i class="ion-ios-arrow-forward"></i></span></p>
+            <h1 class="mb-3 bread">Choose Your Car</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+	  <section class="ftco-section bg-light">
+    	<div class="container">
+    		<div class="row">
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-1.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-2.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Range Rover</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Subaru</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" cla	console.log("huttige putha");ss="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-3.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+								<p class="price ml-auto">$500 <span>/day</span></p>    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-4.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-5.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Range Rover</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Subaru</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-6.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-7.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-8.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Range Rover</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Subaru</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-9.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-10.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-11.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Range Rover</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Subaru</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-12.jpg);">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    		<div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27">
+              <ul>
+                <li><a href="#">&lt;</a></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&gt;</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>
+
+
+  <footer class="ftco-footer ftco-bg-dark ftco-section">
+	  <div class="container">
+		  <div class="row mb-5">
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4">
+					  <h2 class="ftco-heading-2"><a href="#" class="logo">PRE<span>RENTAL</span></a></h2>
+					  <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+					  <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+						  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+						  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+						  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4 ml-md-5">
+					  <h2 class="ftco-heading-2">Information</h2>
+					  <ul class="list-unstyled">
+						  <li><a href="#" class="py-2 d-block">About</a></li>
+						  <li><a href="#" class="py-2 d-block">Services</a></li>
+						  <li><a href="#" class="py-2 d-block">Term and Conditions</a></li>
+						  <li><a href="#" class="py-2 d-block">Best Price Guarantee</a></li>
+						  <li><a href="#" class="py-2 d-block">Privacy &amp; Cookies Policy</a></li>
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4">
+					  <h2 class="ftco-heading-2">Customer Support</h2>
+					  <ul class="list-unstyled">
+						  <li><a href="#" class="py-2 d-block">FAQ</a></li>
+						  <li><a href="#" class="py-2 d-block">Payment Option</a></li>
+						  <li><a href="#" class="py-2 d-block">Booking Tips</a></li>
+						  <li><a href="#" class="py-2 d-block">How it works</a></li>
+						  <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+					  </ul>
+				  </div>
+			  </div>
+			  <div class="col-md">
+				  <div class="ftco-footer-widget mb-4">
+					  <h2 class="ftco-heading-2">Have a Questions?</h2>
+					  <div class="block-23 mb-3">
+						  <ul>
+							  <li><span class="icon icon-map-marker"></span><span class="text">Kalutara,Sri Lanka</span></li>
+							  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+94 72 503 872 7</span></a></li>
+							  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VisahnChathuranga2003@gmail.com.com</span></a></li>
+						  </ul>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="row">
+			  <div class="col-md-12 text-center">
+
+				  <p>
+					  Copyright &copy;<script>document.write(new Date().getFullYear());</script> PreRental . All rights reserved</a></p>
+			  </div>
+		  </div>
+	  </div>
+  </footer>
+
+
+  <!-- loader -->
+
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/jquery.timepicker.min.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/carHome.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+// if click link work function
+    document.getElementById('memberLink').addEventListener('click', function(){
+        CheckExistMember();
+    });
+
+
+	function CheckExistMember(){
+		const token = localStorage.getItem('token');
+
+		//decode token
+		const decoded = jwt_decode(token);
+
+		//get email address
+		const userEmail = decoded.email;
+
+		//check if member exists
+		$.ajax({
+			url: 'http://localhost:8080/api/v1/member/getMemberInfo',
+			method: 'GET',
+			contentType: 'application/json',
+			async: true,
+			data: {
+				email: userEmail
+			},
+			headers: {
+				'Authorization': 'Bearer '+ token
+			},
+			success: function(response){
+				console.log(response);
+				if(response.data === null){
+					PopUp();
+				}else{
+					window.location.href = 'html/MemberPage/memberPage.html';
+				}
+			}
+
+
+		})
+	}
+
+	function PopUp() {
+		Swal.fire({
+			title: 'Join Member Program',
+			html: `
+            <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
+                By joining our member program, you gain access to exclusive benefits, discounts, and personalized services.
+            </p>
+            <p style="font-size: 14px; color: #777;">
+                Please review our <a href="#" target="_blank" style="color: #28a745; text-decoration: underline;">Terms and Conditions</a> before proceeding.
+            </p>
+        `,
+			icon: 'info',
+			iconColor: '#28a745',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Join Now',
+			cancelButtonText: 'No, Thanks',
+			confirmButtonColor: '#28a745',
+			cancelButtonColor: '#6c757d',
+			customClass: {
+				popup: 'custom-swal-popup',
+				title: 'custom-swal-title',
+				htmlContainer: 'custom-swal-html',
+				confirmButton: 'custom-swal-confirm',
+				cancelButton: 'custom-swal-cancel',
+			},
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
+			},
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = 'html/MemberPage/memberPage.html';
+			}
+		});
+	}
+
+
+
+
+
+	/*const cars = [
+		{ name: "Mercedes Grand Sedan", model: "Cheverolet", price: 500, image: "images/car-1.jpg" },
+		{ name: "Range Rover", model: "Subaru", price: 500, image: "images/car-2.jpg" },
+		];
+
+		// Function to populate car listings
+		function populateCarListings(filteredCars) {
+		const carListings = document.getElementById("carListings");
+		carListings.innerHTML = ""; // Clear existing listings
+
+		filteredCars.forEach(car => {
+		const carHtml = `
+            <div class="col-md-4">
+              <div class="car-wrap rounded ftco-animate">
+                <div class="img rounded d-flex align-items-end" style="background-image: url(${car.image});"></div>
+                <div class="text">
+                  <h2 class="mb-0"><a href="car-single.html">${car.name}</a></h2>
+                  <div class="d-flex mb-3">
+                    <span class="cat">${car.model}</span>
+                    <p class="price ml-auto">$${car.price} <span>/day</span></p>
+                  </div>
+                  <p class="d-flex mb-0 d-block">
+                    <a href="#" class="btn btn-primary py-2 mr-1">Book now</a>
+                    <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          `;
+		carListings.insertAdjacentHTML("beforeend", carHtml);
+	});
+	}
+
+		// Function to apply filters
+		function applyFilters() {
+		const location = document.getElementById("location").value.toLowerCase();
+		const priceMin = parseFloat(document.getElementById("priceMin").value) || 0;
+		const priceMax = parseFloat(document.getElementById("priceMax").value) || Infinity;
+		const vehicleModel = document.getElementById("vehicleModel").value.toLowerCase();
+
+		const filteredCars = cars.filter(car => {
+		return (
+		(location === "" || car.location.toLowerCase().includes(location)) &&
+		car.price >= priceMin &&
+		car.price <= priceMax &&
+		(vehicleModel === "" || car.model.toLowerCase().includes(vehicleModel))
+		);
+	});
+
+		populateCarListings(filteredCars);
+		$('#filterModal').modal('hide'); // Close the modal
+	}
+
+		// Initial population of car listings
+		populateCarListings(cars);*/
+</script>
+  </body>
+</html>
+
+<!---->

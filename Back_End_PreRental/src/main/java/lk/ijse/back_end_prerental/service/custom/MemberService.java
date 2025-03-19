@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lk.ijse.back_end_prerental.dto.MemberDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,4 +20,9 @@ public interface MemberService {
     MemberDTO getMember(String email);
 
     int saveMember(MemberDTO memberDTO);
+
+    //get all Member
+    List<MemberDTO> getAllMembers();
+
+    int deleteMember(String email);
 }

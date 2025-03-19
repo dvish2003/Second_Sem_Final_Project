@@ -6,9 +6,13 @@ import lk.ijse.back_end_prerental.dto.UserDTO;
 import lk.ijse.back_end_prerental.service.SuperBO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
+    //get last 4 users
+    List<UserDTO> getLast4Users();
+
     int verifyUser(String email, String code);
 
     int saveUser(UserDTO userDTO);
@@ -21,4 +25,7 @@ public interface UserService {
 
     int updateUser2(UserDTO userDTO);
 
+    List<UserDTO> getUsers();
+
+    int deleteUser(String email);
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public class MemberDTO {
     private String contact;
     private String NicNumber;
     private UserDTO userDTO;
+    private Date joinDate;
+
 }

@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -44,6 +47,21 @@ public class UserController {
     public String test() {
         System.out.println("test");
         return "test";
+    }
+
+    @GetMapping("/get4Users")
+    public ResponseEntity<ResponseDTO> getTop4Users() {
+        System.out.println("get 4 Users");
+      try{ List<UserDTO> users = userService.getLast4Users();
+          if (users.isEmpty()) {
+              return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                      .body(new ResponseDTO(VarList.Not_Found, "Users Not Found", null));
+          }else{
+              return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Success", users));
+
+          }} catch (Exception e) {
+          throw new RuntimeException(e);
+      }
     }
 
     @GetMapping("/getProfilePic/{userEmail}")
@@ -146,6 +164,9 @@ public class UserController {
                 }
                 userDTO.setProfilePicture(file.getOriginalFilename());
             }
+            //get local date
+            Date localDate = Date.valueOf(LocalDate.now());
+            userDTO.setJoinDate(localDate);
             int res = userService.updateUser(userDTO, file);
 
             switch (res) {

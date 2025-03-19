@@ -3,6 +3,7 @@ package lk.ijse.back_end_prerental.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,8 @@ public class Member {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    private Date joinDate;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;

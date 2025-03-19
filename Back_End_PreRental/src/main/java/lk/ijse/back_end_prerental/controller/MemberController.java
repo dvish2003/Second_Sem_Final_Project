@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -52,6 +54,8 @@ public class MemberController {
         MemberDTO memberDTO1 = memberDTO;
         memberDTO1.setNicNumber(memberDTO.getUserDTO().getNational_id());
        try{
+           Date localDate = Date.valueOf(LocalDate.now());
+           memberDTO.setJoinDate(localDate);
            int res = memberService.saveMember(memberDTO1);
            switch(res){
                case VarList.Created:

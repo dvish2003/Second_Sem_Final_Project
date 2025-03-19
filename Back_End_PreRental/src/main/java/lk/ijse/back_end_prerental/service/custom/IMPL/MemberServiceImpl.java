@@ -7,9 +7,12 @@ import lk.ijse.back_end_prerental.repo.UserRepository;
 import lk.ijse.back_end_prerental.service.custom.MemberService;
 import lk.ijse.back_end_prerental.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Author: vishmee
@@ -46,6 +49,24 @@ public class MemberServiceImpl implements MemberService {
             Member member = modelMapper.map(memberDTO, Member.class);
             memberRepository.save(member);
             return VarList.Created;
+        }
+    }
+    //get all Member
+    @Override
+    public List<MemberDTO> getAllMembers() {
+        List<Member> members = memberRepository.findAll();
+        return modelMapper.map(members, new TypeToken<List<MemberDTO>>() {}.getType());
+
+    }
+
+    @Override
+    public int deleteMember(String email) {
+        if(memberRepository.existsByEmail(email)){
+            memberRepository.deleteByEmail(email);
+            return VarList.OK;
+        }
+        else {
+            return VarList.Not_Found;
         }
     }
 
