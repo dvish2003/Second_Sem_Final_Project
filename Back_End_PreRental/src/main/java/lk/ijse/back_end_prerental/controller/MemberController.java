@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lk.ijse.back_end_prerental.dto.MemberDTO;
 import lk.ijse.back_end_prerental.dto.ResponseDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
+import lk.ijse.back_end_prerental.dto.VerifyMemberDTO;
 import lk.ijse.back_end_prerental.service.custom.MemberService;
 import lk.ijse.back_end_prerental.util.VarList;
 import org.springframework.http.HttpStatus;
@@ -73,5 +74,62 @@ public class MemberController {
        } catch (Exception e) {
            throw new RuntimeException(e);
        }
+    }
+
+    //member update
+    @PostMapping(value = "/updateMemberInfo")
+    public ResponseEntity<ResponseDTO> updateMember(@RequestBody MemberDTO memberDTO){
+        System.out.println("Member Update Member Info");
+        System.out.println(memberDTO.getEmail());
+        System.out.println(memberDTO.getJoinDate());
+        System.out.println(memberDTO.getNicNumber());
+        System.out.println(memberDTO.getId());
+        memberDTO.setNicNumber(memberDTO.getUserDTO().getNational_id());
+
+        try{
+            int res = memberService.updateMember(memberDTO);
+            switch(res){
+                case VarList.OK:
+                    System.out.println("Member updated successfully");
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Member updated successfully", memberDTO));
+                case VarList.Not_Found:
+                    System.out.println("Member not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                           .body(new ResponseDTO(VarList.Not_Found, "Member not found", null));
+                default:
+                    System.out.println("Error updating member");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                           .body(new ResponseDTO(VarList.Internal_Server_Error, "Error updating member", null));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    //delete member
+    @DeleteMapping(value = "/deleteMemberInfo")
+    public ResponseEntity<ResponseDTO> deleteMember(@RequestBody VerifyMemberDTO verifyMemberDTO){
+        System.out.println("delete member");
+        System.out.println("ddddddddddddd"+verifyMemberDTO.getNIC());
+        System.out.println("ddddddddddddd"+verifyMemberDTO.getEmail());
+        try{
+            int res = memberService.deleteMember(verifyMemberDTO);
+            switch(res){
+                case VarList.OK:
+                    System.out.println("Member deleted successfully");
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Member deleted successfully", verifyMemberDTO));
+                case VarList.Not_Found:
+                    System.out.println("Member not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                           .body(new ResponseDTO(VarList.Not_Found, "Member not found", null));
+                default:
+                    System.out.println("Error deleting member");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                           .body(new ResponseDTO(VarList.Internal_Server_Error, "Error deleting member", null));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

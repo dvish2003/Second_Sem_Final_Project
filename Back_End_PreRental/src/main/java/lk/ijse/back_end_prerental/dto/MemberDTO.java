@@ -28,5 +28,7 @@ public class MemberDTO {
     private String NicNumber;
     private UserDTO userDTO;
     private Date joinDate;
+    private boolean verified;
+    private String verificationCode;
 
 }

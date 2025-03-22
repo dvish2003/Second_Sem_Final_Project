@@ -170,7 +170,7 @@ function closeModal() {
     const modal = document.getElementById('saveCustomerDetailsModal');
     modal.style.display = 'none';
 }
-n
+
 /*===============================================Set Name=====================================================================*/
 function getName() {
     //get token in local storage
@@ -181,7 +181,7 @@ function getName() {
     const UserEmail = decodedToken.email;
     //set name in header
    $.ajax({
-       url: 'http://localhost:8080/api/v1/user/getUser',
+       url: 'http://localhost:8080/api/v1/member/getMemberInfo',
        method: 'GET',
        contentType: 'application/json',
        async: true,

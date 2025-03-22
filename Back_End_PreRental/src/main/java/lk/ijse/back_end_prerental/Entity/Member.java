@@ -33,6 +33,9 @@ public class Member {
 
     private Date joinDate;
 
+    private boolean verified;
+    private String verificationCode;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
 }

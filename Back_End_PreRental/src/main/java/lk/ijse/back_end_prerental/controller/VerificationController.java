@@ -1,10 +1,9 @@
 package lk.ijse.back_end_prerental.controller;
 
 import lk.ijse.back_end_prerental.dto.ResponseDTO;
-import lk.ijse.back_end_prerental.dto.VerifyDTO;
+import lk.ijse.back_end_prerental.dto.VerifyUserDTO;
 import lk.ijse.back_end_prerental.service.custom.IMPL.UserServiceImpl;
 import lk.ijse.back_end_prerental.util.VarList;
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +21,16 @@ public class VerificationController {
     private final UserServiceImpl userService;
 
     public VerificationController(UserServiceImpl userService) {
+
         this.userService = userService;
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<ResponseDTO> verifyUser(@RequestBody VerifyDTO verifyDTO){
-        System.out.println("email     "+verifyDTO.getEmail());
-        System.out.println("code     "+verifyDTO.getCode());
+    public ResponseEntity<ResponseDTO> verifyUser(@RequestBody VerifyUserDTO verifyUserDTO){
+        System.out.println("email     "+ verifyUserDTO.getEmail());
+        System.out.println("code     "+ verifyUserDTO.getCode());
         try {
-            int res  = userService.verifyUser(verifyDTO.getEmail(), verifyDTO.getCode());
+            int res  = userService.verifyUser(verifyUserDTO.getEmail(), verifyUserDTO.getCode());
             switch (res) {
                 case VarList.OK:
                     return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Verification Successful", null));
