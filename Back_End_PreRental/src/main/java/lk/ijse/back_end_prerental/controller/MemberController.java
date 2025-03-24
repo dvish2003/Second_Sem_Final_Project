@@ -132,4 +132,34 @@ public class MemberController {
             throw new RuntimeException(e);
         }
     }
+    @PostMapping(value = "/reactive")
+    public ResponseEntity<ResponseDTO> ReactiveMember(@RequestBody VerifyMemberDTO verifyMemberDTO){
+        System.out.println("Member reactive Member Info");
+       /* System.out.println(memberDTO.getEmail());
+        System.out.println(memberDTO.getJoinDate());
+        System.out.println(memberDTO.getNicNumber());
+        System.out.println(memberDTO.getId());
+        memberDTO.setNicNumber(memberDTO.getUserDTO().getNational_id());*/
+
+        try{
+            int res = memberService.reactiveMember(verifyMemberDTO);
+            switch(res){
+                case VarList.OK:
+                    System.out.println("Member Reactive successfully");
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Member Reactive successfully", verifyMemberDTO));
+                case VarList.Not_Found:
+                    System.out.println("Member not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResponseDTO(VarList.Not_Found, "Member not found", null));
+                default:
+                    System.out.println("Error Reactive member");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(new ResponseDTO(VarList.Internal_Server_Error, "Error Reactive member", null));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

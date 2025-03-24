@@ -1,20 +1,12 @@
 getUserData();
-document.getElementById('memberLink').addEventListener('click', function(){
-getUserData1();
+document.getElementById('memberLink').addEventListener('click', function () {
+    getUserData1();
 });
-
-
-
-function CheckExistMember(){
+function CheckExistMember() {
     const token = localStorage.getItem('token');
-
-    //decode token
     const decoded = jwt_decode(token);
-
-    //get email address
     const userEmail = decoded.email;
 
-    //check if member exists
     $.ajax({
         url: 'http://localhost:8080/api/v1/member/getMemberInfo',
         method: 'GET',
@@ -24,20 +16,135 @@ function CheckExistMember(){
             email: userEmail
         },
         headers: {
-            'Authorization': 'Bearer '+ token
+            'Authorization': 'Bearer ' + token
         },
-        success: function(response){
+        success: function (response) {
             console.log(response);
-            if(response.data === null){
+            if (response.data === null) {
                 PopUp();
-            }else{
-                window.location.href = 'html/MemberPage/memberPage.html';
+            } else {
+                if (response.data.verified === true) {
+                    window.location.href = 'html/MemberPage/memberPage.html';
+                } else {
+                    handleDeactivatedAccount(userEmail, token);
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error checking member:", error);
+        }
+    });
+}
+
+function handleDeactivatedAccount(email, token) {
+    Swal.fire({
+        title: 'Account Deactivated',
+        text: 'Your account is deactivated at the moment. Please verify your account to activate it.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Activate',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sendVerificationEmail(email, token);
+        }
+    });
+}
+
+function sendVerificationEmail(email, token) {
+    Swal.fire({
+        title: 'Enter your email',
+        input: 'email',
+        inputValue: email,
+        inputPlaceholder: 'Enter your email address',
+        showCancelButton: true,
+        confirmButtonText: 'Send Verification',
+        cancelButtonText: 'Cancel',
+        preConfirm: (email) => {
+            if (!email) {
+                Swal.showValidationMessage('Please enter a valid email address');
+                return false;
+            }
+            return $.ajax({
+                url: 'http://localhost:8080/api/v1/member/reactive',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    email: email,
+                    NIC: ""
+                }),
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                'Verification Sent!',
+                `A verification email has been sent to ${result.value}. Check your mail Box`,
+                'success'
+            ).then(() => {
+                verifyActivationCode(email, token);
+            });
+        }
+    });
+}
+
+function verifyActivationCode(email, token) {
+    Swal.fire({
+        title: 'Enter Verification Code',
+        input: 'text',
+        inputLabel: 'Verification Code',
+        inputPlaceholder: 'Enter the verification code sent to your email',
+        showCancelButton: true,
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        preConfirm: (verificationCode) => {
+            if (!verificationCode) {
+                Swal.showValidationMessage('Please enter a verification code');
+                return false;
+            }
+            return $.ajax({
+                url: 'http://localhost:8080/api/v1/verifyMember/ReActive',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    email: email,
+                    code: verificationCode
+                }),
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result.value.code === 200) {
+                Swal.fire({
+                    title: 'Account Activated!',
+                    text: 'Your account has been activated successfully.',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    window.location.href = '../html/MemberPage/memberPage.html';
+                });
+            } else {
+                Swal.fire({
+                    title: 'Verification Failed',
+                    text: 'Invalid verification code. Please try again.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    verifyActivationCode(email, token);
+                });
             }
         }
-
-
-    })
+    });
 }
+
 
 function PopUp() {
     Swal.fire({
@@ -78,7 +185,6 @@ function PopUp() {
 }
 
 
-
 function previewImage(input, previewId) {
     const preview = document.getElementById(previewId);
     const file = input.files[0];
@@ -94,6 +200,7 @@ function previewImage(input, previewId) {
         preview.src = "/api/placeholder/100/100";
     }
 }
+
 function getUserData1() {
     //get token in local storage
     const token = localStorage.getItem('token');
@@ -116,7 +223,7 @@ function getUserData1() {
         headers: {
             Authorization: 'Bearer ' + token
         },
-        error: function (jqXHR, textStatus, errorTh){
+        error: function (jqXHR, textStatus, errorTh) {
             console.log("Error: ", errorTh);
             Swal.fire({
                 icon: 'error',
@@ -142,7 +249,7 @@ function getUserData1() {
         success: function (response) {
             console.log("User details fetched successfully");
             const email = response.data.email;
-            const  name = response.data.name;
+            const name = response.data.name;
             const password1 = response.data.password;
             const nic = response.data.national_id;
             const address = response.data.address;
@@ -152,24 +259,25 @@ function getUserData1() {
             const secondary_phone_number = response.data.secondary_phone_number;
             //set text feild in data
             //show console in data
-            console.log(password1,email,name,address,nic,city,secondary_phone_number,primary_phone_number,postal_code);
+            console.log(password1, email, name, address, nic, city, secondary_phone_number, primary_phone_number, postal_code);
 
 
             //Check All Data Null
-            if(address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null){
+            if (address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null) {
                 $('#saveCustomerDetailsModal').modal('show');
                 //set data in text field
                 $('#customerEmail').val(email)
                 $('#customerName').val(name)
 
-            }else{
-                   CheckExistMember();
+            } else {
+                CheckExistMember();
             }
 
         }
     })
 
 }
+
 function getUserData() {
     //get token in local storage
     const token = localStorage.getItem('token');
@@ -192,7 +300,7 @@ function getUserData() {
         headers: {
             Authorization: 'Bearer ' + token
         },
-        error: function (jqXHR, textStatus, errorTh){
+        error: function (jqXHR, textStatus, errorTh) {
             console.log("Error: ", errorTh);
             Swal.fire({
                 icon: 'error',
@@ -218,7 +326,7 @@ function getUserData() {
         success: function (response) {
             console.log("User details fetched successfully");
             const email = response.data.email;
-            const  name = response.data.name;
+            const name = response.data.name;
             const password1 = response.data.password;
             const nic = response.data.national_id;
             const address = response.data.address;
@@ -228,17 +336,15 @@ function getUserData() {
             const secondary_phone_number = response.data.secondary_phone_number;
             //set text feild in data
             //show console in data
-            console.log(password1,email,name,address,nic,city,secondary_phone_number,primary_phone_number,postal_code);
+            console.log(password1, email, name, address, nic, city, secondary_phone_number, primary_phone_number, postal_code);
 
 
-            //Check All Data Null
-            if(address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null){
+            if (address === null || nic === null || city === null || postal_code === null || primary_phone_number === null || secondary_phone_number === null) {
                 $('#saveCustomerDetailsModal').modal('show');
-                //set data in text field
                 $('#customerEmail').val(email)
                 $('#customerName').val(name)
 
-            }else{
+            } else {
                 console.log("All data are filled");
             }
 
@@ -246,6 +352,7 @@ function getUserData() {
     })
 
 }
+
 function saveCustomerDetails() {
     const name = $('#customerName').val();
     const email = $('#customerEmail').val();
@@ -325,17 +432,17 @@ function saveCustomerDetails() {
     const formData = new FormData();
     formData.append('file', profilePicture1);
     formData.append('userDTO', new Blob([JSON.stringify({
-        email: email,
-        name: name,
-        role: "user",
-        national_id: nic,
-        address: address,
-        city: city,
-        postal_code: postalCode,
-        primary_phone_number: primaryContact,
-        secondary_phone_number: secondaryContact
-    })],
-        { type: 'application/json' }));
+            email: email,
+            name: name,
+            role: "user",
+            national_id: nic,
+            address: address,
+            city: city,
+            postal_code: postalCode,
+            primary_phone_number: primaryContact,
+            secondary_phone_number: secondaryContact
+        })],
+        {type: 'application/json'}));
 
     $.ajax({
         url: 'http://localhost:8080/api/v1/user/updateUser',

@@ -416,15 +416,7 @@
 		 success: function(response) {
 			 console.log("Login successful");
 			 localStorage.setItem("token", response.data.token);
-			 /*Swal.fire({
-				 icon: 'success',
-				 title: 'Login Successful!',
-				 text: 'You have successfully logged in.',
-				 showConfirmButton: false,
-				 timer: 2000 // Auto-close after 2 seconds
-			 }).then(() => {*/
 				 getUserDetails(emailUser);
-			 // });
 		 },
 
 		 error: function(xhr, status, error) {
@@ -666,7 +658,7 @@
 				 Swal.fire({
 					 icon: 'success',
 					 title: 'Registration Successful!',
-					 text: 'Your account has been created successfully. Please verify your email.',
+					 text: 'Your account has been created successfully.A verification email has been sent to your email. Check your mail box ',
 					 showConfirmButton: true,
 					 confirmButtonText: 'Verify Email',
 				 }).then((result) => {

@@ -28,78 +28,184 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <style>
-      .btn-open-modal {
-          background-color: #007bff;
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 5px;
-          font-size: 16px;
-          cursor: pointer;
-      }
-      .btn-open-modal:hover {
-          background-color: #0056b3;
-      }
       .modal-content {
-          border-radius: 10px;
-      }
-      .modal-header {
-          border-bottom: none;
-          padding-bottom: 0;
-          position: relative;
-      }
-      .modal-title {
-          font-size: 24px;
-          font-weight: bold;
-          text-align: center;
-          width: 100%;
-      }
-      .modal-title .pre {
-          color: green;
-      }
-      .modal-title .rental {
-          color: black;
+          background-color: #fff;
+          border-radius: 15px;
+          width: 90%;
+          max-width: 600px;
+          padding: 20px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          animation: slideIn 0.3s ease-in-out;
+          margin: 0 auto;
       }
 
-      .modal-subtitle {
-          text-align: center;
-          /* position: relative;
-           top: -29px;*/
-          font-size: 16px;
-          color: #555;
-          margin-top: 5px;
+      @keyframes slideIn {
+          from { transform: translateY(-20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
       }
+
+      /* Modal Header */
+      .modal-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 20px;
+          background: #6a11cb;
+          color: white;
+          border-radius: 15px 15px 0 0;
+          border-bottom: none;
+          position: relative;
+      }
+
+      .modal-header .logo {
+          font-size: 2rem;
+          font-weight: bold;
+          color: white;
+          margin-bottom: 10px;
+      }
+
+      .modal-header .logo span {
+          color: #28a745;
+      }
+
+      .modal-header .subtitle {
+          font-size: 1rem;
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 15px;
+      }
+
       .modal-header .btn-close {
           position: absolute;
-          top: 10px;
-          right: 10px;
-          padding-bottom: 2px;
+          top: 15px;
+          right: 15px;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-size: 1.5rem;
+          color: white;
       }
+
+      .modal-header .btn-close:hover {
+          opacity: 0.8;
+      }
+
+      /* Modal Body */
       .modal-body {
-          padding: 20px;
+          padding: 30px;
       }
-      .btn-google {
-          background-color: white;
-          color: black;
-          border: solid 1px grey;
+
+      /* Form Styling */
+      .form-group {
+          margin-bottom: 15px;
+      }
+
+      .form-group label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: #333;
+      }
+
+      .form-control {
           width: 100%;
+          padding: 10px 15px;
+          font-size: 16px;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          transition: all 0.3s ease;
+          box-shadow: none;
+          outline: none;
+      }
+
+      .form-control:focus {
+          border-color: #6a11cb;
+          box-shadow: 0 0 5px rgba(106, 17, 203, 0.3);
+      }
+
+      .form-control::placeholder {
+          color: #999;
+          font-size: 14px;
+      }
+
+      /* Error Message Styling */
+      .error-message {
+          font-size: 13px;
+          color: #dc3545;
+          margin-top: 5px;
+          display: none; /* Hide by default */
+      }
+
+      .form-control.error {
+          border-color: #dc3545;
+      }
+
+      /* Button Styling */
+      .btn-primary {
+          background: #6a11cb;
+          border: none;
+          border-radius: 10px;
           padding: 10px;
-          border-radius: 5px;
+          font-size: 16px;
+          width: 100%;
+          transition: background 0.3s ease;
+          color: white;
+      }
+
+      .btn-primary:hover {
+          background: #2575fc;
+      }
+
+      /* Resend OTP Link */
+      .resend-link {
+          text-align: center;
+          margin-top: 15px;
+      }
+
+      .resend-link a {
+          color: #6a11cb;
+          text-decoration: none;
+          font-weight: bold;
+      }
+
+      .resend-link a:hover {
+          text-decoration: underline;
+      }
+
+      /* Google Button Styling */
+      .btn-google {
+          background-color: #fff;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 10px 15px;
+          font-size: 15px;
+          color: #333;
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: all 0.3s ease;
+          width: 100%;
+          margin-bottom: 15px;
       }
+
       .btn-google img {
           margin-right: 10px;
       }
-      .forgot-password {
-          text-align: center;
-          margin: 1rem 0;
+
+      .btn-google:hover {
+          background-color: #f8f9fa;
+          border-color: #ccc;
       }
-      .signup-link {
+
+      /* Privacy Text */
+      .privacy-text {
+          font-size: 12px;
+          color: #666;
           text-align: center;
-          margin-top: 1rem;
+          margin-top: 10px;
       }
+
+      /* Login Topic */
       .login-topic {
           text-align: center;
           font-size: 25px;
@@ -107,31 +213,39 @@
           color: #0b0b0b;
           font-weight: bold;
       }
-      .error-message {
-          color: red;
-          font-size: 0.875em;
-          display: none;
+
+      /* Forgot Password Link */
+      .forgot-password {
+          text-align: center;
+          margin: 1rem 0;
       }
-      .form-group {
-          margin-bottom: 15px;
+
+      .forgot-password a {
+          color: #6a11cb;
+          text-decoration: none;
+          font-weight: bold;
       }
-      .form-group label {
-          display: block;
-          margin-bottom: 5px;
+
+      .forgot-password a:hover {
+          text-decoration: underline;
       }
-      .form-group input {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
+
+      /* Signup Link */
+      .signup-link {
+          text-align: center;
+          margin-top: 1rem;
       }
-      /* .row {
-           display: flex;
-           gap: 10px;
-       }*/
-      .row .col-md-6 {
-          flex: 1;
+
+      .signup-link a {
+          color: #6a11cb;
+          text-decoration: none;
+          font-weight: bold;
       }
+
+      .signup-link a:hover {
+          text-decoration: underline;
+      }
+
   </style>
   <body>
 
@@ -158,28 +272,26 @@
           </div>
       </div>
   </nav>
-  <!-- END nav -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered" id>
           <div class="modal-content">
+              <!-- Modal Header -->
               <div class="modal-header">
-                  <h5 class="modal-title" id="loginModalLabel">
-                      <span class="pre">Pre</span><span class="rental">Rental</span>
-                  </h5>
+                  <div class="logo">Pre<span>Rental</span></div>
+                  <p class="subtitle">Hire And Enjoy Your Journey</p>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+
               <div class="modal-body">
-                  <div class="modal-subtitle">Hire And Enjoy Your Journey</div>
-                  <hr>
                   <div class="login-topic">Login to your account</div>
-                  <form style="font-size:16px; color: black">
-                      <div class="mb-3">
-                          <label for="loginEmail" class="form-label">Email</label>
-                          <input style="font-size: 14px" type="email" class="form-control" id="loginEmail" name="loginEmail" placeholder="Enter your email" required>
+                  <form id="loginForm" style="font-size: 15px">
+                      <div class="form-group mb-3">
+                          <label for="loginEmail">Email</label>
+                          <input style="font-size: 15px" type="email" class="form-control" id="loginEmail" name="loginEmail" placeholder="Enter your email" required>
                       </div>
-                      <div class="mb-3">
-                          <label for="loginPassword" class="form-label">Password</label>
-                          <input style="font-size: 14px" type="password" class="form-control" id="loginPassword" name="loginPassword" placeholder="Enter Password" required>
+                      <div class="form-group mb-3">
+                          <label for="loginPassword">Password</label>
+                          <input style="font-size: 15px" type="password" class="form-control" id="loginPassword" name="loginPassword" placeholder="Enter Password" required>
                       </div>
                       <div class="forgot-password">
                           <a href="#">Forgot password?</a>
@@ -194,78 +306,94 @@
                   <div class="signup-link">
                       Don't have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Sign up</a>
                   </div>
+                  <div class="privacy-text">
+                      By logging in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                  </div>
               </div>
           </div>
       </div>
   </div>
-
+  <!--================================================== Verify Model=================================================================-->
+  <div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header bg-gradient-primary text-white">
+                  <h5 class="modal-title" id="verificationModalLabel">A verification email has been sent to your email.Check your mail Box</h5>
+              </div>
+              <!-- Modal Body -->
+              <div class="modal-body">
+                  <form id="verifyForm">
+                      <div class="mb-4">
+                          <label for="otp" class="form-label fw-bold">Verification Code</label>
+                          <input type="text" class="form-control form-control-lg" id="otp" name="code" placeholder="Enter 6-digit code" required>
+                          <small class="form-text text-muted">Check your email for the verification code.</small>
+                      </div>
+                      <button type="button" class="btn btn-primary btn-lg w-100" onclick="verifyTheAccount()">Verify</button>
+                  </form>
+                  <div class="text-center mt-3">
+                      <p class="text-muted">Didn't receive the code? <a href="#" id="resendOtp" class="text-decoration-none fw-bold">Resend OTP</a></p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
+              <!-- Modal Header -->
               <div class="modal-header">
-                  <h5 class="modal-title" id="registerModelLable">
-                      <span class="pre">Pre</span><span class="rental">Rental</span>
-                  </h5>
+                  <div class="logo">Pre<span>Rental</span></div>
+                  <p class="subtitle">Hire And Enjoy Your Journey</p>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+
               <div class="modal-body">
-                  <div class="modal-subtitle">Hire And Enjoy Your Journey</div>
-                  <hr>
                   <div class="login-topic">Create a new account</div>
-                  <form style="font-size:16px; color: black" id="customerSignup">
+                  <form id="registerForm" style="font-size:15px">
                       <div class="row mb-3">
                           <div class="col-md-6">
                               <div class="form-group">
                                   <label for="registerFirstName">First Name</label>
-                                  <input style="font-size: 14px" type="text" class="form-control" id="registerFirstName" name="registerFirstName" placeholder="First Name" required>
+                                  <input style="font-size: 15px" type="text" class="form-control" id="registerFirstName" name="registerFirstName" placeholder="First Name" required>
                               </div>
                           </div>
                           <div class="col-md-6">
                               <div class="form-group">
                                   <label for="registerLastName">Last Name</label>
-                                  <input style="font-size: 14px" type="text" class="form-control" id="registerLastName" name="registerLastName" placeholder="Last Name" required>
+                                  <input style="font-size: 15px" type="text" class="form-control" id="registerLastName" name="registerLastName" placeholder="Last Name" required>
                               </div>
                           </div>
                       </div>
-
-                      <!-- Email -->
                       <div class="form-group mb-3">
                           <label for="registerEmail">Email</label>
-                          <input style="font-size: 14px" type="email" class="form-control" id="registerEmail" name="registerEmail" placeholder="Email" required>
-                          <div class="error-message" id="customerEmailError">Please enter a valid email address</div>
+                          <input style="font-size: 15px" type="email" class="form-control" id="registerEmail" name="registerEmail" placeholder="Email" required>
+                          <div class="error-message" id="emailError">Please enter a valid email address</div>
                       </div>
-
-                      <!-- Password -->
                       <div class="form-group mb-3">
                           <label for="registerPassword">Password</label>
-                          <input style="font-size: 14px" type="password" class="form-control" id="registerPassword" name="registerPassword" placeholder="Password (min. 6 characters)" required>
-                          <div class="error-message" id="customerPasswordError">Password must be at least 6 characters</div>
+                          <input style="font-size: 15px" type="password" class="form-control" id="registerPassword" name="registerPassword" placeholder="Password (min. 6 characters)" required>
+                          <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
                       </div>
-
-                      <!-- Confirm Password -->
                       <div class="form-group mb-3">
                           <label for="confirmPassword">Confirm Password</label>
-                          <input style="font-size: 14px" type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
-                          <div class="error-message" id="customerConfirmPasswordError">Passwords do not match</div>
+                          <input style="font-size: 15px" type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                          <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
                       </div>
-
-                      <!-- Create Account Button -->
-                      <button type="submit" class="btn btn-primary w-100 mb-3" onclick="register()">Create Account</button>
-
-                      <!-- Divider -->
+                      <button type="submit" class="btn btn-primary w-100 mb-3" onclick="register()">  Verify Your Email </button>
                       <div class="divider text-center mb-3">
                           <span>OR</span>
                       </div>
-
-                      <!-- Google Sign-Up Button -->
                       <button type="button" class="btn btn-google w-100 mb-3">
                           <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google logo">
                           Sign up with Google
                       </button>
-
-                      <!-- Login Link -->
                       <div class="signup-link text-center">
                           Already have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                      </div>
+                      <div class="privacy-text">
+                          By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
                       </div>
                   </form>
               </div>

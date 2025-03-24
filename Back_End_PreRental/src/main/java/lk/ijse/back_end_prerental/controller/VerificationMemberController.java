@@ -45,4 +45,22 @@ public class VerificationMemberController {
             throw new RuntimeException(e);
         }
     }
+    @PostMapping(value = "ReActive")
+    public ResponseEntity<ResponseDTO> reActiveUser(@RequestBody VerifyMemberDeleteDTO verifyMemberDeleteDTO){
+        System.out.println("member code verify controller qqqqqqqqqqqqqq");
+        try {
+            int res  = memberService.verifyMember2(verifyMemberDeleteDTO.getEmail(), verifyMemberDeleteDTO.getCode());
+            switch (res) {
+                case VarList.OK:
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Verification Successful", null));
+                case VarList.Not_Found:
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "Member Not Found", null));
+                default:
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ResponseDTO(VarList.Not_Acceptable, "Invalid Verification Code", null));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Account Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .navbar .logo span {
+            color: #000;
+        }
+
+        .navbar .back-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar .back-btn span {
+            font-size: 1.2rem;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .navbar .user-info p {
+            margin: 0;
+            font-weight: bold;
+        }
+        /* Custom SweetAlert Styles */
+        .swal2-popup {
+            font-family: 'Arial', sans-serif;
+            border-radius: 10px;
+        }
+
+        .swal2-title-custom {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .swal2-confirm-custom {
+            background-color: #3085d6;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .swal2-confirm-custom:hover {
+            background-color: #1c6aa8;
+        }
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .settings-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+            display: block;
+            margin: 0 auto 15px;
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .danger-zone {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .danger-zone h5 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+
+        .conditions-section {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .conditions-section h5 {
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .conditions-section p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="logo">Pre<span>Rental</span></div>
+    <button class="back-btn" onclick="window.location.href='memberPage.html'">
+        <span class="material-icons-sharp">arrow_back</span> Back to Dashboard
+    </button>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="settings-container">
+        <h3 class="text-center mb-4">Update Member Account Details</h3>
+
+        <!-- Profile Picture -->
+        <div class="text-center">
+            <img id="profilePhoto" src="" alt="Profile Picture" class="profile-pic">
+        </div>
+
+        <!-- Update Form -->
+        <form id="updateForm">
+            <!-- Full Name -->
+            <div class="mb-3">
+                <input type="hidden" class="form-control" placeholder="Enter Full Name" id="ID" required>
+                <input type="hidden" class="form-control" placeholder="Enter Full Name" id="JoinDate" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" placeholder="Enter Full Name" id="Full_Name" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">National Identity Card Number (Readonly)</label>
+                <input type="text" class="form-control" placeholder="Enter National Identity Card Number" id="NIC" readonly>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" placeholder="Enter Phone Number" id="Phone_number" required>
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-control" placeholder="Enter Address" id="address" required>
+            </div>
+
+            <!-- Email (Readonly) -->
+            <div class="mb-3">
+                <label class="form-label">Email (Readonly)</label>
+                <input type="email" class="form-control" value="user@example.com" id="email" readonly>
+            </div>
+
+            <!-- Save Changes Button -->
+            <button type="button" class="btn btn-primary btn-custom" onclick="updateMember()">Update Account</button>
+        </form>
+
+        <!-- Danger Zone -->
+        <div class="danger-zone">
+            <h5>Danger Zone</h5>
+            <p class="text-muted">Temporary Deactivating your account.</p>
+            <button class="btn btn-danger btn-custom" onclick="confirmDeactivation()">Deactivate Account</button>
+        </div>
+
+        <!-- Conditions Section -->
+        <div class="conditions-section">
+            <h5>Terms and Conditions</h5>
+            <p>
+                By using this platform, you agree to our <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>.
+                Please read them carefully before proceeding. Your use of this service is subject to your acceptance of these terms.
+            </p>
+
+            <h5>Privacy Policy</h5>
+            <p>
+                Your privacy is important to us. Please review our <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                to understand how we collect, use, and protect your personal information.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>1. Acceptance of Terms</strong><br>
+                    By accessing or using this platform, you agree to be bound by these terms and conditions.
+                </p>
+                <p>
+                    <strong>2. User Responsibilities</strong><br>
+                    You are responsible for maintaining the confidentiality of your account and password.
+                </p>
+                <p>
+                    <strong>3. Prohibited Activities</strong><br>
+                    You may not use this platform for any illegal or unauthorized purpose.
+                </p>
+                <p>
+                    <strong>4. Termination</strong><br>
+                    We reserve the right to terminate or suspend your account at any time without notice.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>1. Information We Collect</strong><br>
+                    We collect personal information such as your name, email address, and phone number.
+                </p>
+                <p>
+                    <strong>2. How We Use Your Information</strong><br>
+                    Your information is used to provide and improve our services.
+                </p>
+                <p>
+                    <strong>3. Data Security</strong><br>
+                    We implement security measures to protect your personal information.
+                </p>
+                <p>
+                    <strong>4. Third-Party Services</strong><br>
+                    We may share your information with third-party service providers.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<!-- Custom Script -->
+<script>
+    fetchAndSetProfilePicture();
+    getUserData2();
+    getMemberData();
+    let User;
+
+    function fetchAndSetProfilePicture() {
+        const token = localStorage.getItem('token');
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+        const profilePhotoElement = document.getElementById('profilePhoto');
+        fetch(`http://localhost:8080/api/v1/user/getProfilePic/${userEmail}`,
+            {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile picture');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const imageUrl = URL.createObjectURL(blob);
+                profilePhotoElement.src = imageUrl;
+            })
+            .catch(error => {
+                console.error('Error fetching profile picture:', error);
+                profilePhotoElement.src = 'images/profile-1.jpg';
+            });
+    }
+
+    function getUserData2(){
+        const token = localStorage.getItem('token');
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/getUser',
+            method: 'GET',
+            contentType: 'application/json',
+            async: true,
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            data: {
+                email: userEmail
+            },
+
+            success: function (response) {
+                if (response.data!== null) {
+                    User = response.data;
+                }
+            }
+        })
+    }
+    function getMemberData(){
+        const token = localStorage.getItem('token');
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/member/getMemberInfo',
+            method: 'GET',
+            contentType: 'application/json',
+            async: true,
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            data: {
+                email: userEmail
+            },
+
+            success: function (response) {
+                console.log(response.data)
+                document.getElementById('NIC').value = response.data.nicNumber;
+                document.getElementById('email').value = response.data.email;
+                document.getElementById('ID').value = response.data.id;
+                document.getElementById('Full_Name').value = response.data.name;
+                document.getElementById('Phone_number').value = response.data.contact;
+                document.getElementById('address').value = response.data.address;
+                document.getElementById('JoinDate').value = response.data.joinDate;
+            }
+        })
+    }
+    function updateMember() {
+        const id = document.getElementById('ID').value;
+        const name = document.getElementById('Full_Name').value;
+        const phone_number = document.getElementById('Phone_number').value;
+        const address = document.getElementById('address').value;
+        const Nic = document.getElementById('NIC').value;
+        const email = document.getElementById('email').value;
+        const joinDate = document.getElementById('JoinDate').value;
+        const token = localStorage.getItem('token');
+
+        console.log(id, email, name, phone_number, address, Nic, email);
+
+        if (!name || !phone_number || !address || !Nic || !email) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Information',
+                text: 'Please fill in all required fields.',
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                customClass: {        // Email validation
+
+                    popup: 'animated fadeIn faster',
+                    title: 'swal2-title-custom',
+                    confirmButton: 'swal2-confirm-custom'
+                }
+            });
+            return;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address.',
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'animated fadeIn faster',
+                    title: 'swal2-title-custom',
+                    confirmButton: 'swal2-confirm-custom'
+                }
+            });
+            return;
+        }
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/member/updateMemberInfo',
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({
+                id: id,
+                email: email,
+                name: name,
+                address: address,
+                contact: phone_number,
+                NicNumber: Nic,
+                userDTO: User,
+                joinDate: joinDate
+            }),
+            success: function (response) {
+                if (response.code === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'User data updated successfully.',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#28a745',
+                        confirmButtonText: 'OK',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'animated fadeIn faster',
+                            title: 'swal2-title-custom',
+                            confirmButton: 'swal2-confirm-custom'
+                        },
+                        then: () => {
+                            window.location.href = 'memberPage.html';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update Failed',
+                        text: 'Failed to update user data: ' + response.message,
+                        showConfirmButton: true,
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'animated fadeIn faster',
+                            title: 'swal2-title-custom',
+                            confirmButton: 'swal2-confirm-custom'
+                        }
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while updating user data: ' + error,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'animated fadeIn faster',
+                        title: 'swal2-title-custom',
+                        confirmButton: 'swal2-confirm-custom'
+                    }
+                });
+            }
+        });
+    }
+
+    function confirmDeactivation() {
+        Swal.fire({
+            title: 'Deactivate Account',
+            text: 'Are you sure you want to deactivate your member account? This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, deactivate',
+            cancelButtonText: 'No, cancel',
+            allowOutsideClick: false,
+            customClass: {
+                popup: 'animated fadeIn faster',
+                title: 'swal2-title-custom',
+                confirmButton: 'swal2-confirm-custom',
+                cancelButton: 'swal2-cancel-custom'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showVerificationForm();
+            }
+        });
+    }
+
+    function showVerificationForm() {
+        Swal.fire({
+            title: 'Verify Your Identity',
+            html: `
+                <p>To deactivate your account, please verify your identity by entering your email and NIC number.</p>
+                <input type="email" id="deactivateEmail" class="swal2-input" placeholder="Enter your email">
+                <input type="text" id="deactivateNIC" class="swal2-input" placeholder="Enter your NIC number">
+                <button id="sendCodeBtn" class="btn btn-primary btn-custom mt-3" onclick="sendVerificationCode()">Send Verification Code</button>
+            `,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            customClass: {
+                popup: 'animated fadeIn faster',
+                title: 'swal2-title-custom',
+                confirmButton: 'swal2-confirm-custom',
+                cancelButton: 'swal2-cancel-custom'
+            },
+            preConfirm: () => {
+                const email = document.getElementById('deactivateEmail').value;
+                const nic = document.getElementById('deactivateNIC').value;
+
+                if (!email || !nic) {
+                    Swal.showValidationMessage('Please fill in all fields');
+                }
+                return { email, nic };
+            }
+        });
+    }
+
+    function sendVerificationCode() {
+        const email = document.getElementById('deactivateEmail').value;
+        const nic = document.getElementById('deactivateNIC').value;
+
+        if(!nic === User.national_id){
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid NIC',
+                text: 'Please enter a valid NIC number.',
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'animated fadeIn faster',
+                    title: 'swal2-title-custom',
+                    confirmButton: 'swal2-confirm-custom'
+                }
+            });
+            return;
+        }
+
+        if (!email || !nic) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Information',
+                text: 'Please fill in your email and NIC number.',
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'animated fadeIn faster',
+                    title: 'swal2-title-custom',
+                    confirmButton: 'swal2-confirm-custom'
+                }
+            });
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+
+
+
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/member/deleteMemberInfo',
+            method: 'DELETE',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({
+                email: email,
+                NIC: nic
+            }),
+            success: function (response) {
+                if (response.code === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Verification Code Sent',
+                        text: 'A verification email has been sent to your email. Check your mail Box ',
+                        showConfirmButton: false,
+                        confirmButtonColor: '#28a745',
+                        allowOutsideClick: false,
+                        customClass: {
+                            popup: 'animated fadeIn faster',
+                            title: 'swal2-title-custom',
+                            confirmButton: 'swal2-confirm-custom'
+                        }
+                    });
+
+
+                    Swal.update({
+                        allowOutsideClick: false,
+
+                        html: `
+                        <p>Enter the verification code sent to your email.</p>
+                        <input type="text" id="verificationCode" class="swal2-input" placeholder="Enter verification code">
+                        <button id="verifyCodeBtn" class="btn btn-primary btn-custom mt-3" onclick="verifyCode()">Verify Code</button>
+                    `
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Verification Failed',
+                        text: response.message || 'Failed to verify your identity.',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'animated fadeIn faster',
+                            title: 'swal2-title-custom',
+                            confirmButton: 'swal2-confirm-custom'
+                        }
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while verifying your identity: ' + error,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'animated fadeIn faster',
+                        title: 'swal2-title-custom',
+                        confirmButton: 'swal2-confirm-custom'
+                    }
+                });
+            }
+        });
+    }
+
+    function verifyCode() {
+        const code = document.getElementById('verificationCode').value;
+
+        if (!code) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Code',
+                text: 'Please enter the verification code.',
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'animated fadeIn faster',
+                    title: 'swal2-title-custom',
+                    confirmButton: 'swal2-confirm-custom'
+                }
+            });
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+
+        // Verify the code
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/verifyMember/verify',
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({
+                email: userEmail,
+                code: code
+            }),
+            success: function (response) {
+                if (response.code === 200) {
+                    Swal.fire({
+                        icon:'success',
+                        title: 'Verification Successful',
+                        text: 'Your account has been deactivated successfully.',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#28a745',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'animated fadeIn faster',
+                            title: 'swal2-title-custom',
+                            confirmButton: 'swal2-confirm-custom'
+                        },
+                    }).
+                    then(() => {
+                        window.location.href = "../../car.html";
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Code',
+                        text: response.message || 'The verification code is incorrect.',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'animated fadeIn faster',
+                            title: 'swal2-title-custom',
+                            confirmButton: 'swal2-confirm-custom'
+                        }
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while verifying the code: ' + error,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'animated fadeIn faster',
+                        title: 'swal2-title-custom',
+                        confirmButton: 'swal2-confirm-custom'
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

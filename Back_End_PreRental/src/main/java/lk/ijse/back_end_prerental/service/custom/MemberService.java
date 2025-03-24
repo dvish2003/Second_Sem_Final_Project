@@ -27,9 +27,14 @@ public interface MemberService {
 
     int deleteMember(VerifyMemberDTO verifyMemberDTO);
 
+    int reactiveMember(VerifyMemberDTO verifyMemberDTO);
+
+    int verifyMember2(String email, String code);
+
     //
     int verifyMember(String email, String code);
 
     //update member
     int updateMember(MemberDTO memberDTO);
+
 }
