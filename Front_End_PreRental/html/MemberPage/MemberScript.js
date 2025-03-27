@@ -194,8 +194,10 @@ function getName() {
        success: function(response) {
            const userName = response.data.name;
            const profileInfo = document.querySelector('.profile .info');
-           if (profileInfo) {
+           const profileInfo2 = document.querySelector('.profile-header');
+           if (profileInfo && profileInfo2) {
                profileInfo.querySelector('p').innerHTML = `Hey, <b>${userName}</b>`;
+               profileInfo2.querySelector('h2').innerHTML = `profile-name${userName}`;
            } else {
                console.error("Profile info element not found.");
            }
@@ -209,6 +211,8 @@ function getName() {
 function fetchAndSetProfilePicture(userEmail) {
     const token = localStorage.getItem('token');
     const profilePhotoElement = document.getElementById('profilePhoto');
+    const profilePhotoElement2 = document.getElementById('profilePhoto2');
+
     fetch(`http://localhost:8080/api/v1/user/getProfilePic/${userEmail}`, {
         method: 'GET',
         headers: {
@@ -224,6 +228,7 @@ function fetchAndSetProfilePicture(userEmail) {
         .then(blob => {
             const imageUrl = URL.createObjectURL(blob);
             profilePhotoElement.src = imageUrl;
+            profilePhotoElement2.src = imageUrl;
         })
         .catch(error => {
             console.error('Error fetching profile picture:', error);

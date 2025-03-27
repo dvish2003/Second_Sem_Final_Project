@@ -6,9 +6,6 @@ package lk.ijse.back_end_prerental.config;
  */
 
 
-
-
-
 import lk.ijse.back_end_prerental.service.custom.IMPL.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -70,6 +67,8 @@ public class WebSecurityConfig {
                                 "/api/v1/user/register",
                                 "/api/v1/user/updateUser",
                                 "/api/v1/user/get4Users",
+                                "/api/v1/vehicle/getVehiclePic",
+                                "/api/v1/vehicle/getVehicle",
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

@@ -20,6 +20,14 @@
     --padding-1: 1.2rem;
 
     --box-shadow: 0 2rem 3rem var(--color-light);
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --text-color: #2b2d42;
+    --light-gray: #f8f9fa;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 .dark-mode-variables {
@@ -212,11 +220,11 @@ aside .sidebar a span {
     transition: all 0.3s ease;
 }
 
-aside .sidebar a:last-child {
+/*aside .sidebar a:last-child {
     position: absolute;
     bottom: 2rem;
     width: 100%;
-}
+}*/
 
 aside .sidebar a.active {
     width: 100%;
@@ -467,8 +475,132 @@ main .recent-orders a {
     border-radius: 50%;
     overflow: hidden;
 }
+.user-profile-card {
+    width: 100%;
+    max-width: 320px;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: var(--transition);
+    margin: 0 auto;
+}
 
-.right-section .user-profile {
+.user-profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.avatar-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--white);
+    box-shadow: var(--shadow);
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+}
+
+.profile-name {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.profile-title {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 400;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+.profile-actions {
+    display: flex;
+    padding: 1rem;
+    gap: 0.75rem;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.action-btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.action-btn.primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.action-btn.secondary {
+    background-color: var(--light-gray);
+    color: var(--text-color);
+}
+
+.action-btn.secondary:hover {
+    background-color: #e9ecef;
+}
+/*.right-section .user-profile {
     display: flex;
     justify-content: center;
     text-align: center;
@@ -494,7 +626,7 @@ main .recent-orders a {
 
 .right-section .user-profile h2 {
     margin-bottom: 0.2rem;
-}
+}*/
 
 /* Reminders Section */
 .right-section .reminders {

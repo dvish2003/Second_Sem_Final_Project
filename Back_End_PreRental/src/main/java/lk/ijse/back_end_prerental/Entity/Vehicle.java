@@ -16,7 +16,7 @@ import java.util.List;
 public class Vehicle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
@@ -72,16 +72,24 @@ public class Vehicle {
     @Column(name = "available_now")
     private boolean availableNow;
 
+    private boolean airCondition;
+    private boolean bluetooth;
+    private boolean Navigation;
+    private boolean sunroof;
+    private boolean cruiseControl;
+    private boolean backCamera;
+    private boolean heatedSeat;
+    private boolean childSeat;
+    private boolean tollPass;
+    private boolean gpsTracker;
+    private boolean wifiHotspot;
+
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "rental_terms", columnDefinition = "TEXT")
     private String rentalTerms;
-
-    @ElementCollection
-    @CollectionTable(name = "vehicle_features", joinColumns = @JoinColumn(name = "vehicle_id"))
-    @Column(name = "feature")
-    private List<String> features = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false)
     private Date createdAt;

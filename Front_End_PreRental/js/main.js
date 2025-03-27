@@ -334,6 +334,7 @@
 
 
 /*=======================================================================================================================================================================================================*/
+/*
 	 // Handle login form submission
 	 document.getElementById('loginForm').addEventListener('submit', function (e) {
 	 e.preventDefault();
@@ -366,6 +367,7 @@
 	 alert('Google login successful! Redirecting...');
 	 window.location.href = 'car.html'; // Redirect after Google login
  }
+*/
 
 /*=================================login And Register================================================================================================================*/
  function validateEmail(email) {
@@ -455,9 +457,9 @@
 				 timer: 2000
 			 }).then(() => {
 					 if (userRole === "admin") {
-						 window.location.href = "../car1.html";
+						 window.location.href = "../../../Second_Sem_Final_Project/Front_End_PreRental/car1.html";
 					 } else if(userRole === "user"){
-						 window.location.href = "../car.html";
+						 window.location.href = "../../../Second_Sem_Final_Project/Front_End_PreRental/car.html";
 						 getUserData(email);
 					 }
 				 });
@@ -487,123 +489,7 @@
 		 }
 	 });
  }
-/* function login() {
-	 let emailUser = document.getElementById("loginEmail").value;
-	 let password = document.getElementById("loginPassword").value;
 
-	 // Validate email
-	 if (!validateEmail(emailUser)) {
-		 Swal.fire({
-			 icon: 'error',
-			 title: 'Invalid Email',
-			 text: 'Please enter a valid email address.',
-			 showConfirmButton: true
-		 });
-		 return;
-	 }
-
-	 // Validate password
-	 if (!validatePassword(password)) {
-		 Swal.fire({
-			 icon: 'error',
-			 title: 'Invalid Password',
-			 text: 'Password must be at least 6 characters long.',
-			 showConfirmButton: true
-		 });
-		 return;
-	 }
-
-	 // Perform login request
-	 $.ajax({
-		 url: 'http://localhost:8080/api/v1/auth/authenticate',
-		 method: 'POST',
-		 contentType: 'application/json',
-		 data: JSON.stringify({
-			 email: emailUser,
-			 password: password
-		 }),
-		 success: function(response) {
-			 console.log("Login successful");
-			 localStorage.setItem("token", response.data.token);
-
-			 // Decode the token to get user details
-			 const token = localStorage.getItem('token');
-			 const decodedToken = jwt_decode(token);
-			 const email = decodedToken.email;
-
-			 // Fetch user details
-			 getUserDetails(email);
-		 },
-		 error: function(xhr, status, error) {
-			 console.error("Login failed:", error);
-			 Swal.fire({
-				 icon: 'error',
-				 title: 'Login Failed',
-				 text: 'Invalid email or password. Please try again.',
-				 showConfirmButton: true
-			 });
-		 }
-	 });
- }
-
- function getUserDetails(email) {
-	 $.ajax({
-		 url: 'http://localhost:8080/api/v1/user/getUser',
-		 method: 'GET',
-		 contentType: 'application/json',
-		 async: true,
-		 headers: {
-			 Authorization: 'Bearer ' + localStorage.getItem("token")
-		 },
-		 data: {
-			 email: email
-		 },
-		 success: function(response) {
-			 console.log("User details fetched successfully");
-
-			 // Check if the user's email is verified
-			 if (response.data.verified === true) {
-				 Swal.fire({
-					 icon: 'success',
-					 title: 'Login Successful!',
-					 text: 'You have successfully logged in.',
-					 showConfirmButton: false,
-					 timer: 2000 // Auto-close after 2 seconds
-				 }).then(() => {
-					 const userRole = response.data.role;
-
-					 // Redirect based on user role
-					 if (userRole === "admin") {
-						 window.location.href = "html/AdminDashBoard/AdminDashBoard.html";
-					 } else {
-						 window.location.href = "../html/car.html";
-						 getUserData(email); // Fetch additional user data if needed
-					 }
-				 });
-			 } else {
-				 Swal.fire({
-					 icon: 'error',
-					 title: 'Email Not Verified',
-					 text: 'Please verify your email address before logging in.',
-					 showConfirmButton: true
-				 }).then((result) => {
-					 if (result.isConfirmed) {
-						 $('#verificationModal').modal('show');
-					 }
-				 });
-			 }
-		 },
-		 error: function(xhr, status, error) {
-			 console.error("Failed to fetch user details:", error);
-			 Swal.fire({
-				 icon: 'error',
-				 title: 'Error',
-				 text: 'Failed to fetch user details. Please try again.',
-				 showConfirmButton: true
-			 });
-		 }
-	 });
- }*/
 
  function register() {
 	 let Firstname = document.getElementById("registerFirstName").value;

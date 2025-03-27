@@ -13,5 +13,6 @@
     <orderEntry type="library" name="sweetalert2" level="application" />
     <orderEntry type="library" name="jwt-decode" level="application" />
     <orderEntry type="library" name="animate.css" level="application" />
+    <orderEntry type="library" name="bootstrap-icons" level="application" />
   </component>
 </module>

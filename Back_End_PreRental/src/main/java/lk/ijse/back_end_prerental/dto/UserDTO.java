@@ -25,6 +25,9 @@ public class UserDTO {
     private String postal_code;
     private String primary_phone_number;
     private String secondary_phone_number;
+    private String fileName;
+    private String filetype;
+    private byte[] data;
     private String profilePicture;
    private boolean verified;
     private String verificationCode;

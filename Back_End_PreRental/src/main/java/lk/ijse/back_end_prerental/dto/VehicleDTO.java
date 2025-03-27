@@ -1,4 +1,5 @@
 package lk.ijse.back_end_prerental.dto;
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import lk.ijse.back_end_prerental.Entity.Member;
 import lombok.AllArgsConstructor;
@@ -40,15 +41,26 @@ public class VehicleDTO {
     private int minRentalDays;
     private Double depositAmount;
     private boolean availableNow;
+
+    private boolean airCondition;
+    private boolean bluetooth;
+    private boolean Navigation;
+    private boolean sunroof;
+    private boolean cruiseControl;
+    private boolean backCamera;
+    private boolean heatedSeat;
+    private boolean childSeat;
+    private boolean tollPass;
+    private boolean gpsTracker;
+    private boolean wifiHotspot;
+
+
     private String description;
     private String rentalTerms;
-    private List<String> features = new ArrayList<>();
     private Date createdAt;
-    private String image;
-    private Member owner;
-    private List<BookingDTO> bookings;
-    private String mainImageUrl;
-    private List<String> imageUrls;
-    private double averageRating;
-    private int reviewCount;
+    private String fileName;
+    private String filetype;
+    private byte[] data;
+    private String Image;
+    private MemberDTO owner;
 }
