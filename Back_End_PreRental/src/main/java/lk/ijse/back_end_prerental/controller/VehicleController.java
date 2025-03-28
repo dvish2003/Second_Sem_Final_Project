@@ -79,6 +79,7 @@ try{
         System.out.println(memberDTO.getNicNumber());
         System.out.println(memberDTO.getJoinDate());
         vehicleDTO.setOwner(memberDTO);
+        vehicleDTO.setCity(memberDTO.getCity());
         try {
 
             vehicleDTO.setCreatedAt(Date.valueOf(LocalDate.now()));

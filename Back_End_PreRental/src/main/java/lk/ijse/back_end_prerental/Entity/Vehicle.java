@@ -103,7 +103,10 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member owner;
+    private String city;
 
-    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Booking> bookings;
+
+
 }

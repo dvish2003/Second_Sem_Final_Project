@@ -6,6 +6,7 @@ import lk.ijse.back_end_prerental.dto.ResponseDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 import lk.ijse.back_end_prerental.dto.VerifyMemberDTO;
 import lk.ijse.back_end_prerental.service.custom.MemberService;
+import lk.ijse.back_end_prerental.service.custom.UserService;
 import lk.ijse.back_end_prerental.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,11 @@ import java.util.UUID;
 @CrossOrigin
 public class MemberController {
     private  final MemberService memberService;
+    private  final UserService userService;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, UserService userService) {
         this.memberService = memberService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/getMemberInfo")
@@ -52,7 +55,11 @@ public class MemberController {
     @PostMapping(value ="/saveMemberInfo")
     public ResponseEntity<ResponseDTO> saveMember(@RequestBody MemberDTO memberDTO){
         System.out.println(memberDTO);
+        String email = memberDTO.getEmail();
+        UserDTO userDTO = userService.searchUser(email);
+        String city  = userDTO.getCity();
         MemberDTO memberDTO1 = memberDTO;
+        memberDTO1.setCity(city);
         memberDTO1.setNicNumber(memberDTO.getUserDTO().getNational_id());
        try{
            Date localDate = Date.valueOf(LocalDate.now());

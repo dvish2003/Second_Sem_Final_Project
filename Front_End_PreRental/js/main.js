@@ -333,41 +333,6 @@
 
 
 
-/*=======================================================================================================================================================================================================*/
-/*
-	 // Handle login form submission
-	 document.getElementById('loginForm').addEventListener('submit', function (e) {
-	 e.preventDefault();
-	 const email = document.getElementById('loginEmail').value;
-	 const password = document.getElementById('loginPassword').value;
-
-	 // Perform login validation or API call here
-	 console.log('Login with:', email, password);
-	 alert('Login successful! Redirecting...');
-	 window.location.href = 'car.html'; // Redirect after login
- });
-
-	 // Handle register form submission
-	 document.getElementById('registerForm').addEventListener('submit', function (e) {
-	 e.preventDefault();
-	 const name = document.getElementById('registerName').value;
-	 const email = document.getElementById('registerEmail').value;
-	 const password = document.getElementById('registerPassword').value;
-
-	 // Perform registration validation or API call here
-	 console.log('Register with:', name, email, password);
-	 alert('Registration successful! Redirecting...');
-	 window.location.href = 'car.html'; // Redirect after registration
- });
-
-	 // Google login/register function
-	 function googleLogin() {
-	 // Implement Google OAuth logic here
-	 console.log('Logging in with Google...');
-	 alert('Google login successful! Redirecting...');
-	 window.location.href = 'car.html'; // Redirect after Google login
- }
-*/
 
 /*=================================login And Register================================================================================================================*/
  function validateEmail(email) {
@@ -386,7 +351,7 @@
  }
 
  function login() {
-	 let emailUser = document.getElementById("loginEmail").value;
+	 let emailUser = document.getElementById("loginEmail").value.toLowerCase();
 	 let password = document.getElementById("loginPassword").value;
 	 if (!validateEmail(emailUser)) {
 		 Swal.fire({
@@ -495,7 +460,7 @@
 	 let Firstname = document.getElementById("registerFirstName").value;
 	 let Secondname = document.getElementById("registerLastName").value;
 	 let name = Firstname + " " + Secondname;
-	 let email = document.getElementById("registerEmail").value;
+	 let email = document.getElementById("registerEmail").value.toLowerCase();
 	 let password = document.getElementById("registerPassword").value;
 	 let confirmPassword = document.getElementById("confirmPassword").value;
 	 if (!validateEmail(email)) {

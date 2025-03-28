@@ -197,7 +197,7 @@ function getName() {
            const profileInfo2 = document.querySelector('.profile-header');
            if (profileInfo && profileInfo2) {
                profileInfo.querySelector('p').innerHTML = `Hey, <b>${userName}</b>`;
-               profileInfo2.querySelector('h2').innerHTML = `profile-name${userName}`;
+               profileInfo2.querySelector('h2').innerHTML = `${userName}`;
            } else {
                console.error("Profile info element not found.");
            }

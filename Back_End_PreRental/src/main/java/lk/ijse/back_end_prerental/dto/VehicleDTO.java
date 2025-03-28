@@ -63,4 +63,6 @@ public class VehicleDTO {
     private byte[] data;
     private String Image;
     private MemberDTO owner;
+    private String city;
+
 }
