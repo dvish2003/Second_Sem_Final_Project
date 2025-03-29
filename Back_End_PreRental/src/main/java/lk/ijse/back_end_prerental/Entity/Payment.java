@@ -47,6 +47,12 @@ public class Payment {
             foreignKey = @ForeignKey(name = "FK_payment_booking"))
     private Booking booking;
 
+    @Column(unique = true, nullable = false)
+    private String memberEmail;
+
+    @Column(unique = true, nullable = false)
+    private String CustomerEmail;
+
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private AdminPayment adminPayment;

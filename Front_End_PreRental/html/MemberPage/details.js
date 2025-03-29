@@ -30,7 +30,7 @@ function fetchVehicleDetails(plateNumber) {
                 populateVehicleDetails(response.data);
                 populateVehicleDetailsProfile(response.data);
                 vehicleDTO = response.data;
-                document.getElementById('total2').value ="$" + vehicleDTO.depositAmount;
+                document.getElementById('total2').value =vehicleDTO.depositAmount;
                 document.getElementById('pickupLocation').value =vehicleDTO.city;
             } else {
                 console.error('No vehicle data received');
@@ -291,9 +291,9 @@ function prepareBooking() {
     console.log("Service fee", serviceFee);
     console.log( "Total:", total);
 
-    document.getElementById('rentalDays').value ="$" + daysPerFee.toFixed(1);
-    document.getElementById('serviceFee').value = "$" + serviceFee.toFixed(1);
-    document.getElementById('total').value = "$" + total.toFixed(1);
+    document.getElementById('rentalDays').value =daysPerFee.toFixed(1);
+    document.getElementById('serviceFee').value =serviceFee.toFixed(1);
+    document.getElementById('total').value = total.toFixed(1);
 }
 
 function bookingBtn(){
@@ -302,11 +302,39 @@ function bookingBtn(){
     //decoding token
     const decodedToken = jwt_decode(token);
     //get name use decorded token
+
     const UserEmail = decodedToken.email;
     const totalAmount =  document.getElementById('total').value;
     const serviceFee =  document.getElementById('serviceFee').value;
     const depositCharge =  document.getElementById('total2').value;
     const startDate = document.getElementById('pickupDate').value;
     const endDate = document.getElementById('returnDate').value;
+
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/transaction/transactionalSave',
+        method: 'POST',
+        contentType: 'application/json',
+        async: true,
+        headers: {
+            'Authorization': 'Bearer '+ token
+        },
+        data: JSON.stringify({
+            userEmail: UserEmail,
+            totalAmount: totalAmount,
+            serviceFee: serviceFee,
+            depositCharge: depositCharge,
+            startDate: startDate,
+            endDate: endDate,
+            vehicleDTO1:vehicleDTO
+        }),
+        success: function(response) {
+            console.log(response);
+            alert('Booking successful!');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('Booking failed!');
+        }
+    })
 
 }

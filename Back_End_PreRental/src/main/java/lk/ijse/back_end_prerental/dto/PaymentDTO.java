@@ -3,6 +3,7 @@ package lk.ijse.back_end_prerental.dto;
 import jakarta.persistence.*;
 import lk.ijse.back_end_prerental.Entity.AdminPayment;
 import lk.ijse.back_end_prerental.Entity.Booking;
+import lk.ijse.back_end_prerental.Entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,8 @@ public class PaymentDTO {
     private String currency;
     private Date paymentDate;
     private BookingDTO booking;
+    private String memberEmail;
+    private String CustomerEmail;
     private AdminPaymentDTO adminPayment;
+
 }

@@ -40,4 +40,5 @@ public class Member {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
+
 }

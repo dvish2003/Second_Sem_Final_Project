@@ -22,6 +22,6 @@ public class FBTransactionalDTO {
     private double depositCharge;
     private Date startDate;
     private Date endDate;
-    private VehicleDTO vehicleDTO;
+    private VehicleDTO vehicleDTO1;
 
 }
