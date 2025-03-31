@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Bookings | PreRental</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .booking-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .booking-card:hover {
+            transform: translateY(-5px);
+        }
+        .booking-card-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .status-completed {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+        .vehicle-thumbnail {
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .filter-controls {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .pagination .page-link {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <h1 class="mb-4">Past Bookings</h1>
+
+    <!-- Filter Controls -->
+    <div class="filter-controls">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="statusFilter" class="form-label">Status</label>
+                <select class="form-select" id="statusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="dateFrom" class="form-label">From Date</label>
+                <input type="date" class="form-control" id="dateFrom">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="dateTo" class="form-label">To Date</label>
+                <input type="date" class="form-control" id="dateTo">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-counterclockwise me-2"></i>Reset Filters
+            </button>
+            <button class="btn btn-primary">
+                <i class="bi bi-funnel me-2"></i>Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Booking List -->
+    <div class="row">
+        <!-- Booking 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="booking-card">
+                <div class="booking-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">#B-87654321</h5>
+                    <span class="status-badge status-completed">
+                            <i class="bi bi-check-circle-fill me-1"></i>Completed
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="https://via.placeholder.com/200" alt="Vehicle" class="img-fluid vehicle-thumbnail w-100">
+                        </div>
+                        <div class="col-8">
+                            <h6>Toyota Corolla</h6>
+                            <p class="text-muted small mb-2">2023-08-10 to 2023-08-15</p>
+                            <p class="fw-bold mb-1">LKR 25,000</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="booking-detail.html" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i>View
+                        </a>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer me-1"></i>Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking 2 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="booking-card">
+                <div class="booking-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">#B-98765432</h5>
+                    <span class="status-badge status-completed">
+                            <i class="bi bi-check-circle-fill me-1"></i>Completed
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="https://via.placeholder.com/200" alt="Vehicle" class="img-fluid vehicle-thumbnail w-100">
+                        </div>
+                        <div class="col-8">
+                            <h6>Honda Civic</h6>
+                            <p class="text-muted small mb-2">2023-07-05 to 2023-07-10</p>
+                            <p class="fw-bold mb-1">LKR 30,000</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="booking-detail.html" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i>View
+                        </a>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer me-1"></i>Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking 3 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="booking-card">
+                <div class="booking-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">#B-76543210</h5>
+                    <span class="status-badge status-cancelled">
+                            <i class="bi bi-x-circle-fill me-1"></i>Cancelled
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="https://via.placeholder.com/200" alt="Vehicle" class="img-fluid vehicle-thumbnail w-100">
+                        </div>
+                        <div class="col-8">
+                            <h6>Nissan Sunny</h6>
+                            <p class="text-muted small mb-2">2023-06-20 to 2023-06-25</p>
+                            <p class="fw-bold mb-1">LKR 22,000</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="booking-detail.html" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i>View
+                        </a>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-printer me-1"></i>Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

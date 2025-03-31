@@ -22,6 +22,7 @@ public class Booking {
 
     @Column(nullable = false)
     private Date returnDate;
+
     private boolean status;
 
     @Column(nullable = false)
@@ -38,4 +39,7 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
+
+    @Column(name = "member_email")
+    private String memberEmail;
 }

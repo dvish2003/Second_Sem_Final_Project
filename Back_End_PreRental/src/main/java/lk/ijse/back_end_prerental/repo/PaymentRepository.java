@@ -18,4 +18,5 @@ import java.util.UUID;
 public interface PaymentRepository extends JpaRepository<Payment,String> {
     Payment findPaymentByBookingId(UUID booking_id);
 
+
 }

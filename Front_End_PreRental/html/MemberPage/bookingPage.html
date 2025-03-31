@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking List | PreRental</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .booking-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border-left: 4px solid #4CAF50;
+        }
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .booking-card-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-confirmed {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+        .status-completed {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+        .vehicle-thumbnail {
+            height: 80px;
+            width: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .pagination .page-link {
+            color: #4CAF50;
+        }
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .table thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .table th {
+            font-weight: 500;
+        }
+        .action-btn {
+            min-width: 90px;
+        }
+        .badge-filter {
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Booking Management</h1>
+        <a href="create-booking.html" class="btn btn-success">
+            <i class="bi bi-plus-circle me-2"></i>New Booking
+        </a>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label for="searchInput" class="form-label">Search</label>
+                <input type="text" class="form-control" id="searchInput" placeholder="Booking ID, Customer...">
+            </div>
+            <div class="col-md-3">
+                <label for="statusFilter" class="form-label">Status</label>
+                <select class="form-select" id="statusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="dateFrom" class="form-label">From Date</label>
+                <input type="date" class="form-control" id="dateFrom">
+            </div>
+            <div class="col-md-3">
+                <label for="dateTo" class="form-label">To Date</label>
+                <input type="date" class="form-control" id="dateTo">
+            </div>
+        </div>
+
+        <!-- Quick Filter Badges -->
+        <div class="mt-3">
+            <span class="badge bg-secondary badge-filter">Today</span>
+            <span class="badge bg-secondary badge-filter">This Week</span>
+            <span class="badge bg-secondary badge-filter">This Month</span>
+            <span class="badge bg-secondary badge-filter">Pending Approval</span>
+            <span class="badge bg-secondary badge-filter">Need Attention</span>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-outline-secondary me-2">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+            </button>
+            <button class="btn btn-primary">
+                <i class="bi bi-funnel me-1"></i>Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Booking List Table -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Vehicle</th>
+                <th>Dates</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="bookingBody">
+            <!-- Booking 1 -->
+            <tr>
+                <td id="bookingId">#B-87654321</td>
+                <td id="customerDetail">
+                    <div class="d-flex align-items-center" id="customerDiv">
+                        <img id="customerImage" src="https://via.placeholder.com/40" alt="Customer" class="rounded-circle me-2" width="32" height="32">
+                        <span id="customerName">John Smith</span>
+                    </div>
+                </td>
+                <td id="vehicleDetail">
+                    <div class="d-flex align-items-center" id="vehicleDiv">
+                        <img id="vehicleImage" src="https://via.placeholder.com/60" alt="Vehicle" class="vehicle-thumbnail me-2">
+                        <span id="VehicleName">Toyota Corolla</span>
+                    </div>
+                </td>
+                <td>
+                    15 Oct - 20 Oct<br>
+                    <small class="text-muted">5 days</small>
+                </td>
+                <td id="price">LKR 25,000</td>
+                <td id="status"><span class="status-badge status-confirmed">Confirmed</span></td>
+                <td>
+                    <a href="booking-detail.html" class="btn btn-sm btn-outline-primary action-btn">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script>
+    LoadAllBookings();
+function LoadAllBookings(){
+    const token = localStorage.getItem('token');
+    const decord = jwt_decode(token);
+    const  memberEmail = decord.email;
+
+    console.log("kkkkkkkkk",memberEmail)
+
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        url: 'http://localhost:8080/api/v1/booking/getMemberBookings',
+        async: true,
+        data: JSON.stringify({
+            "email": memberEmail,
+        }),
+        success: function(response) {
+            console.log(response.data);
+
+            if(response.code === 200){
+                $('#bookingBody').empty();
+
+                response.data.forEach(booking => {
+
+                    let bookingId = booking.id;
+                    let customerEmail = booking.customerEmail;
+                    let vehiclePLateNumber = booking.plateNumber;
+                    let startDate = booking.pickupDate;
+                    let endDate = booking.returnDate;
+                    let status = booking.status;
+                    let customerFileName2 = booking.customerFileName;
+                    let vehicleFileName2 = booking.vehicleFileName;
+                    let customerName2 = booking.customerName;
+                    let customerContactPrimary = booking.customerContact;
+                    let customerContactSecondory = booking.customerContact2;
+                    let vehicleName;
+                    let amount = booking.paymentAmount;
+
+
+                    // set wehicle data in table
+                    $('#bookingBody').append(`
+                <tr>
+                <td id="bookingId">#B-${bookingId}</td>
+                <td id="customerDetail">
+                    <div class="d-flex align-items-center" id="customerDiv">
+                        <img id="customerImage" src="../../../../Second_Sem_Final_Project/uploads/${customerFileName2}" alt="Customer" class="rounded-circle me-2" width="32" height="32">
+                        <span id="customerName">${customerName2}</span>
+                    </div>
+                </td>
+                <td id="vehicleDetail">
+                    <div class="d-flex align-items-center" id="vehicleDiv">
+                        <img id="vehicleImage" src="../../../../Second_Sem_Final_Project/uploads/${vehicleFileName2}" alt="Vehicle" class="vehicle-thumbnail me-2">
+                        <span id="VehicleName">${vehiclePLateNumber}</span>
+                    </div>
+                </td>
+                <td>
+                    ${startDate} - ${endDate}<br>
+                    <small class="text-muted">5 days</small>
+                </td>
+                <td id="price">$ ${amount}</td>
+                <td id="status"><span class="status-badge status-confirmed">Confirmed</span></td>
+                <td>
+                    <a href="booking-detail.html" class="btn btn-sm btn-outline-primary action-btn">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                </td>
+            </tr>
+            `);
+
+                })
+            }
+            //get data list one by one use for each
+
+        }
+    })
+}
+
+    document.querySelectorAll('.badge-filter').forEach(badge => {
+        badge.addEventListener('click', function() {
+            this.classList.toggle('bg-secondary');
+            this.classList.toggle('bg-primary');
+        });
+    });
+</script>
+</body>
+</html>

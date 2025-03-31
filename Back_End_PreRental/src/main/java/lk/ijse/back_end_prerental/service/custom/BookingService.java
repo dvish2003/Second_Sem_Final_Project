@@ -1,6 +1,7 @@
 package lk.ijse.back_end_prerental.service.custom;
 
 import lk.ijse.back_end_prerental.dto.BookingDTO;
+import lk.ijse.back_end_prerental.dto.MemBookingDTO;
 
 import java.sql.Date;
 import java.util.List;
@@ -16,6 +17,8 @@ public interface BookingService {
     int saveBooking(BookingDTO bookingDTO);
 
     List<BookingDTO> getBookings();
+
+    List<MemBookingDTO> getBookingByMember(String memberEmail);
 
     List<BookingDTO> getBookingDTOUseByDate(Date pickUpDate);
 }

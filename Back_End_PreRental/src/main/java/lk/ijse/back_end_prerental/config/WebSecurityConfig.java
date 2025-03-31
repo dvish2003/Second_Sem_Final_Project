@@ -69,6 +69,7 @@ public class WebSecurityConfig {
                                 "/api/v1/user/get4Users",
                                 "/api/v1/vehicle/getVehiclePic",
                                 "/api/v1/vehicle/getVehicle",
+                                "/api/v1/booking/getMemberBookings",
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

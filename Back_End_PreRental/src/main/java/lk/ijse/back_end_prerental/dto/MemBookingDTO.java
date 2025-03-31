@@ -1,33 +1,35 @@
 package lk.ijse.back_end_prerental.dto;
-import jakarta.persistence.*;
-import lk.ijse.back_end_prerental.Entity.Payment;
-import lk.ijse.back_end_prerental.Entity.User;
-import lk.ijse.back_end_prerental.Entity.Vehicle;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
  * Author: vishmee
- * Date: 3/11/25
- * Time: 9:20 PM
+ * Date: 3/31/25
+ * Time: 11:14 PM
  * Description:
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class BookingDTO {
+
+public class MemBookingDTO {
+
     private UUID id;
     private Date pickupDate;
     private Date returnDate;
     private boolean status;
-    private double totalAmount;
-    private PaymentDTO payment;
-    private UserDTO customer;
-    private VehicleDTO vehicle;
+    private String customerEmail;
+    private String plateNumber;
     private String MemberEmail;
+    private double paymentAmount;
+    private String customerFileName;
+    private String customerName;
+    private String customerContact;
+    private String customerContact2;
+    private String vehicleFileName;
 }

@@ -340,11 +340,99 @@
         </div>
     </div>
 </div>
-<!-- Register Modal -->
+<!--=============================================================================== Register Modal -->
 <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="logo">Pre<span>Rental</span></div>
+                <p class="subtitle">Hire And Enjoy Your Journey</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="login-topic">Create a new account</div>
+                <form id="registerForm" style="font-size:15px">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="registerFirstName">First Name</label>
+                                <input style="font-size: 15px" type="text" class="form-control" id="registerFirstName" name="registerFirstName" placeholder="First Name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="registerLastName">Last Name</label>
+                                <input style="font-size: 15px" type="text" class="form-control" id="registerLastName" name="registerLastName" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="registerEmail">Email</label>
+                        <input style="font-size: 15px" type="email" class="form-control" id="registerEmail" name="registerEmail" placeholder="Email" required>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="registerPassword">Password</label>
+                        <input style="font-size: 15px" type="password" class="form-control" id="registerPassword" name="registerPassword" placeholder="Password (min. 6 characters)" required>
+                        <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input style="font-size: 15px" type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                        <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+                    </div>
+                    <button type="button" class="btn btn-primary w-100 mb-3" onclick="register()">Verify Your Email</button>
+                    <div class="divider text-center mb-3">
+                        <span>OR</span>
+                    </div>
+                    <button type="button" class="btn btn-google w-100 mb-3">
+                        <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google logo">
+                        Sign up with Google
+                    </button>
+                    <div class="signup-link text-center">
+                        Already have an account? <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                    </div>
+                    <div class="privacy-text">
+                        By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+================================================== Verify Model=================================================================
+<div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            &lt;!&ndash; Modal Header &ndash;&gt;
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title" id="verificationModalLabel">A verification email has been sent to your email.Check your mail Box</h5>
+            </div>
+            &lt;!&ndash; Modal Body &ndash;&gt;
+            <div class="modal-body">
+                <form id="verifyForm">
+                    <div class="mb-4">
+                        <label for="otp" class="form-label fw-bold">Verification Code</label>
+                        <input type="text" class="form-control form-control-lg" id="otp" name="code" placeholder="Enter 6-digit code" required>
+                        <small class="form-text text-muted">Check your email for the verification code.</small>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg w-100" onclick="verifyTheAccount()">Verify</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="text-muted">Didn't receive the code? <a href="#" id="resendOtp" class="text-decoration-none fw-bold">Resend OTP</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+&lt;!&ndash;=============================================================================== Register Modal=========================================== &ndash;&gt;
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            &lt;!&ndash; Modal Header &ndash;&gt;
             <div class="modal-header">
                 <div class="logo">Pre<span>Rental</span></div>
                 <p class="subtitle">Hire And Enjoy Your Journey</p>
@@ -402,6 +490,7 @@
         </div>
     </div>
 </div>
+-->
 
 
 <div class="hero-wrap ftco-degree-bg" style="background-image: url('images/wp2922360-bmw-wallpaper-1920x1080.jpg');"
@@ -490,9 +579,9 @@
                                     <div class="services w-100 text-center">
                                         <div class="icon d-flex align-items-center justify-content-center"><span
                                                 class="flaticon-rent"></span></div>
-                                        <div class="text w-100">
+                                        <registerdiv class="text w-100">
                                             <h3 class="heading mb-2">Reserve Your Rental Car</h3>
-                                        </div>
+                                        </registerdiv>
                                     </div>
                                 </div>
                             </div>
@@ -588,7 +677,7 @@
 
 <section class="ftco-section ftco-about">
     <div class="container">
-        <div class="row no-gutters">
+        <div class="row no-gutters">register
             <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center"
                  style="background-image: url(images/about.jpg);">
             </div>
@@ -960,6 +1049,107 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script></script>
+<script>
+
+    function register() {
+        // Prevent form submission if it's inside a form
+        event.preventDefault();
+
+        let Firstname = document.getElementById("registerFirstName").value;
+        let Secondname = document.getElementById("registerLastName").value;
+        let name = Firstname + " " + Secondname;
+        let email = document.getElementById("registerEmail").value.toLowerCase();
+        let password = document.getElementById("registerPassword").value;
+        let confirmPassword = document.getElementById("confirmPassword").value;
+
+        // Validations
+        if (!validateEmail(email)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address.',
+                showConfirmButton: true
+            });
+            return false;
+        }
+
+        if (!validatePassword(password)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Password',
+                text: 'Password must be at least 6 characters long.',
+                showConfirmButton: true
+            });
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Password Mismatch',
+                text: 'Passwords do not match. Please try again.',
+                showConfirmButton: true
+            });
+            return false;
+        }
+
+        $.ajax({
+            method: 'POST',
+            contentType: 'application/json',
+            url: 'http://localhost:8080/api/v1/user/register',
+            async: true,
+            data: JSON.stringify({
+                "email": email,
+                "name": name,
+                "password": password,
+                "role": "user"
+            }),
+            success: function (response) {
+                console.log("Registration successful", response);
+                localStorage.setItem("token", response.data.token);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registration Successful!',
+                    text: 'Your account has been created successfully.A verification email has been sent to your email. Check your mail box ',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Verify Email',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Hide the register modal
+                        $('#registerModal').modal('hide');
+
+                        // Show the verification modal
+                        $('#verificationModal').modal('show');
+                    }
+                });
+/*
+                localStorage.setItem("verifyEmail", email);
+*/
+            },
+            error: function (xhr, status, error) {
+                console.error("Registration failed", xhr.responseText);
+                let errorMsg = "Registration failed. Please try again.";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMsg = xhr.responseJSON.message;
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registration Failed',
+                    text: errorMsg,
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function validatePassword(password) {
+        return password.length >= 6;
+    }
+</script>
 </body>
 </html>

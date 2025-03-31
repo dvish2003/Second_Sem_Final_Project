@@ -1,10 +1,12 @@
 package lk.ijse.back_end_prerental.controller;
 
 import jakarta.validation.Valid;
+import lk.ijse.back_end_prerental.Entity.Booking;
 import lk.ijse.back_end_prerental.dto.MemberDTO;
 import lk.ijse.back_end_prerental.dto.ResponseDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 import lk.ijse.back_end_prerental.dto.VerifyMemberDTO;
+import lk.ijse.back_end_prerental.repo.BookingRepository;
 import lk.ijse.back_end_prerental.service.custom.MemberService;
 import lk.ijse.back_end_prerental.service.custom.UserService;
 import lk.ijse.back_end_prerental.util.VarList;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,10 +31,12 @@ import java.util.UUID;
 public class MemberController {
     private  final MemberService memberService;
     private  final UserService userService;
+    private  final BookingRepository bookingRepository;
 
-    public MemberController(MemberService memberService, UserService userService) {
+    public MemberController(MemberService memberService, UserService userService, BookingRepository bookingRepository) {
         this.memberService = memberService;
         this.userService = userService;
+        this.bookingRepository = bookingRepository;
     }
 
     @GetMapping(value = "/getMemberInfo")
@@ -50,6 +55,9 @@ public class MemberController {
             );
         }
     }
+
+
+
 
 
     @PostMapping(value ="/saveMemberInfo")
@@ -166,6 +174,8 @@ public class MemberController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+
 
     }
 
