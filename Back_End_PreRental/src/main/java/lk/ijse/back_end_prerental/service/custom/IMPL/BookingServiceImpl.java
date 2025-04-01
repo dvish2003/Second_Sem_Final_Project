@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public int saveBooking(BookingDTO bookingDTO){
 
     @Override
     public List<MemBookingDTO> getBookingByMember(String memberEmail){
+        Date localDate = Date.valueOf(LocalDate.now());
+
         List<Booking> bookingList = bookingRepository.findByMemberEmail(memberEmail);
         List<MemBookingDTO> memBookingDTOList = new ArrayList<>();
         for (Booking bookingDTO : bookingList) {
@@ -56,7 +59,7 @@ public int saveBooking(BookingDTO bookingDTO){
             memBookingDTO.setId(bookingDTO.getId());
             memBookingDTO.setPickupDate(bookingDTO.getPickupDate());
             memBookingDTO.setReturnDate(bookingDTO.getReturnDate());
-            memBookingDTO.setStatus(bookingDTO.isStatus());
+            memBookingDTO.setStatus(bookingDTO.getStatus());
             memBookingDTO.setPaymentAmount(bookingDTO.getPayment().getAmount());
             memBookingDTO.setCustomerEmail(bookingDTO.getCustomer().getEmail());
             memBookingDTO.setCustomerFileName(bookingDTO.getCustomer().getFileName());
@@ -66,6 +69,7 @@ public int saveBooking(BookingDTO bookingDTO){
             memBookingDTO.setMemberEmail(bookingDTO.getMemberEmail());
             memBookingDTO.setPlateNumber(bookingDTO.getVehicle().getPlateNumber());
             memBookingDTO.setVehicleFileName(bookingDTO.getVehicle().getFileName());
+            memBookingDTO.setLocalDate(localDate);
             memBookingDTOList.add(memBookingDTO);
 
         }
@@ -77,5 +81,22 @@ public int saveBooking(BookingDTO bookingDTO){
     public List<BookingDTO> getBookingDTOUseByDate(Date pickUpDate) {
         List<Booking> bookingList = bookingRepository.findBookingsByPickupDate(pickUpDate);
         return modelMapper.map(bookingList, new TypeToken<List<BookingDTO>>() {}.getType());
+    }
+
+    @Override
+    public int updateBooking(BookingDTO bookingDTO) {
+        try {
+            if(bookingRepository.existsById(bookingDTO.getId())){
+                Booking booking = bookingRepository.findById(bookingDTO.getId()).get();
+                booking.setStatus(bookingDTO.getStatus());
+                bookingRepository.save(booking);
+                return VarList.Created;
+            }
+            else {
+                return VarList.Not_Found;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

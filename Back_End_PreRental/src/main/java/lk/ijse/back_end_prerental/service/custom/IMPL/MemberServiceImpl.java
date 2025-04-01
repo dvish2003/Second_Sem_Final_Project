@@ -133,7 +133,10 @@ try{
     @Override
     public int updateMember(MemberDTO memberDTO) {
         if(memberRepository.existsById(memberDTO.getId())){
-            Member member = modelMapper.map(memberDTO, Member.class);
+            Member member = memberRepository.findById(memberDTO.getId()).get();
+            member.setName(memberDTO.getName());
+            member.setContact(memberDTO.getContact());
+            member.setAddress(memberDTO.getAddress());
             memberRepository.save(member);
             return VarList.OK;
         }

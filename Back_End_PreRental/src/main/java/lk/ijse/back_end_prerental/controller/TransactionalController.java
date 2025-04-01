@@ -62,7 +62,7 @@ public class TransactionalController {
 
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setVehicle(vehicleDTO);
-        bookingDTO.setStatus(true);
+        bookingDTO.setStatus(null);
         bookingDTO.setPickupDate(pickUpDate);
         bookingDTO.setReturnDate(returnDate);
         bookingDTO.setTotalAmount(total);

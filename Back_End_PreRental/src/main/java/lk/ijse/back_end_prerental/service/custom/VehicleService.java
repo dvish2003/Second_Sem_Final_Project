@@ -16,6 +16,8 @@ public interface VehicleService {
     //get all Vehicle
     List<VehicleDTO> getAllVehicle();
 
+    List<VehicleDTO> getAllVehicleByMember(int Id);
+
     VehicleDTO getVehicle(String plateNumber);
 
     int saveVehicle(VehicleDTO vehicleDTO, MultipartFile multipartFile);

@@ -23,7 +23,7 @@ public class Booking {
     @Column(nullable = false)
     private Date returnDate;
 
-    private boolean status;
+    private String status;
 
     @Column(nullable = false)
     private double totalAmount;

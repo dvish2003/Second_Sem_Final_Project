@@ -24,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Author: vishmee
@@ -140,6 +141,21 @@ try {
     return ResponseEntity.internalServerError().build();
 }
 }
+
+@PostMapping(value = "/getVehicleByMember")
+public ResponseEntity<ResponseDTO> getVehiclePicture(@RequestBody MemberDTO memberDTO) {
+        String email = memberDTO.getEmail();
+        MemberDTO memberDTO1 = memberService.getMember(email);
+        int memberId = memberDTO1.getId();
+    try {
+        List<VehicleDTO> vehicleDTOList = vehicleService.getAllVehicleByMember(memberId);
+        return new ResponseEntity<>(new ResponseDTO(VarList.OK, "Vehicle List", vehicleDTOList), HttpStatus.OK);
+    } catch (Exception e) {
+        return new ResponseEntity<>(new ResponseDTO(VarList.Internal_Server_Error, "Failed to get Vehicle List", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+}
+
 
 }
 

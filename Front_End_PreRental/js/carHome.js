@@ -24,7 +24,7 @@ function CheckExistMember() {
                 PopUp();
             } else {
                 if (response.data.verified === true) {
-                    window.location.href = 'html/MemberPage/memberPage.html';
+                    window.location.href = '../../../Second_Sem_Final_Project/Front_End_PreRental/html/MemberPage/memberPage.html';
                 } else {
                     handleDeactivatedAccount(userEmail, token);
                 }
@@ -242,7 +242,7 @@ function getUserData1() {
                     popup: 'animate__animated animate__fadeOutUp',
                 },
             }).then(() => {
-                window.location.href = '../index.html';
+                window.location.href = '../../../Second_Sem_Final_Project/Front_End_PreRental/index.html';
             });
         },
 
@@ -319,7 +319,7 @@ function getUserData() {
                     popup: 'animate__animated animate__fadeOutUp',
                 },
             }).then(() => {
-                window.location.href = '../index.html';
+                window.location.href = '../../../Second_Sem_Final_Project/Front_End_PreRental/index.html';
             });
         },
 

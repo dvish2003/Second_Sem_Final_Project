@@ -21,4 +21,6 @@ public interface BookingService {
     List<MemBookingDTO> getBookingByMember(String memberEmail);
 
     List<BookingDTO> getBookingDTOUseByDate(Date pickUpDate);
+
+    int updateBooking(BookingDTO bookingDTO);
 }

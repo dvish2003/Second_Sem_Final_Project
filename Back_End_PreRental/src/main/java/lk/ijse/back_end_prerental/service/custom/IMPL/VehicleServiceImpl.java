@@ -37,6 +37,12 @@ public class VehicleServiceImpl implements VehicleService {
         return modelMapper.map(vehicles,new TypeToken<ArrayList<VehicleDTO>>(){
         }.getType());
     }
+    @Override
+    public List<VehicleDTO> getAllVehicleByMember(int Id){
+        List<Vehicle> vehicles = vehicleRepository.findByMemberId(Id);
+        return modelMapper.map(vehicles,new TypeToken<ArrayList<VehicleDTO>>(){
+        }.getType());
+    }
  @Override
  public VehicleDTO getVehicle(String plateNumber){
        try {

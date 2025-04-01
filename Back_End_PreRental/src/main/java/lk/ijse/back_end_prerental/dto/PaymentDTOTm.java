@@ -1,4 +1,5 @@
 package lk.ijse.back_end_prerental.dto;
+
 import jakarta.persistence.*;
 import lk.ijse.back_end_prerental.Entity.Payment;
 import lk.ijse.back_end_prerental.Entity.User;
@@ -20,14 +21,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class BookingDTO {
+public class PaymentDTOTm {
     private UUID id;
-    private Date pickupDate;
-    private Date returnDate;
-    private String status;
-    private double totalAmount;
-    private PaymentDTO payment;
-    private UserDTO customer;
-    private VehicleDTO vehicle;
-    private String MemberEmail;
+    private String paymentMethod;
+    private double amount;
+    private double DepositAmount;
+    private double ServiceCharge;
+    private String currency;
+    private Date paymentDate;
+    private UUID bookingId;
+    private String memberEmail;
+    private String CustomerEmail;
 }

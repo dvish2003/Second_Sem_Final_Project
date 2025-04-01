@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Rental Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .back-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50px;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateX(-3px);
+            color: white;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h2 {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .vehicle-card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            margin-bottom: 24px;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .vehicle-img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .vehicle-card:hover .vehicle-img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .vehicle-features {
+            margin: 1rem 0;
+        }
+
+        .feature-badge {
+            border-radius: 50px;
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .price-tag {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .price-period {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .btn-view {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 500;
+        }
+
+        .btn-view:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-wishlist {
+            border-radius: 50px;
+            padding: 8px 16px;
+            border: 1px solid #dee2e6;
+        }
+
+        .rating-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 50px;
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .availability-badge {
+            background-color: #28a745;
+            color: white;
+            border-radius: 50px;
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 10px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <!-- Back Button and Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="dashboard.html" class="back-btn">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        <h2 class="page-header mb-0">Available Vehicles</h2>
+    </div>
+
+    <!-- Vehicle Cards Grid -->
+    <div class="row">
+        <!-- Vehicle Card 1 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card vehicle-card h-100 border-0 shadow-sm overflow-hidden">
+                <div class="position-relative">
+                    <div class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded-top">
+                            <div class="carousel-item active">
+                                <img src="https://source.unsplash.com/random/600x400?toyota-camry" class="d-block w-100 vehicle-img" alt="Toyota Camry">
+                            </div>
+                        </div>
+                    </div>
+                    <span class="rating-badge">
+                            <i class="bi bi-star-fill"></i> 4.8
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">Toyota Camry 2022</h5>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <p class="text-muted mb-3"><small><i class="bi bi-car-front me-1"></i> Sedan • Silver • Automatic</small></p>
+
+                    <div class="vehicle-features">
+                        <span class="feature-badge"><i class="bi bi-snow me-1"></i>AC</span>
+                        <span class="feature-badge"><i class="bi bi-bluetooth me-1"></i>Bluetooth</span>
+                        <span class="feature-badge"><i class="bi bi-usb-plug me-1"></i>USB</span>
+                        <span class="feature-badge"><i class="bi bi-camera me-1"></i>Backup Cam</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <div>
+                            <span class="price-tag">$49</span>
+                            <span class="price-period">/day</span>
+                            <span class="d-block text-muted small">$299/week</span>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-wishlist btn-sm">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <button class="btn btn-view btn-sm">
+                                <i class="bi bi-eye me-1"></i> View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Card 2 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card vehicle-card h-100 border-0 shadow-sm overflow-hidden">
+                <div class="position-relative">
+                    <div class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded-top">
+                            <div class="carousel-item active">
+                                <img src="https://source.unsplash.com/random/600x400?honda-crv" class="d-block w-100 vehicle-img" alt="Honda CR-V">
+                            </div>
+                        </div>
+                    </div>
+                    <span class="rating-badge">
+                            <i class="bi bi-star-fill"></i> 4.7
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">Honda CR-V 2021</h5>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <p class="text-muted mb-3"><small><i class="bi bi-car-front me-1"></i> SUV • Black • Automatic</small></p>
+
+                    <div class="vehicle-features">
+                        <span class="feature-badge"><i class="bi bi-snow me-1"></i>AC</span>
+                        <span class="feature-badge"><i class="bi bi-bluetooth me-1"></i>Bluetooth</span>
+                        <span class="feature-badge"><i class="bi bi-usb-plug me-1"></i>USB</span>
+                        <span class="feature-badge"><i class="bi bi-camera me-1"></i>Backup Cam</span>
+                        <span class="feature-badge"><i class="bi bi-brightness-high me-1"></i>Sunroof</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <div>
+                            <span class="price-tag">$59</span>
+                            <span class="price-period">/day</span>
+                            <span class="d-block text-muted small">$349/week</span>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-wishlist btn-sm">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <button class="btn btn-view btn-sm">
+                                <i class="bi bi-eye me-1"></i> View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Card 3 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card vehicle-card h-100 border-0 shadow-sm overflow-hidden">
+                <div class="position-relative">
+                    <div class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded-top">
+                            <div class="carousel-item active">
+                                <img src="https://source.unsplash.com/random/600x400?bmw-3series" class="d-block w-100 vehicle-img" alt="BMW 3 Series">
+                            </div>
+                        </div>
+                    </div>
+                    <span class="rating-badge">
+                            <i class="bi bi-star-fill"></i> 4.9
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">BMW 3 Series 2023</h5>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <p class="text-muted mb-3"><small><i class="bi bi-car-front me-1"></i> Luxury • White • Automatic</small></p>
+
+                    <div class="vehicle-features">
+                        <span class="feature-badge"><i class="bi bi-snow me-1"></i>AC</span>
+                        <span class="feature-badge"><i class="bi bi-bluetooth me-1"></i>Bluetooth</span>
+                        <span class="feature-badge"><i class="bi bi-usb-plug me-1"></i>USB</span>
+                        <span class="feature-badge"><i class="bi bi-camera me-1"></i>Backup Cam</span>
+                        <span class="feature-badge"><i class="bi bi-brightness-high me-1"></i>Sunroof</span>
+                        <span class="feature-badge"><i class="bi bi-speedometer2 me-1"></i>Heated Seats</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <div>
+                            <span class="price-tag">$89</span>
+                            <span class="price-period">/day</span>
+                            <span class="d-block text-muted small">$499/week</span>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-wishlist btn-sm">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <button class="btn btn-view btn-sm">
+                                <i class="bi bi-eye me-1"></i> View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    loadAllCards();
+    function loadAllCards(){}
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        // Add click event for wishlist buttons
+        document.querySelectorAll('.btn-wishlist').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                if (this.classList.contains('active')) {
+                    this.innerHTML = '<i class="bi bi-heart-fill text-danger"></i>';
+                } else {
+                    this.innerHTML = '<i class="bi bi-heart"></i>';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

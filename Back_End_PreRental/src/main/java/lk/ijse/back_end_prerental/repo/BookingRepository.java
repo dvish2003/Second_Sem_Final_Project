@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Author: vishmee
@@ -15,7 +16,7 @@ import java.util.List;
  * Description:
  */
 
-public interface BookingRepository extends JpaRepository<Booking,String> {
+public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findBookingsByPickupDate(Date pickupDate);
 
 /*

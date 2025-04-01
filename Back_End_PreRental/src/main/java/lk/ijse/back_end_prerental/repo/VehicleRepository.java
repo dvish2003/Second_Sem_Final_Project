@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * Author: vishmee
  * Date: 3/25/25
@@ -16,4 +18,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Integer> {
     boolean existsByPlateNumber(String plateNumber);
 
     Vehicle findByPlateNumber(String plateNumber);
+    List<Vehicle> findByMemberId(int memberId);
 }

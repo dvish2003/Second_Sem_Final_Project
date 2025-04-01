@@ -749,6 +749,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 	getAllVehicle();
+	loadAllMemberBookingForUpdate();
 
 	function getAllVehicle() {
 		$.ajax({
@@ -768,9 +769,7 @@
 				vehicleContainer.innerHTML = '';
 
 				vehicles.forEach(vehicle => {
-/*
-					setPicture(vehicle.plateNumber);
-*/
+
 					const allFeatures = [
 						{ name: 'AC', value: vehicle.airCondition, icon: 'bi-snow' },
 						{ name: 'Bluetooth', value: vehicle.bluetooth, icon: 'bi-bluetooth' },
@@ -875,64 +874,123 @@
 		});
 	}
 
-	/*function getAllVehicle() {
+	function loadAllMemberBookingForUpdate(){
+		const token = localStorage.getItem('token');
+		const decord = jwt_decode(token);
+		const memberEmail = decord.email;
+
+		console.log("Member Email:", memberEmail)
 		$.ajax({
-			method: 'GET',
-			url: 'http://localhost:8080/api/v1/vehicle/getAllVehicle',
+			method: 'POST',
+			contentType: 'application/json',
+			url: 'http://localhost:8080/api/v1/booking/getMemberBookings',
 			async: true,
-			success: function(response) {
-				console.log(response.data);
-				 const  vehicleType = response.data.vehicleType;
-				 const  brand=response.data.brand;
-				 const  model=response.data.model;
-				 const  year=response.data.year;
-				 const  plateNumber=response.data.plateNumber;
-				 const  color=response.data.color;
-				 const  fuelType=response.data.fuelType;
-				 const  engineCapacity=response.data.engineCapacity;
-				 const  transmission=response.data.transmission;
-				 const  seatingCapacity=response.data.seatingCapacity;
-				 const  mileage=response.data.mileage;
-				 const  fuelEfficiency=response.data.fuelEfficiency
-				 const  dailyRate=response.data.dailyRate
-				 const  weeklyRate=response.data.weeklyRate
-				 const  monthlyRate=response.data.monthlyRate;
-				 const  minRentalDays=response.data.minRentalDays;
-				 const  depositAmount=response.data.depositAmount;
-				 const  availableNow=response.data.availableNow
-				 const  airCondition=response.data.airCondition;
-				 const  bluetooth=response.data.bluetooth;
-				 const  Navigation=response.data.Navigation;
-				 const  sunroof=response.data.sunroof;
-				 const  cruiseControl=response.data.cruiseControl
-				 const  backCamera=response.data.backCamera;
-				const  heatedSeat=response.data.heatedSeat;
-				const  childSeat=response.data. childSeat;
-				 const  tollPass=response.data. tollPass;
-				const  gpsTracker=response.data. gpsTracker;
-				const  wifiHotspot=response.data. wifiHotspot;
-				 const  description=response.data.description
-				 const  rentalTerms=response.data.rentalTerms
-				 const  owner=response.data.owner;
+			data: JSON.stringify({
+				"email": memberEmail,
+			}),
+			success: function (response) {
+				console.log("All member bookings loaded successfully", response);
+				if (response.code === 200){
+					response.data.forEach(booking => {
+						let bookingId = booking.id;
+						let customerEmail = booking.customerEmail;
+						let vehiclePLateNumber = booking.plateNumber;
+						let startDate = booking.pickupDate;
+						let endDate = booking.returnDate;
+						let status = booking.status;
+						let customerFileName2 = booking.customerFileName;
+						let vehicleFileName2 = booking.vehicleFileName;
+						let customerName2 = booking.customerName;
+						let customerContactPrimary = booking.customerContact;
+						let customerContactSecondory = booking.customerContact2;
+						let vehicleName;
+						let amount = booking.paymentAmount;
+						let LocalDate = booking.localDate;
 
-				const profilePhotoElement = document.getElementById('vehicleImage');
-				fetch(`http://localhost:8080/api/v1/vehicle/getVehiclePic/${plateNumber}`, {
-					method: 'GET',
-				}).then(response =>{
-					if(response.ok) {
-						throw new Error('Network response was not ok');
-                    }
-					return response.blob();
-					}).then(blob => {
-						const objectURL = URL.createObjectURL(blob);
-                        profilePhotoElement.src = objectURL;
-                    })
-				})
-				})
 
+						if( startDate <= LocalDate   && LocalDate <= endDate ){
+							let booked = "Ongoing Booking";
+							$.ajax({
+								method: 'PUT',
+								contentType: 'application/json',
+								url: 'http://localhost:8080/api/v1/booking/updateBooking',
+								async: true,
+								data: JSON.stringify({
+									"id": bookingId,
+									"status": booked,
+								}),
+								headers: {
+									'Authorization': 'Bearer '+ token,
+								},
+								success: function (response) {
+									console.log("Booking updated successfully", response);
+                                    if (response.code === 201){
+                                        console.log("Booking updated successfully");
+                                    } else {
+                                        console.error("Failed to update booking");
+                                    }
+								}
+
+							})
+						}
+						if(LocalDate >= endDate ){
+							console.log("Expire Booking");
+                            let booked = "Expire Booking";
+                            $.ajax({
+                                method: 'PUT',
+                                contentType: 'application/json',
+                                url: 'http://localhost:8080/api/v1/booking/updateBooking',
+                                async: true,
+                                data: JSON.stringify({
+                                    "id": bookingId,
+                                    "status": booked,
+                                }),
+                                headers: {
+                                    'Authorization': 'Bearer '+ token,
+                                },
+                                success: function (response) {
+                                    console.log("Booking updated successfully", response);
+                                    if (response.code === 201){
+                                        console.log("Booking updated successfully");
+                                    } else {
+                                        console.error("Failed to update booking");
+                                    }
+                                }
+                            })
+						}
+
+						if (startDate > LocalDate) {
+							console.log("Pending Booking");
+							let booked = "Pending Booking";
+							$.ajax({
+								method: 'PUT',
+                                contentType: 'application/json',
+                                url: 'http://localhost:8080/api/v1/booking/updateBooking',
+                                async: true,
+                                data: JSON.stringify({
+                                    "id": bookingId,
+                                    "status": booked,
+                                }),
+								headers: {
+									'Authorization': 'Bearer '+ token,
+								},
+                                success: function (response) {
+                                    console.log("Booking updated successfully", response);
+                                    if (response.code === 201){
+                                        console.log("Booking updated successfully");
+                                    } else {
+                                        console.error("Failed to update booking");
+                                    }
+                                }
+							})
+						}
+
+					})
+				}
 			}
-		});
-	}*/
+		})
+	}
+
 </script>
   </body>
 </html>

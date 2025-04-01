@@ -22,7 +22,7 @@ public class MemBookingDTO {
     private UUID id;
     private Date pickupDate;
     private Date returnDate;
-    private boolean status;
+    private String status;
     private String customerEmail;
     private String plateNumber;
     private String MemberEmail;
@@ -32,4 +32,5 @@ public class MemBookingDTO {
     private String customerContact;
     private String customerContact2;
     private String vehicleFileName;
+    private Date localDate;
 }

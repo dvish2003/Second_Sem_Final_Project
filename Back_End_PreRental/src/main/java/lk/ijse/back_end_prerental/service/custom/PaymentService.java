@@ -1,6 +1,7 @@
 package lk.ijse.back_end_prerental.service.custom;
 
 import lk.ijse.back_end_prerental.dto.PaymentDTO;
+import lk.ijse.back_end_prerental.dto.PaymentDTOTm;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,8 @@ public interface PaymentService {
     int savePayment(PaymentDTO paymentDTO);
 
     List<PaymentDTO> getPaymentDTO();
+
+    List<PaymentDTOTm> getPaymentDTOByMemberEmail(String memberEmail);
 
     PaymentDTO getPayment(UUID paymentId);
 }
