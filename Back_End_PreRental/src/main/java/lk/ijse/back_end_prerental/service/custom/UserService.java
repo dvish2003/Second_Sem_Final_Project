@@ -3,6 +3,7 @@ package lk.ijse.back_end_prerental.service.custom;
 
 import jakarta.validation.Valid;
 import lk.ijse.back_end_prerental.dto.UserDTO;
+import lk.ijse.back_end_prerental.dto.VerifyUserDTO;
 import lk.ijse.back_end_prerental.service.SuperBO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,10 @@ public interface UserService {
 
      int updateUser(UserDTO userDTO);
 
+    int deactiveAccount(VerifyUserDTO verifyUserDTO);
+
+    int verifyUser2(String email, String code);
+
     int updateUser(UserDTO userDTO, MultipartFile multipartFile);
 
     int updateUser2(UserDTO userDTO);
@@ -28,4 +33,7 @@ public interface UserService {
     List<UserDTO> getUsers();
 
     int deleteUser(String email);
+
+    int CodeSent(String useEmail);
+
 }

@@ -5,6 +5,7 @@ package lk.ijse.back_end_prerental.service.custom.IMPL;
 import lk.ijse.back_end_prerental.Entity.User;
 import lk.ijse.back_end_prerental.config.VerificationCodeGenerator;
 import lk.ijse.back_end_prerental.dto.UserDTO;
+import lk.ijse.back_end_prerental.dto.VerifyUserDTO;
 import lk.ijse.back_end_prerental.repo.UserRepository;
 import lk.ijse.back_end_prerental.service.custom.UserService;
 import lk.ijse.back_end_prerental.util.VarList;
@@ -76,7 +77,65 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public int updateUser(UserDTO userDTO) {
-        return 0;
+        try{
+            if(userRepository.existsByEmail(userDTO.getEmail())){
+                User user = userRepository.findByEmail(userDTO.getEmail());
+
+                user.setName(userDTO.getName());
+                user.setAddress(userDTO.getAddress());
+                user.setNational_id(userDTO.getNational_id());
+                user.setPostal_code(userDTO.getPostal_code());
+                user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
+                user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
+
+                if(userDTO.getPassword() != null){
+                    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                    user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+                }
+                userRepository.save(user);
+                return VarList.OK;
+            }else{
+                return VarList.Not_Found;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public int deactiveAccount(VerifyUserDTO verifyUserDTO){
+        try {
+            if (userRepository.existsByEmail(verifyUserDTO.getEmail())) {
+                User user = userRepository.findByEmail(verifyUserDTO.getEmail());
+                String verificationCode = VerificationCodeGenerator.generateCode(6);
+                user.setVerificationCode(verificationCode);
+                userRepository.save(user);
+                emailService.sendVerificationEmail(user.getEmail(), verificationCode);
+                return VarList.OK;
+            } else {
+                return VarList.Not_Found;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public int verifyUser2(String email, String code) {
+        try{
+            User user = userRepository.findByEmail(email);
+            if (user.getVerificationCode().equals(code)) {
+                user.setVerified(false);
+                user.setVerificationCode(null);
+                userRepository.save(user);
+
+
+                return VarList.OK;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return VarList.Not_Found;
     }
 
     @Override
@@ -208,19 +267,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return VarList.Not_Found;
         }
     }
-
-  /*  @Override
-    public int saveUser(UserDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
-            return VarList.Not_Acceptable;
-        } else {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            userRepository.save(modelMapper.map(userDTO, User.class));
-            return VarList.Created;
+@Override
+public int CodeSent(String userEmail){
+        User user = userRepository.findByEmail(userEmail);
+        if(user!= null){
+            String verificationCode = VerificationCodeGenerator.generateCode(6);
+            user.setVerificationCode(verificationCode);
+            userRepository.save(user);
+            emailService.sendVerificationEmail(user.getEmail(), verificationCode);
+            return VarList.OK;
         }
-    }*/
-
+        else {
+            return VarList.Not_Found;
+        }
+  }
 
 };
 

@@ -2,6 +2,7 @@ package lk.ijse.back_end_prerental.service.custom.IMPL;
 
 import lk.ijse.back_end_prerental.Entity.Booking;
 import lk.ijse.back_end_prerental.dto.BookingDTO;
+import lk.ijse.back_end_prerental.dto.CusBookingDTO;
 import lk.ijse.back_end_prerental.dto.MemBookingDTO;
 import lk.ijse.back_end_prerental.repo.BookingRepository;
 import lk.ijse.back_end_prerental.service.custom.BookingService;
@@ -74,6 +75,37 @@ public int saveBooking(BookingDTO bookingDTO){
 
         }
         return memBookingDTOList;
+
+    }
+
+
+    @Override
+    public List<CusBookingDTO> getCusBooking(){
+        Date localDate = Date.valueOf(LocalDate.now());
+
+        List<Booking> bookingList = bookingRepository.findAll();
+        List<CusBookingDTO> cusBookingDTOS = new ArrayList<>();
+        for (Booking bookingDTO : bookingList) {
+            CusBookingDTO cusBookingDTO = new CusBookingDTO();
+            cusBookingDTO.setId(bookingDTO.getId());
+            cusBookingDTO.setPickupDate(bookingDTO.getPickupDate());
+            cusBookingDTO.setReturnDate(bookingDTO.getReturnDate());
+            cusBookingDTO.setStatus(bookingDTO.getStatus());
+            cusBookingDTO.setPaymentAmount(bookingDTO.getPayment().getAmount());
+            cusBookingDTO.setCustomerEmail(bookingDTO.getCustomer().getEmail());
+            cusBookingDTO.setCustomerFileName(bookingDTO.getCustomer().getFileName());
+            cusBookingDTO.setCustomerName(bookingDTO.getCustomer().getName());
+            cusBookingDTO.setCustomerContact(bookingDTO.getCustomer().getPrimary_phone_number());
+            cusBookingDTO.setCustomerContact2(bookingDTO.getCustomer().getSecondary_phone_number());
+            cusBookingDTO.setMemberEmail(bookingDTO.getMemberEmail());
+            cusBookingDTO.setPlateNumber(bookingDTO.getVehicle().getPlateNumber());
+            cusBookingDTO.setVehicleFileName(bookingDTO.getVehicle().getFileName());
+            cusBookingDTO.setMemberContact(bookingDTO.getVehicle().getOwner().getContact());
+            cusBookingDTO.setLocalDate(localDate);
+            cusBookingDTOS.add(cusBookingDTO);
+
+        }
+        return cusBookingDTOS;
 
     }
 

@@ -49,7 +49,7 @@ public class Payment {
 
     private String memberEmail;
 
-    private String CustomerEmail;
+    private String customerEmail;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)

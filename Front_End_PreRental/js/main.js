@@ -413,6 +413,47 @@ function getUserDetails(email) {
 		success: function(response) {
 			console.log("User details fetched successfully");
 			const userRole = response.data.role;
+			console.log("llllllllllllllllllllllll",response.data.verificationCode)
+			if(response.data.verified === false && response.data.verificationCode === null) {
+                $.ajax({
+					method: 'POST',
+					contentType: 'application/json',
+					url: 'http://localhost:8080/api/v1/user/falseNullUser',
+					async: true,
+					data: JSON.stringify({
+						"email": email,
+					}),
+					headers:{
+						Authorization: 'Bearer '+ localStorage.getItem("token")
+					},
+					success: function(response) {
+						if(response.data.verified === false){
+							Swal.fire({
+								icon: 'error',
+								title: 'Email not verified',
+								text: 'Please verify your email address to proceed.',
+								showConfirmButton: false,
+								timer: 2000
+							}).then(() => {
+								$('#loginModal').modal('hide');
+
+								$('#verificationModal').modal('show');
+							});
+						}
+
+					},
+					error: function(xhr, status, error) {
+                        console.error("Failed to send false null user request:", error);
+						Swal.fire({
+							icon: 'error',
+                            title: 'Failed to send false null user request',
+                            text: 'Failed to send request. Please try again later.',
+                            showConfirmButton: false,
+                            timer: 2000
+						})
+                    }
+				})
+			}
 			if(response.data.verified === true) {
 				Swal.fire({
 					icon: 'success',
@@ -429,7 +470,9 @@ function getUserDetails(email) {
 					}
 				});
 			}else{
-				Swal.fire({
+
+				if(response.data.verified === false){
+					Swal.fire({
 					icon: 'error',
 					title: 'Email not verified',
 					text: 'Please verify your email address to proceed.',
@@ -440,6 +483,9 @@ function getUserDetails(email) {
 
 					$('#verificationModal').modal('show');
 				});
+				}
+
+
 			}
 
 		},
@@ -454,294 +500,6 @@ function getUserDetails(email) {
 		}
 	});
 }
-/*function register(event) {
-	// Prevent default form submission
-	event.preventDefault();
-
-	let Firstname = document.getElementById("registerFirstName").value;
-	let Secondname = document.getElementById("registerLastName").value;
-	let name = Firstname + " " + Secondname;
-	let email = document.getElementById("registerEmail").value.toLowerCase();
-	let password = document.getElementById("registerPassword").value;
-	let confirmPassword = document.getElementById("confirmPassword").value;
-
-	if (!validateEmail(email)) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Invalid Email',
-			text: 'Please enter a valid email address.',
-			showConfirmButton: true
-		});
-		return false;
-	}
-
-	if (!validatePassword(password)) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Invalid Password',
-			text: 'Password must be at least 6 characters long.',
-			showConfirmButton: true
-		});
-		return false;
-	}
-
-	if (password !== confirmPassword) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Password Mismatch',
-			text: 'Passwords do not match. Please try again.',
-			showConfirmButton: true
-		});
-		return false;
-	} else {
-		$.ajax({
-			method: 'POST',
-			contentType: 'application/json',
-			url: 'http://localhost:8080/api/v1/user/register',
-			async: true,
-			data: JSON.stringify({
-				"email": email,
-				"name": name,
-				"password": password,
-				"role": "user"
-			}),
-			success: function(response) {
-				console.log("Registration successful");
-				localStorage.setItem("token", response.data.token);
-
-				// Close the register modal first
-				$('#registerModal').modal('hide');
-
-				// Clear the form
-				document.getElementById("registerForm").reset();
-
-				// After modal is fully hidden, show verification modal
-				$('#registerModal').on('hidden.bs.modal', function() {
-					Swal.fire({
-						icon: 'success',
-						title: 'Registration Successful!',
-						text: 'Your account has been created successfully. A verification email has been sent to your email.',
-						showConfirmButton: true,
-						confirmButtonText: 'Verify Email',
-					}).then((result) => {
-						if (result.isConfirmed) {
-							$('#verificationModal').modal('show');
-							// Focus on OTP field when modal is shown
-							$('#verificationModal').on('shown.bs.modal', function() {
-								$('#otp').focus();
-							});
-						}
-					});
-				});
-			},
-			error: function(error) {
-				console.error("Registration failed:", error);
-				let errorMessage = "Registration failed. Please try again.";
-				if (error.responseJSON && error.responseJSON.message) {
-					errorMessage = error.responseJSON.message;
-					if (Array.isArray(errorMessage)) {
-						errorMessage = errorMessage.join("<br>");
-					}
-				}
-				Swal.fire({
-					icon: 'error',
-					title: 'Registration Failed',
-					html: errorMessage,
-					showConfirmButton: true
-				});
-			}
-		});
-	}
-}*/
-/*
-function register() {
-	let Firstname = document.getElementById("registerFirstName").value;
-	let Secondname = document.getElementById("registerLastName").value;
-	let name = Firstname + " " + Secondname;
-	let email = document.getElementById("registerEmail").value.toLowerCase();
-	let password = document.getElementById("registerPassword").value;
-	let confirmPassword = document.getElementById("confirmPassword").value;
-
-	if (!validateEmail(email)) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Invalid Email',
-			text: 'Please enter a valid email address.',
-			showConfirmButton: true
-		});
-		return false;
-	}
-
-	if (!validatePassword(password)) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Invalid Password',
-			text: 'Password must be at least 6 characters long.',
-			showConfirmButton: true
-		});
-		return false;
-	}
-
-	if (password !== confirmPassword) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Password Mismatch',
-			text: 'Passwords do not match. Please try again.',
-			showConfirmButton: true
-		});
-		return false;
-	} else {
-		$.ajax({
-			method: 'POST',
-			contentType: 'application/json',
-			url: 'http://localhost:8080/api/v1/user/register',
-			async: true,
-			data: JSON.stringify({
-				"email": email,
-				"name": name,
-				"password": password,
-				"role": "user"
-			}),
-			success: function(response) {
-				console.log("Registration successful");
-				localStorage.setItem("token", response.data.token);
-
-				// Immediately hide the register modal
-				$('#registerModal').modal('hide');
-
-				// Clear the registration form
-				document.getElementById("registerFirstName").value = "";
-				document.getElementById("registerLastName").value = "";
-				document.getElementById("registerEmail").value = "";
-				document.getElementById("registerPassword").value = "";
-				document.getElementById("confirmPassword").value = "";
-
-				// Show success message and then open verification modal
-				Swal.fire({
-					icon: 'success',
-					title: 'Registration Successful!',
-					text: 'Your account has been created successfully. A verification email has been sent to your email.',
-					showConfirmButton: true,
-					confirmButtonText: 'Verify Email',
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// Show the verification modal
-						$('#verificationModal').modal('show');
-
-						// Focus on OTP field when modal is shown
-						$('#verificationModal').on('shown.bs.modal', function() {
-							$('#otp').focus();
-						});
-					}
-				});
-			},
-			error: function(error) {
-				console.error("Registration failed:", error);
-				let errorMessage = "Registration failed. Please try again.";
-				if (error.responseJSON && error.responseJSON.message) {
-					errorMessage = error.responseJSON.message;
-					if (Array.isArray(errorMessage)) {
-						errorMessage = errorMessage.join("<br>");
-					}
-				}
-				Swal.fire({
-					icon: 'error',
-					title: 'Registration Failed',
-					html: errorMessage,
-					showConfirmButton: true
-				});
-			}
-		});
-	}
-}
-*/
-
-/*
-function register() {
-	let Firstname = document.getElementById("registerFirstName").value;
-	let Secondname = document.getElementById("registerLastName").value;
-	let name = Firstname + " " + Secondname;
-	let email = document.getElementById("registerEmail").value.toLowerCase();
-	let password = document.getElementById("registerPassword").value;
-	let confirmPassword = document.getElementById("confirmPassword").value;
-	if (!validateEmail(email)) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Invalid Email',
-			text: 'Please enter a valid email address.',
-			showConfirmButton: true
-		});
-		return false;
-	}
-	if (!validatePassword(password)) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Invalid Password',
-			text: 'Password must be at least 6 characters long.',
-			showConfirmButton: true
-		});
-		return false;
-	}
-
-	if (password !== confirmPassword) {
-		Swal.fire({
-			icon: 'error',
-			title: 'Password Mismatch',
-			text: 'Passwords do not match. Please try again.',
-			showConfirmButton: true
-		});
-		return false;
-	} else {
-		$.ajax({
-			method: 'POST',
-			contentType: 'application/json',
-			url: 'http://localhost:8080/api/v1/user/register',
-			async: true,
-			data: JSON.stringify({
-				"email": email,
-				"name": name,
-				"password": password,
-				"role": "user"
-			}),
-			success: function(response) {
-				console.log("Registration successful");
-				localStorage.setItem("token", response.data.token);
-if(response.code === 201){
-
-}
-				Swal.fire({
-					icon: 'success',
-					title: 'Registration Successful!',
-					text: 'Your account has been created successfully.A verification email has been sent to your email. Check your mail box ',
-					showConfirmButton: true,
-					confirmButtonText: 'Verify Email',
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// Hide the register modal
-						$('#registerModal').modal('hide');
-
-						// Show the verification modal
-						$('#verificationModal').modal('show');
-					}
-				});
-			},
-			error: function(error) {
-				console.error("Registration failed:", error);
-				let errorMessage = "Registration failed. Please try again.";
-				if (error.responseJSON && error.responseJSON.message) {
-					errorMessage = error.responseJSON.message.join("<br>");
-				}
-				Swal.fire({
-					icon: 'error',
-					title: 'Registration Failed',
-					html: errorMessage,
-					showConfirmButton: true
-				});
-			}
-		});
-	}
-}
-*/
 
 /*============================================Verify the code===========================================================================================*/
 function verifyTheAccount() {
@@ -846,3 +604,104 @@ function verifyTheAccount() {
 		 }
 	 });
  }*/
+
+
+function register() {
+	event.preventDefault();
+
+	let Firstname = document.getElementById("registerFirstName").value;
+	let Secondname = document.getElementById("registerLastName").value;
+	let name = Firstname + " " + Secondname;
+	let email = document.getElementById("registerEmail").value.toLowerCase();
+	let password = document.getElementById("registerPassword").value;
+	let confirmPassword = document.getElementById("confirmPassword").value;
+
+	// Validations
+	if (!validateEmail(email)) {
+		Swal.fire({
+			icon: 'error',
+			title: 'Invalid Email',
+			text: 'Please enter a valid email address.',
+			showConfirmButton: true
+		});
+		return false;
+	}
+
+	if (!validatePassword(password)) {
+		Swal.fire({
+			icon: 'error',
+			title: 'Invalid Password',
+			text: 'Password must be at least 6 characters long.',
+			showConfirmButton: true
+		});
+		return false;
+	}
+
+	if (password !== confirmPassword) {
+		Swal.fire({
+			icon: 'error',
+			title: 'Password Mismatch',
+			text: 'Passwords do not match. Please try again.',
+			showConfirmButton: true
+		});
+		return false;
+	}
+
+	$.ajax({
+		method: 'POST',
+		contentType: 'application/json',
+		url: 'http://localhost:8080/api/v1/user/register',
+		async: true,
+		data: JSON.stringify({
+			"email": email,
+			"name": name,
+			"password": password,
+			"role": "user"
+		}),
+		success: function (response) {
+			console.log("Registration successful", response);
+			localStorage.setItem("token", response.data.token);
+			Swal.fire({
+				icon: 'success',
+				title: 'Registration Successful!',
+				text: 'Your account has been created successfully.A verification email has been sent to your email. Check your mail box ',
+				showConfirmButton: true,
+				confirmButtonText: 'Verify Email',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// Hide the register modal
+					$('#registerModal').modal('hide');
+
+					// Show the verification modal
+					$('#verificationModal').modal('show');
+				}
+			});
+			/*
+                            localStorage.setItem("verifyEmail", email);
+            */
+		},
+		error: function (xhr, status, error) {
+			console.error("Registration failed", xhr.responseText);
+			let errorMsg = "Registration failed. Please try again.";
+			if (xhr.responseJSON && xhr.responseJSON.message) {
+				errorMsg = xhr.responseJSON.message;
+			}
+			Swal.fire({
+				icon: 'error',
+				title: 'Registration Failed',
+				text: errorMsg,
+				showConfirmButton: true
+			});
+		}
+	});
+}
+
+function validateEmail(email) {
+	const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return re.test(email);
+}
+
+function validatePassword(password) {
+	return password.length >= 6;
+}
+

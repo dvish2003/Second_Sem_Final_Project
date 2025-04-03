@@ -402,8 +402,8 @@
 				  <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" id="filterLink" data-target="#filterModal">Filter</a></li>
 				  <li class="nav-item"><a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/CustomerPage/customerBooking.html" class="nav-link" id="bbokingLink">Bookings</a></li>
 				  <li class="nav-item"><a class="nav-link" id="memberLink">Member</a></li>
-				  <li class="nav-item"><a href="#" class="nav-link" id="paymentLink">Payment</a></li>
-				  <li class="nav-item"><a href="#" class="nav-link">Account Setting</a></li>
+				  <li class="nav-item"><a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/CustomerPage/customerPayment.html" class="nav-link" id="paymentLink">Payment</a></li>
+				  <li class="nav-item"><a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/CustomerPage/customerAccount.html" class="nav-link">Account Setting</a></li>
 				  <li class="nav-item"><a href="index.html" class="nav-link">Log Out</a></li>
 			  </ul>
 		  </div>
@@ -769,49 +769,49 @@
 				vehicleContainer.innerHTML = '';
 
 				vehicles.forEach(vehicle => {
+					if(vehicle.active === true){
+						const allFeatures = [
+							{ name: 'AC', value: vehicle.airCondition, icon: 'bi-snow' },
+							{ name: 'Bluetooth', value: vehicle.bluetooth, icon: 'bi-bluetooth' },
+							{ name: 'Navigation', value: vehicle.Navigation, icon: 'bi-geo-alt' },
+							{ name: 'Sunroof', value: vehicle.sunroof, icon: 'bi-sun' },
+							{ name: 'Cruise Control', value: vehicle.cruiseControl, icon: 'bi-speedometer2' },
+							{ name: 'Backup Cam', value: vehicle.backCamera, icon: 'bi-camera' },
+							{ name: 'Heated Seats', value: vehicle.heatedSeat, icon: 'bi-thermometer-sun' },
+							{ name: 'Child Seat', value: vehicle.childSeat, icon: 'bi-child' },
+							{ name: 'Toll Pass', value: vehicle.tollPass, icon: 'bi-credit-card' },
+							{ name: 'GPS Tracker', value: vehicle.gpsTracker, icon: 'bi-pin-map' },
+							{ name: 'WiFi Hotspot', value: vehicle.wifiHotspot, icon: 'bi-wifi' }
+						].filter(feature => feature.value);
 
-					const allFeatures = [
-						{ name: 'AC', value: vehicle.airCondition, icon: 'bi-snow' },
-						{ name: 'Bluetooth', value: vehicle.bluetooth, icon: 'bi-bluetooth' },
-						{ name: 'Navigation', value: vehicle.Navigation, icon: 'bi-geo-alt' },
-						{ name: 'Sunroof', value: vehicle.sunroof, icon: 'bi-sun' },
-						{ name: 'Cruise Control', value: vehicle.cruiseControl, icon: 'bi-speedometer2' },
-						{ name: 'Backup Cam', value: vehicle.backCamera, icon: 'bi-camera' },
-						{ name: 'Heated Seats', value: vehicle.heatedSeat, icon: 'bi-thermometer-sun' },
-						{ name: 'Child Seat', value: vehicle.childSeat, icon: 'bi-child' },
-						{ name: 'Toll Pass', value: vehicle.tollPass, icon: 'bi-credit-card' },
-						{ name: 'GPS Tracker', value: vehicle.gpsTracker, icon: 'bi-pin-map' },
-						{ name: 'WiFi Hotspot', value: vehicle.wifiHotspot, icon: 'bi-wifi' }
-					].filter(feature => feature.value);
+						const shuffledFeatures = [...allFeatures].sort(() => 0.5 - Math.random());
+						const featuresToShow = shuffledFeatures.slice(0, Math.min(3, Math.max(1, Math.floor(Math.random() * 3) + 1)));
 
-					const shuffledFeatures = [...allFeatures].sort(() => 0.5 - Math.random());
-					const featuresToShow = shuffledFeatures.slice(0, Math.min(3, Math.max(1, Math.floor(Math.random() * 3) + 1)));
-
-					let featuresHTML = featuresToShow.map(feature => `
+						let featuresHTML = featuresToShow.map(feature => `
                     <span class="badge bg-light text-dark me-1 mb-1">
                         <i class="bi ${feature.icon} me-1"></i>${feature.name}
                     </span>
                 `).join('');
 
-					if (allFeatures.length > featuresToShow.length) {
-						featuresHTML += `
+						if (allFeatures.length > featuresToShow.length) {
+							featuresHTML += `
                         <span class="badge bg-light text-dark me-1 mb-1">
                             +${allFeatures.length - featuresToShow.length} more
                         </span>
                     `;
-					}
+						}
 
-					let imageHTML = '';
-					imageHTML =`<div class="position-relative">
+						let imageHTML = '';
+						imageHTML =`<div class="position-relative">
  <div class="carousel slide" data-bs-ride="carousel">
  <div class="carousel-inner rounded-top">
  <div class="carousel-item active">
-  <img src="../uploads/${vehicle.fileName}" class="d-block w-100 vehicle-img" alt="${vehicle.brand}" id="vehicleImage" style="height: 220px; object-fit: cover;">
+  <img src="../../Second_Sem_Final_Project/uploads/${vehicle.fileName}" class="d-block w-100 vehicle-img" alt="${vehicle.brand}" id="vehicleImage" style="height: 220px; object-fit: cover;">
 </div>
  </div>
  </div>`;
 
-					const vehicleCard = `
+						const vehicleCard = `
                     <div class="col-lg-4 col-md-6">
                         <div class="card vehicle-card h-100 border-0 shadow-sm overflow-hidden">
                             <div class="position-relative">
@@ -858,8 +858,13 @@
                         </div>
                     </div>`;
 
-					// Add the card to the container
-					vehicleContainer.insertAdjacentHTML('beforeend', vehicleCard);
+						// Add the card to the container
+						vehicleContainer.insertAdjacentHTML('beforeend', vehicleCard);
+					} else {
+						console.log("hhhhhhhhhhhhheeeeeeeeeeeeeeee")
+					}
+
+
 				});
 			},
 			error: function(error) {
@@ -888,6 +893,9 @@
 			data: JSON.stringify({
 				"email": memberEmail,
 			}),
+			headers: {
+				'Authorization': 'Bearer '+ token,
+			},
 			success: function (response) {
 				console.log("All member bookings loaded successfully", response);
 				if (response.code === 200){

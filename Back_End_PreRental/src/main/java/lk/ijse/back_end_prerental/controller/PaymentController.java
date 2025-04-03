@@ -1,6 +1,7 @@
 package lk.ijse.back_end_prerental.controller;
 
 import lk.ijse.back_end_prerental.dto.MemberDTO;
+import lk.ijse.back_end_prerental.dto.PaymentDTO;
 import lk.ijse.back_end_prerental.dto.PaymentDTOTm;
 import lk.ijse.back_end_prerental.dto.ResponseDTO;
 import lk.ijse.back_end_prerental.service.custom.PaymentService;
@@ -33,6 +34,19 @@ public class PaymentController {
     public ResponseEntity<ResponseDTO> getMemberBookings(@RequestBody MemberDTO memberDTO) {
         System.out.println("Payment List fetch..........................................");
         List<PaymentDTOTm> paymentDTOTmList = paymentService.getPaymentDTOByMemberEmail(memberDTO.getEmail());
+        for (int i = 0; i < paymentDTOTmList.size(); i++) {
+            System.out.println(paymentDTOTmList.get(i).getCustomerEmail());
+            System.out.println(paymentDTOTmList.get(i).getBookingId());
+            System.out.println(paymentDTOTmList.get(i).getPaymentMethod());
+        }
+        System.out.println(paymentDTOTmList.size());
+        return ResponseEntity.ok(
+                new ResponseDTO(OK, "Payment List",paymentDTOTmList));
+    }
+    @PostMapping(value = "/getPaymentsByCustomer")
+    public ResponseEntity<ResponseDTO> getMemberBookings(@RequestBody PaymentDTO paymentDTO) {
+        System.out.println("Payment List fetch..........................................");
+        List<PaymentDTOTm> paymentDTOTmList = paymentService.getPaymentDTOByCustomerEmail(paymentDTO.getCustomerEmail());
         for (int i = 0; i < paymentDTOTmList.size(); i++) {
             System.out.println(paymentDTOTmList.get(i).getCustomerEmail());
             System.out.println(paymentDTOTmList.get(i).getBookingId());

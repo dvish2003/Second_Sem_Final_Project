@@ -3,22 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Details | PreRental</title>
+    <title>Booking List | PreRental</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
-        .booking-header {
-            background-color: #f8f9fa;
+        .booking-card {
             border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border-left: 4px solid #4CAF50;
+        }
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .booking-card-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .booking-card-body {
             padding: 20px;
-            margin-bottom: 30px;
+        }
+        .booking-card-footer {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .status-badge {
-            font-size: 0.9rem;
-            padding: 8px 12px;
+            font-size: 0.8rem;
+            padding: 5px 10px;
             border-radius: 20px;
+            font-weight: 500;
         }
-        .status-active {
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-confirmed {
             background-color: #d1e7dd;
             color: #0f5132;
         }
@@ -30,162 +60,221 @@
             background-color: #f8d7da;
             color: #842029;
         }
-        .detail-card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        .detail-card-header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 20px;
-        }
-        .vehicle-image {
-            height: 200px;
+        .vehicle-thumbnail {
+            height: 120px;
+            width: 100%;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
         }
-        .action-btn {
-            min-width: 120px;
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .pagination .page-link {
+            color: #4CAF50;
+        }
+        .contact-info {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        .booking-detail-row {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .booking-detail-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .booking-detail-value {
+            color: #212529;
+        }
+        .customer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .customer-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
 <div class="container py-5">
-    <div class="booking-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 class="h3 mb-0">Booking Details</h1>
-            <span class="status-badge status-active">
-                    <i class="bi bi-check-circle-fill me-2"></i>Active
-                </span>
-        </div>
-        <p class="text-muted mb-0">Booking ID: #B-12345678</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Your All Bookings</h1>
+        <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/car.html" class="btn btn-success">
+            <i class="bi bi-arrow-left me-2"></i>Back to Home Page
+        </a>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <!-- Vehicle Details Card -->
-            <div class="card detail-card mb-4">
-                <div class="card-header detail-card-header">
-                    <h5 class="mb-0"><i class="bi bi-car-front me-2"></i>Vehicle Details</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-3 mb-md-0">
-                            <img src="https://via.placeholder.com/300" alt="Vehicle" class="img-fluid vehicle-image w-100">
-                        </div>
-                        <div class="col-md-8">
-                            <h4>Toyota Corolla 2023</h4>
-                            <p class="text-muted">Automatic | Petrol | 5 Seats</p>
-
-                            <div class="row mt-3">
-                                <div class="col-6">
-                                    <p class="mb-1"><strong>Registration No:</strong></p>
-                                    <p>CAB-1234</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="mb-1"><strong>Mileage:</strong></p>
-                                    <p>15,000 km</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="mb-1"><strong>Color:</strong></p>
-                                    <p>Silver</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="mb-1"><strong>AC:</strong></p>
-                                    <p>Yes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rental Period Card -->
-            <div class="card detail-card mb-4">
-                <div class="card-header detail-card-header">
-                    <h5 class="mb-0"><i class="bi bi-calendar-range me-2"></i>Rental Period</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <h6>Pickup Details</h6>
-                            <p class="mb-1"><strong>Date & Time:</strong></p>
-                            <p>2023-10-15 at 10:00 AM</p>
-
-                            <p class="mb-1 mt-3"><strong>Location:</strong></p>
-                            <p>123 Main Street, Colombo 05</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Return Details</h6>
-                            <p class="mb-1"><strong>Date & Time:</strong></p>
-                            <p>2023-10-20 at 04:00 PM</p>
-
-                            <p class="mb-1 mt-3"><strong>Location:</strong></p>
-                            <p>123 Main Street, Colombo 05</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <!-- Payment Summary Card -->
-            <div class="card detail-card mb-4">
-                <div class="card-header detail-card-header">
-                    <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i>Payment Summary</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Daily Rate (5 days)</span>
-                        <span>LKR 5,000 x 5</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Service Fee</span>
-                        <span>LKR 500</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Deposit</span>
-                        <span>LKR 10,000</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between fw-bold">
-                        <span>Total Amount</span>
-                        <span>LKR 35,500</span>
-                    </div>
-
-                    <div class="mt-4">
-                        <p class="mb-1"><strong>Payment Method:</strong></p>
-                        <p>PayHere (Visa ending in 4242)</p>
-
-                        <p class="mb-1 mt-3"><strong>Payment Status:</strong></p>
-                        <p class="text-success">Paid on 2023-10-14</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Actions Card -->
-            <div class="card detail-card">
-                <div class="card-header detail-card-header">
-                    <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Actions</h5>
-                </div>
-                <div class="card-body">
-                    <button class="btn btn-outline-primary w-100 mb-2 action-btn">
-                        <i class="bi bi-printer me-2"></i>Print Receipt
-                    </button>
-                    <button class="btn btn-outline-secondary w-100 mb-2 action-btn">
-                        <i class="bi bi-file-text me-2"></i>View Contract
-                    </button>
-                    <button class="btn btn-outline-danger w-100 action-btn">
-                        <i class="bi bi-x-circle me-2"></i>Cancel Booking
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <!-- Your filter content here -->
     </div>
+
+    <!-- Booking Cards Container -->
+    <div class="row" id="bookingCardsContainer">
+        <!-- Cards will be dynamically inserted here -->
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script>
+    LoadAllBookings();
+    function LoadAllBookings(){
+        const token = localStorage.getItem('token');
+        const decord = jwt_decode(token);
+        const userEmail = decord.email;
+
+        console.log("user Email:", userEmail)
+
+        $.ajax({
+            method: 'POST',
+            contentType: 'application/json',
+            url: 'http://localhost:8080/api/v1/booking/getCustomerBookings',
+            async: true,
+            data: JSON.stringify({
+                "email": userEmail,
+            }),
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            success: function(response) {
+                console.log(response.data);
+
+                if(response.code === 200){
+                    $('#bookingCardsContainer').empty();
+
+                    response.data.forEach(booking => {
+                        let bookingId = booking.id;
+                        let customerEmail = booking.customerEmail;
+                        let vehiclePLateNumber = booking.plateNumber;
+                        let startDate = booking.pickupDate;
+                        let endDate = booking.returnDate;
+                        let status = booking.status;
+                        let customerFileName2 = booking.customerFileName;
+                        let vehicleFileName2 = booking.vehicleFileName;
+                        let customerName2 = booking.customerName;
+                        let memberContact = booking.memberContact;
+                        let customerContactSecondory = booking.customerContact2;
+                        let amount = booking.paymentAmount;
+
+                        // Calculate number of days
+                        let start = new Date(startDate);
+                        let end = new Date(endDate);
+                        let diffTime = Math.abs(end - start);
+                        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        let statusN = "";
+                        let statusClass = "";
+
+                        if(status === "Ongoing Booking"){
+                            statusN = "Ongoing";
+                            statusClass = "status-confirmed";
+                        }
+                        if(status === "Expire Booking"){
+                            statusN = "Expired";
+                            statusClass = "status-cancelled";
+                        }
+                        if(status === "Pending Booking"){
+                            statusN = "Pending";
+                            statusClass = "status-pending";
+                        }
+
+                        $('#bookingCardsContainer').append(`
+                            <div class="col-md-6 col-lg-4">
+                                <div class="booking-card">
+                                    <div class="booking-card-header">
+                                        <h5 class="mb-0">Booking #B-${bookingId}</h5>
+                                        <span class="status-badge ${statusClass}">${statusN}</span>
+                                    </div>
+                                    <div class="booking-card-body">
+
+
+                                        <img src="../../../../Second_Sem_Final_Project/uploads/${vehicleFileName2}" alt="Vehicle" class="vehicle-thumbnail">
+
+                                        <div class="booking-detail-row">
+                                            <span class="booking-detail-label">Vehicle:</span>
+                                            <span class="booking-detail-value">${vehiclePLateNumber}</span>
+                                        </div>
+
+                                        <div class="booking-detail-row">
+                                            <span class="booking-detail-label">Rental Period:</span>
+                                            <span class="booking-detail-value">${startDate} to ${endDate}</span>
+                                        </div>
+
+                                        <div class="booking-detail-row">
+                                            <span class="booking-detail-label">Duration:</span>
+                                            <span class="booking-detail-value">${diffDays} days</span>
+                                        </div>
+
+                                        <div class="booking-detail-row">
+                                            <span class="booking-detail-label">Contact:</span>
+                                            <span class="booking-detail-value">${memberContact || 'N/A'}</span>
+                                        </div>
+                                    </div>
+                                    <div class="booking-card-footer">
+                                        <div>
+                                            <strong>Total Amount:</strong> $${amount}
+                                        </div>
+                                        <div>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i> View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error loading bookings:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load bookings. Please try again.'
+                });
+            }
+        });
+    }
+
+    document.querySelectorAll('.badge-filter').forEach(badge => {
+        badge.addEventListener('click', function() {
+            this.classList.toggle('bg-secondary');
+            this.classList.toggle('bg-primary');
+        });
+    });
+</script>
 </body>
 </html>

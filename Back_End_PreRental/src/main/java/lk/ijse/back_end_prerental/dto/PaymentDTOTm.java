@@ -31,5 +31,5 @@ public class PaymentDTOTm {
     private Date paymentDate;
     private UUID bookingId;
     private String memberEmail;
-    private String CustomerEmail;
+    private String customerEmail;
 }

@@ -20,5 +20,7 @@ public interface PaymentService {
 
     List<PaymentDTOTm> getPaymentDTOByMemberEmail(String memberEmail);
 
+    List<PaymentDTOTm> getPaymentDTOByCustomerEmail(String customerEmail);
+
     PaymentDTO getPayment(UUID paymentId);
 }

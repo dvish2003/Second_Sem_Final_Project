@@ -104,6 +104,7 @@ public class Vehicle {
     @JoinColumn(name = "member_id", nullable = false)
     private Member owner;
     private String city;
+    private boolean active;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Booking> bookings;

@@ -5,6 +5,7 @@ import lk.ijse.back_end_prerental.Entity.User;
 import lk.ijse.back_end_prerental.dto.AuthDTO;
 import lk.ijse.back_end_prerental.dto.ResponseDTO;
 import lk.ijse.back_end_prerental.dto.UserDTO;
+import lk.ijse.back_end_prerental.dto.VerifyUserDTO;
 import lk.ijse.back_end_prerental.repo.UserRepository;
 import lk.ijse.back_end_prerental.service.custom.IMPL.UserServiceImpl;
 import lk.ijse.back_end_prerental.service.custom.UserService;
@@ -188,117 +189,73 @@ public class UserController {
                     .body(new ResponseDTO(VarList.Internal_Server_Error, "Internal Server Error", null));
         }
     }
-
- /*   @PutMapping(value = "/updateUser")
-    public ResponseEntity<ResponseDTO> updateUser(@RequestParam("file") @RequestBody @Valid UserDTO userDTO,MultipartFile file) {
-        System.out.println("Update User" + userDTO.getEmail());
-        System.out.println("Update User" + userDTO.getRole());
-        System.out.println("Update User" + userDTO.getPassword());
-        System.out.println("Update User" + userDTO.getName());
-        try{
-            // check if file is not null
-            if (!file.isEmpty()) {
-                // save the file
-                Path filePath = Paths.get(System.getProperty("user.dir") + "/uploads/" + file.getOriginalFilename());
-                try {
-                    Files.copy(file.getInputStream(), filePath);
-                    System.out.println("File uploaded successfully.");
-                } catch (IOException e) {
-                    System.out.println("Error uploading file: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                           .body(new ResponseDTO(VarList.Internal_Server_Error, "Error", null));
-                }
-            }
-
-            userDTO.setProfilePicture(file.getOriginalFilename());
-            System.out.println("File name: " + userDTO.getProfilePicture());
-            System.out.println("File size: " + file.getSize());
-            System.out.println("File type: " + file.getContentType());
-
+    @PostMapping(value = "/updateUser3")
+    public ResponseEntity<ResponseDTO> updateUser3(@RequestBody @Valid UserDTO userDTO) {
+        try {
             int res = userService.updateUser(userDTO);
             switch (res) {
-                case VarList.OK -> {
+                case VarList.OK:
                     System.out.println("User updated");
-                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Updated Successfully", null));
-                }
-                case VarList.Not_Found -> {
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Updated Successfully", userDTO));
+                case VarList.Not_Found:
                     System.out.println("User not found");
                     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                           .body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
-                }
-                default -> {
+                            .body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
+                default:
                     System.out.println("Error updating user");
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                           .body(new ResponseDTO(VarList.Internal_Server_Error, "Error", null));
-                }
+                            .body(new ResponseDTO(VarList.Internal_Server_Error, "Error updating user", null));
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+       }
 
-    }
-*//*
-@PutMapping(value = "/updateUser", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-public ResponseEntity<ResponseDTO> updateUser(
-        @RequestParam("email") String email,
-        @RequestParam("name") String name,
-        @RequestParam("national_id") String nationalId,
-        @RequestParam("address") String address,
-        @RequestParam("city") String city,
-        @RequestParam("postal_code") String postalCode,
-        @RequestParam("primary_phone_number") String primaryPhoneNumber,
-        @RequestParam(value = "secondary_phone_number", required = false) String secondaryPhoneNumber,
-        @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture) {
-
-    System.out.println("Update User: " + email);
-
-    if (profilePicture != null && !profilePicture.isEmpty()) {
+       @PostMapping(value = "/deleteUser")
+       public ResponseEntity<ResponseDTO> deleteUser(@RequestBody VerifyUserDTO verifyUserDTO) {
         try {
-            String uploadDir = "uploads/";
-            File uploadFolder = new File(uploadDir);
-            if (!uploadFolder.exists()) {
-                uploadFolder.mkdirs();
+            int res = userService.deactiveAccount(verifyUserDTO);
+            switch (res) {
+                case VarList.OK:
+                    System.out.println("User deleted");
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Deleted Successfully", verifyUserDTO));
+                case VarList.Not_Found:
+                    System.out.println("User not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
+                default:
+                    System.out.println("Error deleting user");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(new ResponseDTO(VarList.Internal_Server_Error, "Error deleting user", null));
             }
-            Path filePath = Paths.get(uploadDir + profilePicture.getOriginalFilename());
-            profilePicture.transferTo(filePath.toFile());
-            System.out.println("Profile picture saved: " + filePath);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, "File upload failed!", null));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-    }
+       }
 
-    // Create UserDTO (modify this according to your DTO)
-    UserDTO userDTO = new UserDTO();
-    userDTO.setEmail(email);
-    userDTO.setName(name);
-    userDTO.setNational_id(nationalId);
-    userDTO.setAddress(address);
-    userDTO.setCity(city);
-    userDTO.setPostal_code(postalCode);
-    userDTO.setPrimary_phone_number(primaryPhoneNumber);
-    userDTO.setSecondary_phone_number(secondaryPhoneNumber);
-    userDTO.setProfilePicture(String.valueOf(profilePicture));
+       @PostMapping(value = "/falseNullUser")
+       public ResponseEntity<ResponseDTO> falseNullUser(@RequestBody VerifyUserDTO verifyUserDTO) {
+        try {
+            int res = userService.CodeSent(verifyUserDTO.getEmail());
+            switch (res) {
+                case VarList.OK:
+                    System.out.println("User verified code sent");
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Verified Successfully", verifyUserDTO));
+                case VarList.Not_Found:
+                    System.out.println("User not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
+                default:
+                    System.out.println("Error verifying user");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(new ResponseDTO(VarList.Internal_Server_Error, "Error verifying user", null));
+            }
 
-    try {
-        int res = userService.updateUser(userDTO);
-        switch (res) {
-            case VarList.OK:
-                return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Updated Successfully", null));
-            case VarList.Not_Found:
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
-            default:
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ResponseDTO(VarList.Internal_Server_Error, "Error", null));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ResponseDTO(VarList.Internal_Server_Error, "Update failed!", null));
-    }
-}
-*/
-
-
-}
+       }
+        }

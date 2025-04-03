@@ -18,6 +18,7 @@ import java.util.UUID;
 public interface PaymentRepository extends JpaRepository<Payment,String> {
     Payment findPaymentByBookingId(UUID booking_id);
     List<Payment> findAllByMemberEmail(String memberEmail);
+    List<Payment> findAllByCustomerEmail(String customerEmail);
 
 
 }

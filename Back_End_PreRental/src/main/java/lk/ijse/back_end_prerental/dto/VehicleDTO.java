@@ -61,6 +61,7 @@ public class VehicleDTO {
     private String fileName;
     private String filetype;
     private byte[] data;
+    private boolean active;
     private String Image;
     private MemberDTO owner;
     private String city;

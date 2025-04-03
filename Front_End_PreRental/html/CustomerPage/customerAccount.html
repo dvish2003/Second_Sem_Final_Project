@@ -80,6 +80,17 @@
             padding: 2rem;
             margin-bottom: 2rem;
         }
+        .password-input-group .input-group-text {
+            cursor: pointer;
+            background-color: #fff;
+            border-left: none;
+        }
+        .password-input-group .form-control {
+            border-right: none;
+        }
+        .password-input-group .input-group-text:hover {
+            background-color: #f8f9fa;
+        }
 
         .account-card-title {
             font-size: 1.25rem;
@@ -280,7 +291,7 @@
     <!-- Account Header -->
     <div class="account-header">
         <h1>Account Settings</h1>
-        <a href="memberPage.html" class="back-btn">
+        <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/car.html" class="back-btn">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
         </a>
     </div>
@@ -316,12 +327,20 @@
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="Phone_number" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="Phone_number" placeholder="Enter your phone number" required>
+                    <label for="primary_phone" class="form-label">Primary Number</label>
+                    <input type="tel" class="form-control" id="primary_phone" placeholder="Enter your primary phone number" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="second_number" class="form-label">Second Number</label>
+                    <input type="tel" class="form-control" id="second_number" placeholder="Enter your second phone number" required>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="email" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="email" placeholder="Enter your email" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="postalCode" class="form-label">Postal code</label>
+                    <input type="email" class="form-control" id="postalCode" placeholder="Enter your postalC code">
                 </div>
             </div>
 
@@ -329,9 +348,28 @@
                 <label for="address" class="form-label">Address</label>
                 <input type="text" class="form-control" id="address" placeholder="Enter your address" required>
             </div>
-
+            <div class="row">
+                <div class="col-md-6 mb-3 password-input-group">
+                    <label for="Password" class="form-label">Enter the Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="Password" placeholder="Enter the password (min 6 characters)">
+                        <span class="input-group-text toggle-password" onclick="togglePassword('Password', this)">
+                <i class="fas fa-eye"></i>
+            </span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3 password-input-group">
+                    <label for="ConformPassword" class="form-label">Confirm the password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="ConformPassword" placeholder="Confirm the Password">
+                        <span class="input-group-text toggle-password" onclick="togglePassword('ConformPassword', this)">
+                <i class="fas fa-eye"></i>
+            </span>
+                    </div>
+                </div>
+            </div>
             <div class="d-grid">
-                <button type="button" class="btn btn-primary" onclick="updateMember()">
+                <button type="button" class="btn btn-primary" onclick="updateUser()">
                     <i class="fas fa-save"></i> Save Changes
                 </button>
             </div>
@@ -439,16 +477,479 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-
 <script>
     let User;
     let profilePhotoChanged = false;
+    let profilePhoto = null;
 
-    // Initialize when page loads
+    function togglePassword(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        const icon = iconElement.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
     document.addEventListener('DOMContentLoaded', function() {
         fetchAndSetProfilePicture();
         getUserData();
-        getMemberData();
+
+        const uploadInput = document.createElement('input');
+        uploadInput.type = 'file';
+        uploadInput.id = 'profilePhotoUpload';
+        uploadInput.accept = 'image/*';
+        uploadInput.style.display = 'none';
+        document.body.appendChild(uploadInput);
+
+        uploadInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profilePhoto').src = event.target.result;
+                    profilePhotoChanged = true;
+                    profilePhoto = new FormData();
+                    profilePhoto.append('profilePic', e.target.files[0]);
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        document.getElementById('profilePhoto').addEventListener('click', function() {
+            uploadInput.click();
+        });
+    });
+
+    function fetchAndSetProfilePicture() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+        const profilePhotoElement = document.getElementById('profilePhoto');
+
+        fetch(`http://localhost:8080/api/v1/user/getProfilePic/${userEmail}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch profile picture');
+                return response.blob();
+            })
+            .then(blob => {
+                const imageUrl = URL.createObjectURL(blob);
+                profilePhotoElement.src = imageUrl;
+            })
+            .catch(error => {
+                console.error('Error fetching profile picture:', error);
+                profilePhotoElement.src = 'https://via.placeholder.com/150';
+            });
+    }
+
+    function getUserData() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/getUser',
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            data: {
+                email: userEmail
+            },
+            success: function(response) {
+                if (response.data !== null) {
+                    User = response.data;
+                    document.getElementById('ID').value = User.uid;
+                    document.getElementById('NIC').value = User.national_id;
+                    document.getElementById('email').value = User.email;
+                    document.getElementById('Full_Name').value = User.name;
+                    document.getElementById('primary_phone').value = User.primary_phone_number;
+                    document.getElementById('second_number').value = User.secondary_phone_number;
+                    document.getElementById('postalCode').value = User.postal_code;
+                    document.getElementById('address').value = User.address;
+                    document.getElementById('JoinDate').value = User.joinDate;
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching user data:', error);
+            }
+        });
+    }
+
+    function updateUser() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showError('Authentication required. Please log in again.');
+            return;
+        }
+
+        const id = document.getElementById('ID').value;
+        const name = document.getElementById('Full_Name').value.trim();
+        const primary_phone = document.getElementById('primary_phone').value.trim();
+        const second_phone = document.getElementById('second_number').value.trim();
+        const postal_code = document.getElementById('postalCode').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const nic = document.getElementById('NIC').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const joinDate = document.getElementById('JoinDate').value;
+        const password = document.getElementById('Password').value;
+        const confirmPassword = document.getElementById('ConformPassword').value;
+
+        if (!name || !primary_phone || !address || !nic || !email) {
+            showError('Please fill in all required fields.');
+            return;
+        }
+
+        if (!/^\d{10}$/.test(primary_phone) || (second_phone && !/^\d{10}$/.test(second_phone))) {
+            showError('Please enter valid 10-digit phone numbers.');
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError('Please enter a valid email address.');
+            return;
+        }
+        if (password || confirmPassword) {
+            const passwordLengthMatch = password.length >= 6;
+            const passwordMatch = password === confirmPassword;
+
+            if (!passwordMatch || !passwordLengthMatch) {
+                Swal.fire({
+                    title: 'Password Error',
+                    text: !passwordMatch ? 'Passwords do not match.' : 'Password must be at least 6 characters long.',
+                    icon: 'error',
+                    confirmButtonText: 'Okay'
+                });
+                return;
+            }
+        }
+
+        Swal.fire({
+            title: 'Updating Information',
+            html: 'Please wait while we update your account details...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        if (profilePhotoChanged && profilePhoto) {
+            profilePhoto.append('email', email);
+
+            fetch('http://localhost:8080/api/v1/user/uploadProfilePic', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: profilePhoto
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to upload profile picture');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('Error uploading profile picture:', error);
+                });
+        }
+
+        const data = {
+            id: id,
+            email: email,
+            name: name,
+            address: address,
+            primary_phone_number: primary_phone,
+            secondary_phone_number: second_phone,
+            postal_code: postal_code,
+            national_id: nic,
+            joinDate: joinDate
+        };
+
+        if (password && confirmPassword) {
+            data.password = password;
+        }
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/updateUser3',
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify(data),
+                success: function(response) {
+                    Swal.close();
+                    if (response.code === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Your account information has been updated successfully.',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            }
+                        }).then(() => {
+                            // Clear password fields
+                            document.getElementById('Password').value = '';
+                            document.getElementById('ConformPassword').value = '';
+
+                            if (profilePhotoChanged) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        showError(response.message || 'Failed to update account information.');
+                    }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                showError('An error occurred while updating your information: ' + error);
+            }
+        });
+    }
+
+    function confirmDeactivation() {
+        Swal.fire({
+            title: 'Deactivate Account?',
+            html: `
+                <p>You're about to deactivate your account. This will:</p>
+                <ul class="text-start">
+                    <li>Hide your profile from other users</li>
+                    <li>Cancel any pending bookings</li>
+                    <li>Preserve your account data</li>
+                </ul>
+                <p>You can reactivate your account by logging in again.</p>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Continue to Deactivate',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#f72585',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-danger',
+                cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showVerificationForm();
+            }
+        });
+    }
+
+    function showVerificationForm() {
+        Swal.fire({
+            title: 'Verify Your Identity',
+            html: `
+                <p>For security reasons, please verify your identity before deactivating your account.</p>
+                <div class="mb-3">
+                    <label for="deactivateEmail" class="form-label">Email Address</label>
+                    <input type="email" id="deactivateEmail" class="form-control" placeholder="Your email address">
+                </div>
+                <div class="mb-3">
+                    <label for="deactivateNIC" class="form-label">NIC Number</label>
+                    <input type="text" id="deactivateNIC" class="form-control" placeholder="Your NIC number">
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Send Verification Code',
+            cancelButtonText: 'Cancel',
+            focusConfirm: false,
+            preConfirm: () => {
+                const email = document.getElementById('deactivateEmail').value.trim();
+                const nic = document.getElementById('deactivateNIC').value.trim();
+
+                if (!email || !nic) {
+                    Swal.showValidationMessage('Please fill in all fields');
+                    return false;
+                }
+
+                return { email, nic };
+            },
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sendVerificationCode(result.value.email, result.value.nic);
+            }
+        });
+    }
+
+    function sendVerificationCode(email, nic) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showError('Authentication required. Please log in again.');
+            return;
+        }
+
+        Swal.fire({
+            title: 'Sending Verification Code',
+            html: 'Please wait while we send a verification code to your email...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/deleteUser',
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({
+                email: email,
+                NIC: nic
+            }),
+            success: function(response) {
+                Swal.close();
+                if (response.code === 200) {
+                    showVerificationCodeInput();
+                } else {
+                    showError(response.message || 'Failed to send verification code.');
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                showError('An error occurred while sending verification code: ' + error);
+            }
+        });
+    }
+
+    function showVerificationCodeInput() {
+        Swal.fire({
+            title: 'Enter Verification Code',
+            html: `
+                <p>We've sent a 6-digit verification code to your email address.</p>
+                <div class="mb-3">
+                    <input type="text" id="verificationCode" class="form-control" placeholder="Enter verification code" maxlength="6">
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Verify Code',
+            cancelButtonText: 'Cancel',
+            focusConfirm: false,
+            preConfirm: () => {
+                const code = document.getElementById('verificationCode').value.trim();
+
+                if (!code || code.length !== 6) {
+                    Swal.showValidationMessage('Please enter a valid 6-digit code');
+                    return false;
+                }
+
+                return code;
+            },
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                verifyCode(result.value);
+            }
+        });
+    }
+
+    function verifyCode(code) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showError('Authentication required. Please log in again.');
+            return;
+        }
+
+        const decodedToken = jwt_decode(token);
+        const userEmail = decodedToken.email;
+
+        Swal.fire({
+            title: 'Verifying Code',
+            html: 'Please wait while we verify your code...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/verifyUser/verify2',
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: JSON.stringify({
+                email: userEmail,
+                code: code
+            }),
+            success: function(response) {
+                Swal.close();
+                if (response.code === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Account Deactivated',
+                        text: 'Your account has been successfully deactivated. You can reactivate it by logging in again.',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        }
+                    }).then(() => {
+                        window.location.href = "../../../../Second_Sem_Final_Project/Front_End_PreRental/index.html";
+                    });
+                } else {
+                    showError(response.message || 'Invalid verification code. Please try again.');
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                showError('An error occurred while verifying your code: ' + error);
+            }
+        });
+    }
+
+    function showError(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+    }
+</script>
+<!--<script>
+    let User;
+    let profilePhotoChanged = false;
+    fetchAndSetProfilePicture();
+    getUserData();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchAndSetProfilePicture();
+        getUserData();
 
         document.getElementById('profilePhotoUpload').addEventListener('change', function(e) {
             if (e.target.files && e.target.files[0]) {
@@ -511,10 +1012,22 @@
             headers: {
                 'Authorization': 'Bearer '+ token
             },
-            data: { email: userEmail },
+            data: {
+                email: userEmail
+            },
             success: function(response) {
                 if (response.data !== null) {
                     User = response.data;
+                    document.getElementById('ID').value = User.uid;
+                    document.getElementById('NIC').value = User.national_id;
+                    document.getElementById('email').value = User.email;
+                    document.getElementById('Full_Name').value = User.name;
+                    document.getElementById('primary_phone').value = User.primary_phone_number;
+                    document.getElementById('second_number').value = User.secondary_phone_number;
+                    document.getElementById('postalCode').value = User.postal_code;
+                    document.getElementById('address').value = User.address;
+                    document.getElementById('JoinDate').value = User.joinDate;
+
                 }
             },
             error: function(xhr, status, error) {
@@ -522,44 +1035,7 @@
             }
         });
     }
-
-    function getMemberData() {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No token found');
-            return;
-        }
-
-        const decodedToken = jwt_decode(token);
-        const userEmail = decodedToken.email;
-
-        $.ajax({
-            url: 'http://localhost:8080/api/v1/member/getMemberInfo',
-            method: 'GET',
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer '+ token
-            },
-            data: { email: userEmail },
-            success: function(response) {
-                if (response.data) {
-                    const member = response.data;
-                    document.getElementById('ID').value = member.id;
-                    document.getElementById('NIC').value = member.nicNumber;
-                    document.getElementById('email').value = member.email;
-                    document.getElementById('Full_Name').value = member.name;
-                    document.getElementById('Phone_number').value = member.contact;
-                    document.getElementById('address').value = member.address;
-                    document.getElementById('JoinDate').value = member.joinDate;
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching member data:', error);
-            }
-        });
-    }
-
-    function updateMember() {
+    function updateUser() {
         const token = localStorage.getItem('token');
         if (!token) {
             showError('Authentication required. Please log in again.');
@@ -568,11 +1044,51 @@
 
         const id = document.getElementById('ID').value;
         const name = document.getElementById('Full_Name').value.trim();
-        const phone = document.getElementById('Phone_number').value.trim();
+        const primary_phone = document.getElementById('primary_phone').value.trim();
+        const second_phone = document.getElementById('second_number').value.trim();
+        const postal_code = document.getElementById('postalCode').value.trim();
         const address = document.getElementById('address').value.trim();
         const nic = document.getElementById('NIC').value.trim();
         const email = document.getElementById('email').value.trim();
         const joinDate = document.getElementById('JoinDate').value;
+        const password = document.getElementById('Password').value;
+        const confirmPassword = document.getElementById('ConfirmPassword').value;
+        cosole.log(
+            id,
+            name,
+            primary_phone,
+            second_phone,
+            postal_code,
+            address,
+            nic,
+            email,
+            joinDate,
+            password,
+            confirmPassword
+        );
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordMatch = password === confirmPassword;
+        const passwordLengthMatch = password.length >= 8;
+        const passwordRegexMatch = passwordRegex.test(password);
+          //check password
+        if (!passwordMatch ||!passwordLengthMatch ||!passwordRegexMatch) {
+          //swal fire
+            Swal.fire({
+                title: 'Password Error',
+                text: 'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*).',
+                icon: 'error',
+                confirmButtonText: 'Okay'
+            });
+            return;
+        }
+
+        if (profilePhoto) {
+            const profilePhotoData = new FormData();
+            profilePhotoData.append('profilePic', profilePhoto.get('profilePhoto'));
+            profilePhotoData.append('email', email);
+        }
+
+        // Send AJAX request to update member info
 
         if (!name || !phone || !address || !nic || !email) {
             showError('Please fill in all required fields.');
@@ -602,16 +1118,16 @@
             id: id,
             email: email,
             name: name,
-            city:User.city,
             address: address,
-            contact: phone,
-            NicNumber: nic,
-            userDTO: User,
-            joinDate: joinDate
+            primary_phone_number: primary_phone,
+            secondary_phone_number: second_phone,
+            password: password,
+            postal_code: postal_code,
+            national_id: nic,
         };
 
         $.ajax({
-            url: 'http://localhost:8080/api/v1/member/updateMemberInfo',
+            url: 'http://localhost:8080/api/v1/user/updateUser3',
             method: 'POST',
             contentType: 'application/json',
             headers: {
@@ -732,8 +1248,8 @@
         });
 
         $.ajax({
-            url: 'http://localhost:8080/api/v1/member/deleteMemberInfo',
-            method: 'DELETE',
+            url: 'http://localhost:8080/api/v1/user/deleteUser',
+            method: 'POSt',
             contentType: 'application/json',
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -812,7 +1328,7 @@
         });
 
         $.ajax({
-            url: 'http://localhost:8080/api/v1/verifyMember/verify',
+            url: 'http://localhost:8080/api/v1/verifyUser/verify2',
             method: 'POST',
             contentType: 'application/json',
             headers: {
@@ -859,6 +1375,6 @@
             }
         });
     }
-</script>
+</script>-->
 </body>
 </html>

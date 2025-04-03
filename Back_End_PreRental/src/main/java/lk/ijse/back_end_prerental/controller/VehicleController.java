@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,6 +85,7 @@ try{
         try {
 
             vehicleDTO.setCreatedAt(Date.valueOf(LocalDate.now()));
+            vehicleDTO.setActive(true);
 
 
             if (file != null && !file.isEmpty()) {
@@ -143,17 +145,61 @@ try {
 }
 
 @PostMapping(value = "/getVehicleByMember")
-public ResponseEntity<ResponseDTO> getVehiclePicture(@RequestBody MemberDTO memberDTO) {
+public ResponseEntity<ResponseDTO> getVehicle(@RequestBody MemberDTO memberDTO) {
         String email = memberDTO.getEmail();
         MemberDTO memberDTO1 = memberService.getMember(email);
         int memberId = memberDTO1.getId();
     try {
-        List<VehicleDTO> vehicleDTOList = vehicleService.getAllVehicleByMember(memberId);
-        return new ResponseEntity<>(new ResponseDTO(VarList.OK, "Vehicle List", vehicleDTOList), HttpStatus.OK);
+        List<VehicleDTO> vehicleDTOList = vehicleService.getAllVehicle();
+        List<VehicleDTO> vehicleDTOList1 = new ArrayList<>();
+        for (VehicleDTO vehicleDTO : vehicleDTOList){
+            //get member id include dtos
+            VehicleDTO vehicleDTO1 = new VehicleDTO();
+            vehicleDTO1 = vehicleDTO;
+            if(vehicleDTO1.getOwner().getId() == memberId){
+                vehicleDTOList1.add(vehicleDTO1);
+            }
+
+        }
+        System.out.println("ssssssssssssss "+vehicleDTOList1.size());
+        return new ResponseEntity<>(new ResponseDTO(VarList.OK, "Vehicle List", vehicleDTOList1), HttpStatus.OK);
     } catch (Exception e) {
         return new ResponseEntity<>(new ResponseDTO(VarList.Internal_Server_Error, "Failed to get Vehicle List", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+}
+@DeleteMapping(value = "/deleteVehicle")
+public ResponseEntity<ResponseDTO> deleteVehicle(@RequestBody VehicleDTO vehicleDTO) {
+    System.out.println("dddddddddddddddddddddddeeeeeeeeeeeeeeeeelllllllllllllllllllleeeeeeeeeeeetttttttttttttteeeeeeeeeeeeeeeee");
+        try {
+            int res = vehicleService.deleteVehicle(vehicleDTO.getPlateNumber());
+            switch (res){
+                case VarList.No_Content:
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ResponseDTO(VarList.No_Content, "Vehicle not found", null));
+                case VarList.OK:
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Vehicle deleted successfully", vehicleDTO));
+                default:
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(VarList.Internal_Server_Error, "Error deleting vehicle", null));
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseDTO(VarList.Internal_Server_Error, "Failed to delete Vehicle", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+}
+@PutMapping(value = "/updateVehicle")
+public ResponseEntity<ResponseDTO> updateVehicle(@RequestBody VehicleDTO vehicleDTO) {
+        try {
+            int res = vehicleService.updateVehicle(vehicleDTO.getPlateNumber());
+            switch (res){
+                case VarList.No_Content:
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ResponseDTO(VarList.No_Content, "Vehicle not found", null));
+                case VarList.OK:
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Vehicle update successfully", vehicleDTO));
+                default:
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(VarList.Internal_Server_Error, "Error update vehicle", null));
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseDTO(VarList.Internal_Server_Error, "Failed to update Vehicle", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 }
 
 

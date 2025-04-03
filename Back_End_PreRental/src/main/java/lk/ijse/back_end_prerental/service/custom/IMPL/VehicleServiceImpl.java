@@ -39,9 +39,8 @@ public class VehicleServiceImpl implements VehicleService {
     }
     @Override
     public List<VehicleDTO> getAllVehicleByMember(int Id){
-        List<Vehicle> vehicles = vehicleRepository.findByMemberId(Id);
-        return modelMapper.map(vehicles,new TypeToken<ArrayList<VehicleDTO>>(){
-        }.getType());
+
+        return List.of();
     }
  @Override
  public VehicleDTO getVehicle(String plateNumber){
@@ -75,6 +74,40 @@ public class VehicleServiceImpl implements VehicleService {
                 }
                 vehicleRepository.save(vehicle);
                 return VarList.Created;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int deleteVehicle(String plateNumber) {
+     try{
+         if(vehicleRepository.existsByPlateNumber(plateNumber)){
+             Vehicle vehicle = vehicleRepository.findByPlateNumber(plateNumber);
+             vehicle.setActive(false);
+             vehicleRepository.save(vehicle);
+             return VarList.OK;
+         }
+         else{
+             return VarList.Not_Found;
+         }
+     } catch (Exception e) {
+         throw new RuntimeException(e);
+     }
+    }
+
+    @Override
+    public int updateVehicle(String plateNumber) {
+        try{
+            if(vehicleRepository.existsByPlateNumber(plateNumber)){
+                Vehicle vehicle = vehicleRepository.findByPlateNumber(plateNumber);
+                vehicle.setActive(true);
+                vehicleRepository.save(vehicle);
+                return VarList.OK;
+            }
+            else{
+                return VarList.Not_Found;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -18,5 +18,4 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Integer> {
     boolean existsByPlateNumber(String plateNumber);
 
     Vehicle findByPlateNumber(String plateNumber);
-    List<Vehicle> findByMemberId(int memberId);
 }

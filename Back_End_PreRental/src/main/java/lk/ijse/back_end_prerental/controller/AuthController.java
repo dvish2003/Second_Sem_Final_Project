@@ -63,3 +63,9 @@ public class AuthController {
 
 }
 
+/*
+*  User user = userRepository.findByEmail(userDTO.getEmail());
+            String verificationCode = VerificationCodeGenerator.generateCode(6);
+            user.setVerificationCode(verificationCode);
+            userRepository.save(user);
+            emailService.sendVerificationEmail(user.getEmail(), verificationCode);*/

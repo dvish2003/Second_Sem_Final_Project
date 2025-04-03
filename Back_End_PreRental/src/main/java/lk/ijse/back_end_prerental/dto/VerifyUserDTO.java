@@ -18,4 +18,5 @@ import lombok.NoArgsConstructor;
 public class VerifyUserDTO {
     private String email;
     private String code;
+    private String Nic;
 }

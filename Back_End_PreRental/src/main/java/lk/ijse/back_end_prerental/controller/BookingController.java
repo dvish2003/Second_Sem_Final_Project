@@ -1,9 +1,6 @@
 package lk.ijse.back_end_prerental.controller;
 
-import lk.ijse.back_end_prerental.dto.BookingDTO;
-import lk.ijse.back_end_prerental.dto.MemBookingDTO;
-import lk.ijse.back_end_prerental.dto.MemberDTO;
-import lk.ijse.back_end_prerental.dto.ResponseDTO;
+import lk.ijse.back_end_prerental.dto.*;
 import lk.ijse.back_end_prerental.repo.BookingRepository;
 import lk.ijse.back_end_prerental.service.custom.BookingService;
 import lk.ijse.back_end_prerental.util.VarList;
@@ -54,6 +51,25 @@ public class BookingController {
         );
 
     }
+    @PostMapping(value = "/getCustomerBookings")
+    public ResponseEntity<ResponseDTO> getMemberBookings(@RequestBody UserDTO userDTO) {
+        System.out.println("Request Acceptedoooooooooooooooooooooooo");
+        List<CusBookingDTO> cusBookingDTOS = bookingService.getCusBooking();
+        List<CusBookingDTO> cusBookingDTOS1 = new ArrayList<>();
+        for (CusBookingDTO cusBookingDTO2 : cusBookingDTOS){
+            CusBookingDTO cusBookingDTO = new CusBookingDTO();
+            cusBookingDTO = cusBookingDTO2;
+            if(cusBookingDTO.getCustomerEmail().equals(userDTO.getEmail())){
+                cusBookingDTOS1.add(cusBookingDTO);
+            }
+
+        }
+        System.out.println(cusBookingDTOS.size());
+        return ResponseEntity.ok(
+                new ResponseDTO(OK, "Booking List",cusBookingDTOS1)
+        );
+
+    }
 
     @PutMapping(value = "/updateBooking")
     public ResponseEntity<ResponseDTO> updateBooking(@RequestBody BookingDTO bookingDTO) {
@@ -62,6 +78,7 @@ public class BookingController {
         String status = bookingDTO.getStatus();
         bookingDTO1.setId(id);
         bookingDTO1.setStatus(status);
+        System.out.println("lllllllllllllllll"+bookingDTO1.getStatus());
 try{
     int res = bookingService.updateBooking(bookingDTO1);
     switch (res) {

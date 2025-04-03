@@ -22,4 +22,7 @@ public interface VehicleService {
 
     int saveVehicle(VehicleDTO vehicleDTO, MultipartFile multipartFile);
 
+    int deleteVehicle(String plateNumber);
+
+    int updateVehicle(String plateNumber);
 }
