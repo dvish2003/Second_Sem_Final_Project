@@ -656,7 +656,7 @@ function register() {
 			"email": email,
 			"name": name,
 			"password": password,
-			"role": "user"
+			"role": "admin"
 		}),
 		success: function (response) {
 			console.log("Registration successful", response);

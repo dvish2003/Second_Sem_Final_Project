@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Management | PreRental</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #1cc88a;
+            --accent-color: #36b9cc;
+            --danger-color: #e74a3b;
+            --warning-color: #f6c23e;
+            --light-bg: #f8f9fc;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .page-header {
+            border-bottom: 1px solid #e3e6f0;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .booking-card {
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 0.25rem solid transparent;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1.5rem 0 rgba(58, 59, 69, 0.2);
+        }
+
+        .booking-card.confirmed {
+            border-left-color: var(--secondary-color);
+        }
+
+        .booking-card.pending {
+            border-left-color: var(--warning-color);
+        }
+
+        .booking-card.expired {
+            border-left-color: var(--danger-color);
+        }
+
+        .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            padding: 1rem 1.35rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-footer {
+            background-color: #f8f9fc;
+            border-top: 1px solid #e3e6f0;
+            padding: 1rem 1.35rem;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .badge-confirmed {
+            background-color: rgba(28, 200, 138, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .badge-pending {
+            background-color: rgba(246, 194, 62, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-expired {
+            background-color: rgba(231, 74, 59, 0.1);
+            color: var(--danger-color);
+        }
+
+        .vehicle-thumbnail {
+            height: 140px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e3e6f0;
+        }
+
+        .customer-avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e3e6f0;
+        }
+
+        .member-badge {
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+            padding: 0.25rem 0.5rem;
+            background-color: rgba(54, 185, 204, 0.1);
+            color: var(--accent-color);
+        }
+
+        .detail-row {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px dashed #e3e6f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #858796;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 0.9rem;
+            color: #5a5c69;
+            font-weight: 600;
+        }
+
+        .amount-badge {
+            background-color: rgba(78, 115, 223, 0.1);
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+        }
+
+        .filter-card {
+            background-color: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .pagination .page-link {
+            color: var(--primary-color);
+        }
+
+        .btn-details {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-details:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 page-header">
+        <h1 class="h3 mb-0 text-gray-800">Booking Management</h1>
+        <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/MemberPage/memberPage.html" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="bi bi-arrow-left me-2"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="row">
+        <!--<div class="col-12">
+            <div class="filter-card p-4 mb-4">
+                <div class="row">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <label class="form-label">Search Bookings</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search by ID, name or vehicle...">
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="pending">Pending</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label">Date Range</label>
+                        <select class="form-select">
+                            <option value="">All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="btn btn-primary w-100">
+                            <i class="bi bi-funnel me-2"></i> Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+
+    <div class="row" id="bookingCardsContainer"></div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script>
+    LoadAllBookings();
+    function LoadAllBookings(){
+        const token = localStorage.getItem('token');
+        const decord = jwt_decode(token);
+        const memberEmail = decord.email;
+
+        $.ajax({
+            method: 'GET',
+            contentType: 'application/json',
+            url: 'http://localhost:8080/api/v1/booking/grtAllBookings',
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            success: function(response) {
+                if(response.code === 200){
+                    $('#bookingCardsContainer').empty();
+
+                    response.data.forEach(booking => {
+                        let bookingId = booking.id;
+                        let customerEmail = booking.customerEmail;
+                        let memberEmail = booking.memberEmail;
+                        let memberName = booking.memberName;
+                        let vehiclePLateNumber = booking.plateNumber;
+                        let startDate = new Date(booking.pickupDate).toLocaleDateString();
+                        let endDate = new Date(booking.returnDate).toLocaleDateString();
+                        let status = booking.status;
+                        let customerFileName2 = booking.customerFileName;
+                        let vehicleFileName2 = booking.vehicleFileName;
+                        let customerName2 = booking.customerName;
+                        let customerContactPrimary = booking.customerContact;
+                        let amount = booking.paymentAmount;
+
+                        let diffDays = Math.ceil((new Date(booking.returnDate) - new Date(booking.pickupDate)) / (1000 * 60 * 60 * 24));
+
+                        let statusClass = "";
+                        let cardStatusClass = "";
+                        let statusText = "";
+
+                        if(status === "Ongoing Booking"){
+                            statusText = "Confirmed";
+                            statusClass = "badge-confirmed";
+                            cardStatusClass = "confirmed";
+                        } else if(status === "Expire Booking"){
+                            statusText = "Expired";
+                            statusClass = "badge-expired";
+                            cardStatusClass = "expired";
+                        } else if(status === "Pending Booking"){
+                            statusText = "Pending";
+                            statusClass = "badge-pending";
+                            cardStatusClass = "pending";
+                        }
+
+                        $('#bookingCardsContainer').append(`
+                                <div class="col-lg-6 col-xl-4 mb-4">
+                                    <div class="booking-card ${cardStatusClass} h-100">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0 text-gray-800">Booking #${bookingId.toString().padStart(5, '0')}</h5>
+                                            <span class="status-badge ${statusClass}">${statusText}</span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row align-items-center mb-3">
+                                                <div class="col-auto">
+                                                    <img src="../../../../Second_Sem_Final_Project/uploads/${customerFileName2 || 'default-user.jpg'}"
+                                                         alt="Customer" class="customer-avatar">
+                                                </div>
+                                                <div class="col">
+                                                    <h6 class="mb-1 text-gray-900">${customerName2}</h6>
+                                                    <p class="mb-0 text-muted small"><i class="bi bi-envelope me-1"></i> ${customerEmail}</p>
+                                                    <p class="mb-0 text-muted small"><i class="bi bi-telephone me-1"></i> ${customerContactPrimary || 'N/A'}</p>
+                                                </div>
+                                            </div>
+
+                                            ${memberEmail ? `
+                                            <div class="alert alert-light mb-3 py-2">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="member-badge me-2"><i class="bi bi-person-check me-1"></i>Family Member</span>
+                                                    <div>
+                                                        <p class="mb-0 small text-gray-900"><strong>${memberName}</strong></p>
+                                                        <p class="mb-0 small text-muted">${memberEmail}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ` : ''}
+
+                                            <img src="../../../../Second_Sem_Final_Project/uploads/${vehicleFileName2 || 'default-vehicle.jpg'}"
+                                                 alt="Vehicle" class="vehicle-thumbnail">
+
+                                            <div class="detail-row">
+                                                <span class="detail-label"><i class="bi bi-car-front me-1"></i>Vehicle Plate</span>
+                                                <span class="detail-value">${vehiclePLateNumber}</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label"><i class="bi bi-calendar-range me-1"></i>Rental Period</span>
+                                                <span class="detail-value">${startDate} - ${endDate}</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label"><i class="bi bi-clock-history me-1"></i>Duration</span>
+                                                <span class="detail-value">${diffDays} days</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between align-items-center">
+                                            <span class="amount-badge">
+                                                <i class="bi bi-currency-dollar me-1"></i>Total: $${amount.toFixed(2)}
+                                            </span>
+                                            <button class="btn btn-sm btn-details">
+                                                <i class="bi bi-eye me-1"></i>Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load bookings. Please try again.'
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

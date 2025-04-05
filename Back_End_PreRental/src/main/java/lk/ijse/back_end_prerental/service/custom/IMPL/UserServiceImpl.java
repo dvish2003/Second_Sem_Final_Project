@@ -63,6 +63,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return authorities;
     }
+ @Override
+ public List<UserDTO> getAllUser(){
+        List<User> userDTOList = userRepository.findAll();
+        return modelMapper.map(userDTOList,new TypeToken<List<UserDTO>>(){}.getType());
+    }
 
 
     @Override
@@ -171,42 +176,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new RuntimeException("Error updating user: " + e.getMessage(), e);
         }
     }
-
-/*
-    @Override
-    public int updateUser(UserDTO userDTO, MultipartFile file) {
-        try {
-            if(userRepository.existsByEmail(userDTO.getEmail())){
-                User user = userRepository.findByEmail(userDTO.getEmail());
-                */
-/*====================================================================*//*
-
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                user.setFileName(fileName);
-                user.setFiletype(file.getContentType());
-                user.setData(file.getBytes());
-                */
-/*===================================================================*//*
-
-                user.setAddress(userDTO.getAddress());
-                user.setName(userDTO.getName());
-                user.setNational_id(userDTO.getNational_id());
-                user.setPostal_code(userDTO.getPostal_code());
-                user.setPrimary_phone_number(userDTO.getPrimary_phone_number());
-                user.setSecondary_phone_number(userDTO.getSecondary_phone_number());
-                user.setCity(userDTO.getCity());
-
-                userRepository.save(user);
-                return VarList.OK;
-            }
-            else {
-                return VarList.Not_Found;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-*/
 
     @Override
     public int updateUser2(UserDTO userDTO) {

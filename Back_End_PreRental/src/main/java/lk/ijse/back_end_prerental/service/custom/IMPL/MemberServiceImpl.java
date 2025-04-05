@@ -25,14 +25,17 @@ import java.util.List;
 @Service
 @Transactional
 public class MemberServiceImpl implements MemberService {
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private EmailService emailService;
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
 
     @Override
@@ -85,6 +88,16 @@ public class MemberServiceImpl implements MemberService {
             return VarList.Internal_Server_Error;
         }
     }
+
+    @Override
+    public int deleteMember2(String email) {
+        Member member = memberRepository.findByEmail(email);
+            member.setVerified(false);
+            member.setVerificationCode(null);
+            memberRepository.save(member);
+            return VarList.OK;
+    }
+
     @Override
     public int reactiveMember(VerifyMemberDTO verifyMemberDTO) {
 try{

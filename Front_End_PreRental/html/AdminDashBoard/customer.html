@@ -97,7 +97,7 @@
 
     <!-- User Cards -->
     <div class="row" id="userCardsContainer">
-        <!-- User Card 1 -->
+        <!-- User Card 1
         <div class="col-lg-4 col-md-6">
             <div class="card user-card h-100">
                 <div class="position-relative">
@@ -141,99 +141,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- User Card 2 -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card user-card h-100">
-                <div class="position-relative">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" class="card-img-top user-img" alt="User photo">
-                    <span class="badge bg-success user-status">
-                            <i class="fas fa-check-circle me-1"></i> Active
-                        </span>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title mb-0 fw-bold">Sarah Johnson</h5>
-                        <span class="badge bg-info role-badge">MEMBER</span>
-                    </div>
-                    <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i>sarah.j@example.com</p>
-                    <p class="text-muted mb-1"><i class="fas fa-id-card me-2"></i>ID: 7a2e...f9c1</p>
-
-                    <div class="d-flex align-items-center mb-2">
-                            <span class="badge unverified-badge me-2">
-                                <i class="fas fa-exclamation-circle me-1"></i>Unverified
-                            </span>
-                        <span class="text-muted small"><i class="fas fa-calendar-alt me-1"></i>Joined: 22 Feb 2023</span>
-                    </div>
-
-                    <div class="user-details mb-3">
-                        <span class="badge bg-light text-dark"><i class="fas fa-phone me-1"></i>(555) 987-6543</span>
-                        <span class="badge bg-light text-dark"><i class="fas fa-map-marker-alt me-1"></i>Kandy</span>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                        <div>
-                            <span class="d-block text-muted small">Last active: 1 day ago</span>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- User Card 3 -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card user-card h-100">
-                <div class="position-relative">
-                    <img src="https://randomuser.me/api/portraits/men/75.jpg" class="card-img-top user-img" alt="User photo">
-                    <span class="badge bg-secondary user-status">
-                            <i class="fas fa-times-circle me-1"></i> Inactive
-                        </span>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title mb-0 fw-bold">Michael Brown</h5>
-                        <span class="badge bg-warning role-badge text-dark">STAFF</span>
-                    </div>
-                    <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i>michael.b@example.com</p>
-                    <p class="text-muted mb-1"><i class="fas fa-id-card me-2"></i>ID: 3b9f...e7d4</p>
-
-                    <div class="d-flex align-items-center mb-2">
-                            <span class="badge verified-badge me-2">
-                                <i class="fas fa-check-circle me-1"></i>Verified
-                            </span>
-                        <span class="text-muted small"><i class="fas fa-calendar-alt me-1"></i>Joined: 05 Mar 2022</span>
-                    </div>
-
-                    <div class="user-details mb-3">
-                        <span class="badge bg-light text-dark"><i class="fas fa-phone me-1"></i>(555) 456-7890</span>
-                        <span class="badge bg-light text-dark"><i class="fas fa-map-marker-alt me-1"></i>Galle</span>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                        <div>
-                            <span class="d-block text-muted small">Last active: 3 weeks ago</span>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>-->
     </div>
 
     <!-- Pagination -->
@@ -357,7 +265,83 @@
 
 <!-- Bootstrap 5 JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script>
+    getAllCustomers();
+    function getAllCustomers(){
+$.ajax({
+    method: 'GET',
+    url: 'http://localhost:8080/api/v1/user/getAllUsers',
+    async: true,
+    headers: {
+        'Authorization': 'Bearer '+ localStorage.getItem('token')
+    },
+    success: function(response) {
+        console.log(response.data);
+       const User = response.data;
+        const userContainer = $('#userCardsContainer');
+        User.forEach(user => {
+            const html = `
+            <div class="col-lg-4 col-md-6">
+            <div class="card user-card h-100">
+                <div class="position-relative">
+                    <img src="../../../../Second_Sem_Final_Project/uploads/${
+                    user.fileName? user.fileName : 'default_user.png'
+            }" class="card-img-top user-img" alt="User photo">
+                    <span class="badge bg-success user-status">
+                            <i class="fas fa-check-circle me-1"></i>${
+                        user.verified? 'Active' : 'Not Active'
+            }
+                        </span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0 fw-bold">${user.name}</h5>
+                        <span class="badge bg-primary role-badge">${user.role}</span>
+                    </div>
+                    <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i>${user.email}</p>
+                    <p class="text-muted mb-1"><i class="fas fa-id-card me-2"></i>${user.national_id}</p>
+
+                    <div class="d-flex align-items-center mb-2">
+                            <span class="badge verified-badge me-2">
+                                <i class="fas fa-check-circle me-1"></i>${
+                        user.verified? 'Verified' : 'Not Verified'
+            }
+                            </span>
+                        <span class="text-muted small"><i class="fas fa-calendar-alt me-1"></i>${user.joinDate}</span>
+                    </div>
+
+                    <div class="user-details mb-3">
+                        <span class="badge bg-light text-dark"><i class="fas fa-phone me-1"></i>${user.primary_phone_number}</span>
+                        <span class="badge bg-light text-dark"><i class="fas fa-map-marker-alt me-1"></i>${user.city}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            `;
+
+            userContainer.append(html);
+
+        })
+    },
+    error: function(error) {
+        console.error(error);
+    }
+})
+    }
     // Simple search functionality
     document.getElementById('searchInput').addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
@@ -396,17 +380,11 @@
         });
     });
 
-    // Delete confirmation validation
     document.getElementById('confirmDelete').addEventListener('input', function() {
         document.getElementById('confirmDeleteBtn').disabled =
             this.value.toUpperCase() !== 'DELETE';
     });
 
-    // In a real application, you would have API calls to:
-    // - Fetch users
-    // - Update user
-    // - Delete user
-    // - Handle pagination
 </script>
 </body>
 </html>

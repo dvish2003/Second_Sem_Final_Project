@@ -26,6 +26,7 @@ public interface MemberService {
     List<MemberDTO> getAllMembers();
 
     int deleteMember(VerifyMemberDTO verifyMemberDTO);
+    int deleteMember2(String email);
 
     int reactiveMember(VerifyMemberDTO verifyMemberDTO);
 

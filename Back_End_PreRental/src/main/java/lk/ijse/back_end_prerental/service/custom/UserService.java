@@ -18,7 +18,9 @@ public interface UserService {
 
     int saveUser(UserDTO userDTO);
 
-     UserDTO searchUser(String username);
+    List<UserDTO> getAllUser();
+
+    UserDTO searchUser(String username);
 
      int updateUser(UserDTO userDTO);
 

@@ -77,6 +77,35 @@ public int saveBooking(BookingDTO bookingDTO){
         return memBookingDTOList;
 
     }
+    @Override
+    public List<MemBookingDTO> getAllBooking(){
+        Date localDate = Date.valueOf(LocalDate.now());
+
+        List<Booking> bookingList = bookingRepository.findAll();
+        List<MemBookingDTO> memBookingDTOList = new ArrayList<>();
+        for (Booking bookingDTO : bookingList) {
+            MemBookingDTO memBookingDTO = new MemBookingDTO();
+            memBookingDTO.setId(bookingDTO.getId());
+            memBookingDTO.setPickupDate(bookingDTO.getPickupDate());
+            memBookingDTO.setReturnDate(bookingDTO.getReturnDate());
+            memBookingDTO.setStatus(bookingDTO.getStatus());
+            memBookingDTO.setPaymentAmount(bookingDTO.getPayment().getAmount());
+            memBookingDTO.setCustomerEmail(bookingDTO.getCustomer().getEmail());
+            memBookingDTO.setCustomerFileName(bookingDTO.getCustomer().getFileName());
+            memBookingDTO.setCustomerName(bookingDTO.getCustomer().getName());
+            memBookingDTO.setCustomerContact(bookingDTO.getCustomer().getPrimary_phone_number());
+            memBookingDTO.setCustomerContact2(bookingDTO.getCustomer().getSecondary_phone_number());
+            memBookingDTO.setMemberEmail(bookingDTO.getMemberEmail());
+            memBookingDTO.setMemberName(bookingDTO.getVehicle().getOwner().getName());
+            memBookingDTO.setPlateNumber(bookingDTO.getVehicle().getPlateNumber());
+            memBookingDTO.setVehicleFileName(bookingDTO.getVehicle().getFileName());
+            memBookingDTO.setLocalDate(localDate);
+            memBookingDTOList.add(memBookingDTO);
+
+        }
+        return memBookingDTOList;
+
+    }
 
 
     @Override

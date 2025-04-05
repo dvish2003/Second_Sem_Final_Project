@@ -456,7 +456,6 @@
                 reader.onload = function(event) {
                     document.getElementById('profilePhoto').src = event.target.result;
                     profilePhotoChanged = true;
-                    // Here you would typically upload the new photo to your server
                 };
                 reader.readAsDataURL(e.target.files[0]);
             }

@@ -258,4 +258,13 @@ public class UserController {
             throw new RuntimeException(e);
         }
        }
+       @GetMapping(value = "/getAllUsers")
+       public ResponseEntity<ResponseDTO> getAllUsers() {
+        try {
+            List<UserDTO> users = userService.getUsers();
+            return ResponseEntity.ok(new ResponseDTO(VarList.OK, "All Users", users));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseDTO(VarList.Internal_Server_Error, "Failed to get  List", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+       }
         }

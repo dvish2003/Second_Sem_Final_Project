@@ -51,6 +51,26 @@ public class BookingController {
         );
 
     }
+
+    @GetMapping(value = "/grtAllBookings")
+    public ResponseEntity<ResponseDTO> getMemberBookings() {
+        System.out.println("Request Accepted 111111111111111111ppppppppppppppppppppppppppp");
+        List<MemBookingDTO> memBookingDTOList = bookingService.getAllBooking();
+        for (int i = 0; i < memBookingDTOList.size(); i++) {
+            System.out.println(memBookingDTOList.get(i).getCustomerFileName());
+            System.out.println(memBookingDTOList.get(i).getVehicleFileName());
+            System.out.println(memBookingDTOList.get(i).getCustomerName());
+            System.out.println("member emaaaaaaaaaaaaaaaaaaaaaaal"+memBookingDTOList.get(i).getMemberEmail());
+            System.out.println("memberrrrrrrrrrrrrrrrrr name"+memBookingDTOList.get(i).getMemberName());
+            System.out.println(memBookingDTOList.get(i).getCustomerContact2());
+
+        }
+        System.out.println(memBookingDTOList.size());
+        return ResponseEntity.ok(
+                new ResponseDTO(OK, "Booking List",memBookingDTOList)
+        );
+
+    }
     @PostMapping(value = "/getCustomerBookings")
     public ResponseEntity<ResponseDTO> getMemberBookings(@RequestBody UserDTO userDTO) {
         System.out.println("Request Acceptedoooooooooooooooooooooooo");

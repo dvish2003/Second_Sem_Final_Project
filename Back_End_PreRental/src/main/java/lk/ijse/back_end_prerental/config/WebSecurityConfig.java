@@ -68,6 +68,7 @@ public class WebSecurityConfig {
                                 "/api/v1/user/updateUser",
                                 "/api/v1/user/get4Users",
                                 "/api/v1/vehicle/getVehiclePic",
+                                "/api/v1/member/deleteMemberInfo2",
                                 "/api/v1/vehicle/getVehicle",
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",

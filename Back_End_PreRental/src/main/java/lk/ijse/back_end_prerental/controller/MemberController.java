@@ -55,6 +55,18 @@ public class MemberController {
             );
         }
     }
+    @GetMapping(value = "/getMembers")
+    public ResponseEntity<ResponseDTO> getMembers() {
+try{
+    List<MemberDTO> memberDTOS = memberService.getAllMembers();
+    return new ResponseEntity<>(new ResponseDTO(VarList.OK, "Member List", memberDTOS), HttpStatus.OK);
+
+
+} catch (Exception e) {
+    return new ResponseEntity<>(new ResponseDTO(VarList.Internal_Server_Error, "Failed to get  List", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
+    }
 
 
 
@@ -130,6 +142,29 @@ public class MemberController {
         System.out.println("ddddddddddddd"+verifyMemberDTO.getEmail());
         try{
             int res = memberService.deleteMember(verifyMemberDTO);
+            switch(res){
+                case VarList.OK:
+                    System.out.println("Member deleted successfully");
+                    return ResponseEntity.ok(new ResponseDTO(VarList.OK, "Member deleted successfully", verifyMemberDTO));
+                case VarList.Not_Found:
+                    System.out.println("Member not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                           .body(new ResponseDTO(VarList.Not_Found, "Member not found", null));
+                default:
+                    System.out.println("Error deleting member");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                           .body(new ResponseDTO(VarList.Internal_Server_Error, "Error deleting member", null));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @DeleteMapping(value = "/deleteMemberInfo2")
+    public ResponseEntity<ResponseDTO> deleteMember2(@RequestBody VerifyMemberDTO verifyMemberDTO){
+        System.out.println("delete member");
+        System.out.println("ddddddddddddd"+verifyMemberDTO.getEmail());
+        try{
+            int res = memberService.deleteMember2(verifyMemberDTO.getEmail());
             switch(res){
                 case VarList.OK:
                     System.out.println("Member deleted successfully");

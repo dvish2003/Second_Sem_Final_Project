@@ -25,7 +25,8 @@ public class MemBookingDTO {
     private String status;
     private String customerEmail;
     private String plateNumber;
-    private String MemberEmail;
+    private String memberEmail;
+    private String memberName;
     private double paymentAmount;
     private String customerFileName;
     private String customerName;
