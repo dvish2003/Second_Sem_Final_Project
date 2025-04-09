@@ -886,13 +886,9 @@
 
 		console.log("Member Email:", memberEmail)
 		$.ajax({
-			method: 'POST',
-			contentType: 'application/json',
-			url: 'http://localhost:8080/api/v1/booking/getMemberBookings',
+			method: 'GET',
+			url: 'http://localhost:8080/api/v1/booking/grtAllBookings',
 			async: true,
-			data: JSON.stringify({
-				"email": memberEmail,
-			}),
 			headers: {
 				'Authorization': 'Bearer '+ token,
 			},

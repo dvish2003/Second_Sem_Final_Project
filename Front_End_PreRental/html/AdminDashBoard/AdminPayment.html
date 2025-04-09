@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Payment Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);
+            --dark-bg: #2a3042;
+            --light-bg: #f8f9fa;
+            --success-gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            --warning-gradient: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        body {
+            background-color: #f5f7ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+        }
+
+        .header-bar {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .payment-table {
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: rgba(0, 0, 0, 0.02);
+        }
+
+        .payment-table th {
+            background: rgba(0, 0, 0, 0.03);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            position: sticky;
+            top: 0;
+        }
+
+        .payment-table tr {
+            transition: all 0.2s ease;
+        }
+
+        .payment-table tr:hover {
+            background: rgba(102, 126, 234, 0.05) !important;
+        }
+
+        .badge-pill {
+            border-radius: 50px;
+            padding: 5px 12px;
+            font-weight: 500;
+            font-size: 0.7rem;
+        }
+
+        .badge-success {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+        }
+
+        .badge-warning {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+        }
+
+        .badge-danger {
+            background: rgba(220, 53, 69, 0.15);
+            color: #dc3545;
+        }
+
+        .payment-method-icon {
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-right: 8px;
+        }
+
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--primary-gradient);
+            border-color: transparent;
+        }
+
+        .stats-card {
+            border-radius: 10px;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card i {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        .stats-card .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 100% 100% 0 0;
+        }
+
+        .total-revenue {
+            background: var(--primary-gradient);
+        }
+
+        .pending-payments {
+            background: var(--secondary-gradient);
+        }
+
+        .recent-transactions {
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+        }
+
+        .total-fees {
+            background: var(--success-gradient);
+        }
+
+        /* Improved Back Button Styles */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        /* Summary Card */
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2a3042;
+        }
+
+        .summary-change {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .summary-change.positive {
+            color: #28a745;
+        }
+
+        .summary-change.negative {
+            color: #dc3545;
+        }
+
+        /* Payment Method Colors */
+        .payment-visa {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+        }
+
+        .payment-mastercard {
+            background: linear-gradient(135deg, #b71c1c 0%, #c62828 100%);
+            color: white;
+        }
+
+        .payment-paypal {
+            background: linear-gradient(135deg, #003087 0%, #009cde 100%);
+            color: white;
+        }
+
+        .payment-bank {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stats-card {
+                margin-bottom: 1rem;
+            }
+
+            .search-box {
+                max-width: 100%;
+                margin-top: 1rem;
+            }
+
+            .header-bar .d-flex {
+                flex-direction: column;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Status dots */
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .status-dot.success {
+            background: #28a745;
+        }
+
+        .status-dot.warning {
+            background: #ffc107;
+        }
+
+        .status-dot.danger {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <!-- Back Button at the top of the page -->
+    <div class="mb-4">
+        <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/AdminDashBoard/AdminDashBoard.html" class="btn back-btn text-black">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="row mb-4 animate__animated animate__fadeIn">
+        <div class="col-md-3">
+            <div class="stats-card total-revenue glass-card">
+                <div class="wave"></div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-uppercase text-white-50">Total Revenue</h6>
+                        <h2 class="mb-0">$0.00</h2>
+                        <small class="text-white-50">All payments</small>
+                    </div>
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-card recent-transactions glass-card">
+                <div class="wave"></div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-uppercase text-white-50">Transactions</h6>
+                        <h2 class="mb-0">0</h2>
+                        <small class="text-white-50">Completed payments</small>
+                    </div>
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-card total-fees glass-card">
+                <div class="wave"></div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-uppercase text-white-50">Total Fees</h6>
+                        <h2 class="mb-0">$0.00</h2>
+                        <small class="text-white-50">Service charges</small>
+                    </div>
+                    <i class="fas fa-percentage"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-card pending-payments glass-card">
+                <div class="wave"></div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-uppercase text-white-50">Deposits</h6>
+                        <h2 class="mb-0">$0.00</h2>
+                        <small class="text-white-50">Total deposits</small>
+                    </div>
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Row -->
+    <div class="row mb-4 animate__animated animate__fadeIn">
+        <div class="col-md-12">
+            <div class="glass-card p-4">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <div class="summary-title">Average Payment</div>
+                            <div class="summary-value">$0.00</div>
+                            <div class="summary-change positive">
+                                <i class="fas fa-arrow-up me-1"></i> 0% from last period
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <div class="summary-title">Highest Payment</div>
+                            <div class="summary-value">$0.00</div>
+                            <div class="summary-change negative">
+                                <i class="fas fa-arrow-down me-1"></i> 0% from last period
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <div class="summary-title">Payment Methods</div>
+                            <div class="summary-value">0</div>
+                            <div class="summary-change">
+                                <i class="fas fa-equals me-1"></i> Different methods
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="summary-card">
+                            <div class="summary-title">Success Rate</div>
+                            <div class="summary-value">0%</div>
+                            <div class="summary-change positive">
+                                <i class="fas fa-arrow-up me-1"></i> 0% from last period
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-card animate__animated animate__fadeInUp">
+        <div class="header-bar">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0"><i class="fas fa-credit-card me-2"></i>Payment Transactions</h4>
+                    <p class="mb-0 text-white-50">All payment records</p>
+                </div>
+                <div class="d-flex">
+                    <div class="search-box me-3">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control form-control-sm" placeholder="Search payments..." id="searchInput">
+                    </div>
+                    <button class="btn btn-light btn-sm" id="exportBtn">
+                        <i class="fas fa-file-export me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover payment-table mb-0">
+                    <thead>
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Method</th>
+                        <th>Amount</th>
+                        <th>Deposit</th>
+                        <th>Fee</th>
+                        <th>Date</th>
+                        <th>Booking</th>
+                        <th>Customer</th>
+                        <th>Member</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="paymentBody">
+                    <!-- Data will be loaded here via JavaScript -->
+                    </tbody>
+                    <tfoot>
+                    <tr class="bg-light">
+                        <td colspan="2" class="text-end fw-bold">Totals:</td>
+                        <td class="fw-bold" id="totalAmount">$0.00</td>
+                        <td class="fw-bold" id="totalDeposit">$0.00</td>
+                        <td class="fw-bold" id="totalFee">$0.00</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<div class="fab animate__animated animate__fadeInUp" id="refreshBtn">
+    <i class="fas fa-sync-alt"></i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    $(document).ready(function() {
+        loadPayment();
+
+        $('#refreshBtn').click(function() {
+            $(this).addClass('animate__rotateIn');
+            loadPayment();
+            setTimeout(() => {
+                $(this).removeClass('animate__rotateIn');
+            }, 1000);
+        });
+
+        $('#searchInput').on('keyup', function() {
+            const value = $(this).val().toLowerCase();
+            $('#paymentBody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+
+    function loadPayment() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "../../../../Second_Sem_Final_Project/Front_End_PreRental/index.html";
+            return;
+        }
+
+        const decorde = jwt_decode(token);
+        const MemberEmail = decorde.email;
+
+        $.ajax({
+            method: 'GET',
+            url: 'http://localhost:8080/api/v1/payment/getPayments',
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function(response) {
+                console.log(response);
+                if (response.code === 200) {
+                    $('#paymentBody').empty();
+                    const payments = response.data;
+
+                    // Calculate totals
+                    const totalTransactions = payments.length;
+                    const totalAmount = payments.reduce((acc, curr) => acc + curr.amount, 0);
+                    const totalDeposit = payments.reduce((acc, curr) => acc + curr.depositAmount, 0);
+                    const totalFee = payments.reduce((acc, curr) => acc + curr.serviceCharge, 0);
+                    const avgPayment = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
+                    const highestPayment = payments.reduce((max, curr) => Math.max(max, curr.amount), 0);
+
+                    const paymentMethods = [...new Set(payments.map(p => p.paymentMethod))];
+
+                    $('.total-revenue h2').text('$' + totalAmount.toFixed(2));
+                    $('.recent-transactions h2').text(totalTransactions);
+                    $('.total-fees h2').text('$' + totalFee.toFixed(2));
+                    $('.pending-payments h2').text('$' + totalDeposit.toFixed(2));
+
+                    $('.summary-card:nth-child(1) .summary-value').text('$' + avgPayment.toFixed(2));
+                    $('.summary-card:nth-child(2) .summary-value').text('$' + highestPayment.toFixed(2));
+                    $('.summary-card:nth-child(3) .summary-value').text(paymentMethods.length);
+                    $('.summary-card:nth-child(4) .summary-value').text('100%'); // Assuming all are completed
+
+                    $('#totalAmount').text('$' + totalAmount.toFixed(2));
+                    $('#totalDeposit').text('$' + totalDeposit.toFixed(2));
+                    $('#totalFee').text('$' + totalFee.toFixed(2));
+
+                    payments.forEach((payment, index) => {
+                        const paymentMethodClass = getPaymentMethodClass(payment.paymentMethod);
+                        const paymentMethodIcon = getPaymentMethodIcon(payment.paymentMethod);
+
+                        $('#paymentBody').append(`
+                            <tr class="animate__animated animate__fadeIn" style="animation-delay: ${index * 0.05}s">
+                                <td class="ps-4 fw-bold">PAY-${payment.id}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="payment-method-icon ${paymentMethodClass}">
+                                            <i class="${paymentMethodIcon}"></i>
+                                        </div>
+                                        <span>${payment.paymentMethod}</span>
+                                    </div>
+                                </td>
+                                <td class="fw-bold">$${payment.amount.toFixed(2)}</td>
+                                <td>$${payment.depositAmount.toFixed(2)}</td>
+                                <td>$${payment.serviceCharge.toFixed(2)}</td>
+                                <td>${formatDate(payment.paymentDate)}</td>
+                                <td>BK-${payment.bookingId}</td>
+                                <td>${payment.customerEmail}</td>
+                                <td>${payment.memberEmail}</td>
+                                <td>
+                                    <span class="badge badge-pill badge-success">
+                                        <span class="status-dot success"></span> Completed
+                                    </span>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+            },
+            error: function(error) {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to load payments. Please try again later.'
+                });
+            }
+        });
+    }
+
+    function getPaymentMethodClass(method) {
+        const methodMap = {
+            'Visa': 'payment-visa',
+            'Mastercard': 'payment-mastercard',
+            'PayPal': 'payment-paypal',
+            'Bank Transfer': 'payment-bank'
+        };
+        return methodMap[method] || 'bg-secondary';
+    }
+
+    function getPaymentMethodIcon(method) {
+        const iconMap = {
+            'Visa': 'fab fa-cc-visa',
+            'Mastercard': 'fab fa-cc-mastercard',
+            'PayPal': 'fab fa-cc-paypal',
+            'Bank Transfer': 'fas fa-university'
+        };
+        return iconMap[method] || 'fas fa-credit-card';
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+</script>
+</body>
+</html>

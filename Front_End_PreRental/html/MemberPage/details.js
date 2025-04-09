@@ -1,4 +1,5 @@
 let vehicleDTO;
+let bookedDates = [];
 function getQueryParam(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const plateNumber = getQueryParam('plate');
     if (plateNumber) {
         fetchVehicleDetails(plateNumber);
+        getExistBookingDate(plateNumber)
     } else {
         console.error('No plate number provided in URL');
     }
@@ -27,8 +29,8 @@ function fetchVehicleDetails(plateNumber) {
         success: function(response) {
             if (response.data) {
                 console.log(response.data);
-                populateVehicleDetails(response.data);
-                populateVehicleDetailsProfile(response.data);
+                VehicleDetails1(response.data);
+                VehicleDetails2(response.data);
                 vehicleDTO = response.data;
                 document.getElementById('total2').value =vehicleDTO.depositAmount;
                 document.getElementById('pickupLocation').value =vehicleDTO.city;
@@ -42,7 +44,7 @@ function fetchVehicleDetails(plateNumber) {
     });
 }
 
-function populateVehicleDetailsProfile(vehicle){
+function VehicleDetails1(vehicle){
     const email = vehicle.owner.email;
     $.ajax({
         url: 'http://localhost:8080/api/v1/user/getUser',
@@ -108,7 +110,7 @@ function populateVehicleDetailsProfile(vehicle){
     })
 }
 
-function populateVehicleDetails(vehicle) {
+function VehicleDetails2(vehicle) {
     const mainImageContainer = document.getElementById('mainImageContainer');
     mainImageContainer.innerHTML = `
             <img id="mainImage" src="/uploads/${vehicle.fileName}"
@@ -338,3 +340,245 @@ function bookingBtn(){
     })
 
 }
+function getExistBookingDate(plateNumber1) {
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/booking/getExistsBookingDate',
+        method: 'POST',
+        contentType: 'application/json',
+        async: true,
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
+        data: JSON.stringify({
+            plateNumber: plateNumber1,
+        }),
+        success: function(response) {
+            console.log("Existing booking dates:", response);
+            if (response.data && response.data.length > 0) {
+                bookedDates = processBookedDates(response.data);
+                initializeCustomCalendars();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching booked dates:', error);
+        }
+    })
+}
+
+function processBookedDates(bookings) {
+    const dates = [];
+    bookings.forEach(booking => {
+        const start = new Date(booking.pickupDate);
+        const end = new Date(booking.returnDate);
+        const current = new Date(start);
+
+        while (current <= end) {
+            dates.push(new Date(current));
+            current.setDate(current.getDate() + 1);
+        }
+    });
+    return dates;
+}
+
+function initializeCustomCalendars() {
+    const pickupInput = document.getElementById('pickupDate');
+    const returnInput = document.getElementById('returnDate');
+    const pickupCalendar = document.getElementById('pickupCalendar');
+    const returnCalendar = document.getElementById('returnCalendar');
+
+    // Create calendar for pickup date
+    createCalendar(pickupCalendar, pickupInput, returnInput, true);
+    // Create calendar for return date
+    createCalendar(returnCalendar, returnInput, pickupInput, false);
+
+    // Show/hide calendars on input click
+    pickupInput.addEventListener('click', () => {
+        returnCalendar.style.display = 'none';
+        pickupCalendar.style.display = pickupCalendar.style.display === 'block' ? 'none' : 'block';
+    });
+
+    returnInput.addEventListener('click', () => {
+        pickupCalendar.style.display = 'none';
+        returnCalendar.style.display = returnCalendar.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!pickupInput.contains(e.target) && !pickupCalendar.contains(e.target)) {
+            pickupCalendar.style.display = 'none';
+        }
+        if (!returnInput.contains(e.target) && !returnCalendar.contains(e.target)) {
+            returnCalendar.style.display = 'none';
+        }
+    });
+}
+
+function createCalendar(calendarEl, targetInput, otherInput, isPickup) {
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+
+    function renderCalendar() {
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        calendarEl.innerHTML = `
+            <div class="calendar-header">
+                <span class="calendar-nav" onclick="changeMonth(-1)">❮</span>
+                <h5>${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long', year: 'numeric' })}</h5>
+                <span class="calendar-nav" onclick="changeMonth(1)">❯</span>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-day-header">Sun</div>
+                <div class="calendar-day-header">Mon</div>
+                <div class="calendar-day-header">Tue</div>
+                <div class="calendar-day-header">Wed</div>
+                <div class="calendar-day-header">Thu</div>
+                <div class="calendar-day-header">Fri</div>
+                <div class="calendar-day-header">Sat</div>
+                ${renderDays(firstDay, daysInMonth)}
+            </div>
+        `;
+
+        document.querySelectorAll(`#${calendarEl.id} .calendar-day:not(.disabled):not(.booked)`).forEach(day => {
+            day.addEventListener('click', () => {
+                const dayNum = day.textContent;
+                const selectedDate = new Date(currentYear, currentMonth, dayNum);
+                targetInput.value = formatDate(selectedDate);
+                calendarEl.style.display = 'none';
+
+                if (isPickup) {
+                    document.getElementById('returnDate').min = formatDate(selectedDate);
+                }
+
+                validateSelectedDates();
+            });
+        });
+    }
+
+    function renderDays(firstDay, daysInMonth) {
+        let daysHtml = '';
+
+        for (let i = 0; i < firstDay; i++) {
+            daysHtml += '<div class="calendar-day disabled"></div>';
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const date = new Date(currentYear, currentMonth, i);
+            const isBooked = isDateBooked(date);
+            const isDisabled = isDateDisabled(date, isPickup);
+            const isSelected = targetInput.value === formatDate(date);
+
+            let classes = 'calendar-day';
+            if (isBooked) classes += ' booked';
+            if (isDisabled) classes += ' disabled';
+            if (isSelected) classes += ' selected';
+
+            daysHtml += `<div class="${classes}">${i}</div>`;
+        }
+
+        return daysHtml;
+    }
+
+    function isDateBooked(date) {
+        return bookedDates.some(bookedDate =>
+            date.getFullYear() === bookedDate.getFullYear() &&
+            date.getMonth() === bookedDate.getMonth() &&
+            date.getDate() === bookedDate.getDate()
+        );
+    }
+
+    function isDateDisabled(date, isPickup) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (date < today) return true;
+
+        if (!isPickup && otherInput.value) {
+            const pickupDate = new Date(otherInput.value);
+            return date < pickupDate;
+        }
+
+        return false;
+    }
+
+    window.changeMonth = function(offset) {
+        currentMonth += offset;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    };
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    renderCalendar();
+}
+
+function validateSelectedDates() {
+    const pickupDate = document.getElementById('pickupDate').value;
+    const returnDate = document.getElementById('returnDate').value;
+
+    if (!pickupDate || !returnDate) return;
+
+    const pickup = new Date(pickupDate);
+    const returnD = new Date(returnDate);
+    let current = new Date(pickup);
+    while (current <= returnD) {
+        const isBooked = bookedDates.some(bookedDate =>
+            current.getFullYear() === bookedDate.getFullYear() &&
+            current.getMonth() === bookedDate.getMonth() &&
+            current.getDate() === bookedDate.getDate()
+        );
+
+        if (isBooked) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Date Not Available',
+                html: 'The selected dates include a period when the vehicle is already booked.<br><br>Booked dates are marked in <span style="color:#cc0000">red</span> on the calendar.',
+                confirmButtonColor: '#0d6efd'
+            });
+
+            document.getElementById('pickupDate').value = '';
+            document.getElementById('returnDate').value = '';
+            return;
+        }
+
+        current.setDate(current.getDate() + 1);
+    }
+}
+/*
+function getExistBookingDate(plateNumber1){
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/booking/getExistsBookingDate',
+        method: 'POST',
+        contentType: 'application/json',
+        async: true,
+        headers: {
+            'Authorization': 'Bearer '+ localStorage.getItem("token")
+        },
+        data: JSON.stringify({
+            plateNumber: plateNumber1,
+        }),
+        success: function(response) {
+            console.log("ooooooooooooooooooooooooooooooofffffffffffffffffffffffffffffffffffffffffffffff",response);
+            console.log('Fetch date successful!');
+            const bookingReturnPickUpDate = response.data;
+            bookingReturnPickUpDate.forEach(pickReturnDate=> {
+                const returnDate = pickReturnDate.returnDate;
+                const pickUpdate = pickReturnDate.pickupDate;
+            })
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            console.log('Booking failed!');
+        }
+    })
+}*/

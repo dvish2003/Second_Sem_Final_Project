@@ -34,7 +34,26 @@ public class BookingController {
     }
 
 
-    @PostMapping(value = "/getMemberBookings")
+    @PostMapping(value = "/getExistsBookingDate")
+    public ResponseEntity<ResponseDTO> getExistBookings(@RequestBody VehicleDTO vehicleDTO) {
+        System.out.println("vehicle plate numbbbbbbbbbbbbberrrrrrrrr   "+vehicleDTO.getPlateNumber());
+        String plateNumber = vehicleDTO.getPlateNumber();
+        List<MemBookingDTO> bookingDTOList = bookingService.getAllBooking();
+        List<MemBookingDTO> bookingDTOList_2 = new ArrayList<>();
+        for(MemBookingDTO memBookingDTO : bookingDTOList){
+            MemBookingDTO memBookingDTO1 = new MemBookingDTO();
+            memBookingDTO1 = memBookingDTO;
+            if(plateNumber.equals(memBookingDTO1.getPlateNumber())){
+                bookingDTOList_2.add(memBookingDTO1);
+            }
+        }
+        System.out.println(bookingDTOList_2.size());
+        return ResponseEntity.ok(
+                new ResponseDTO(OK, "Booking List",bookingDTOList_2)
+        );
+    }
+
+        @PostMapping(value = "/getMemberBookings")
     public ResponseEntity<ResponseDTO> getMemberBookings(@RequestBody MemberDTO memberDTO) {
         System.out.println("Request Accepted 111111111111111111ppppppppppppppppppppppppppp");
         List<MemBookingDTO> memBookingDTOList = bookingService.getBookingByMember(memberDTO.getEmail());

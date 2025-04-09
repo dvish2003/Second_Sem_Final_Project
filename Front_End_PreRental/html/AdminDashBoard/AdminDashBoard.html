@@ -1,83 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--
-/**
-* Author: vishmeeadaya
-* Date: 3/6/25
-* Time: 7:22 PM
-* Description:
-*/
--->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Rental | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <title>PREMIUM | RENTAL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e0e7ff;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --danger: #e63946;
+            --danger-light: #fee2e2;
+            --success: #2a9d8f;
+            --success-light: #d1fae5;
+            --warning: #f4a261;
+            --warning-light: #fef3c7;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #f3f4f6;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        aside {
+            background: white;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            z-index: 10;
+        }
+
+        .toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .logo h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .logo .danger {
+            color: var(--danger);
+        }
+
+        .close {
+            cursor: pointer;
+            display: none;
+        }
+
+        .sidebar {
+            padding: 1rem 0;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            margin: 0.25rem 0;
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .sidebar a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .sidebar a.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .sidebar a.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .sidebar h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .message-count {
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+
+        main {
+            padding: 2rem;
+            background-color: #f5f7fa;
+            position: relative;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .real-time-clock {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .real-time-clock i {
+            color: var(--primary);
+        }
+
+        .analyse {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analyse > div {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .analyse > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .info h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .info h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .progresss {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .progresss svg {
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
+
+        .progresss svg circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+        }
+
+        .sales .progresss svg circle {
+            stroke: var(--success);
+            stroke-dashoffset: calc(226 - (226 * 81) / 100);
+        }
+
+        .visits .progresss svg circle {
+            stroke: var(--danger);
+            stroke-dashoffset: calc(226 - (226 * 48) / 100);
+        }
+
+        .searches .progresss svg circle {
+            stroke: var(--warning);
+            stroke-dashoffset: calc(226 - (226 * 21) / 100);
+        }
+
+        .percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .sales .percentage {
+            color: var(--success);
+        }
+
+        .visits .percentage {
+            color: var(--danger);
+        }
+
+        .searches .percentage {
+            color: var(--warning);
+        }
+
+        .new-users {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .new-users h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .user-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .user {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            background: var(--gray-light);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .user:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .user img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user h2 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .recent-orders {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .recent-orders h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(--gray-light);
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .recent-orders a {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .recent-orders a:hover {
+            text-decoration: underline;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid var(--primary-light);
+            border-right-color: var(--primary);
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-paid {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .status-cancelled {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                position: fixed;
+                left: -100%;
+                width: 240px;
+                height: 100vh;
+                transition: all 0.3s ease;
+                z-index: 100;
+            }
+
+            aside.active {
+                left: 0;
+            }
+
+            .close {
+                display: block;
+            }
+
+            #menu-btn {
+                display: block;
+            }
+
+            .analyse {
+                grid-template-columns: 1fr;
+            }
+
+            .user-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .user-list {
+                grid-template-columns: 1fr;
+            }
+
+            .real-time-clock {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
-<style>
-    .profile {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .profile .info {
-        text-align: right;
-    }
-
-    .profile .info p {
-        margin: 0;
-        font-size: 1rem;
-    }
-
-    .profile .info small {
-        font-size: 0.8rem;
-        color: #666;
-    }
-
-    .profile-photo {
-        width: 50px;
-        height: 50px; /* Adjust size as needed */
-        border-radius: 50%; /* Makes the image circular */
-        overflow: hidden;
-        border: 2px solid #ddd;
-    }
-
-    .profile-photo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Ensures the image covers the entire area */
-    }
-</style>
 <body>
 <div class="container">
-    <!-- Sidebar Section -->
     <aside>
         <div class="toggle">
             <div class="logo">
-                <img src="/images/215451966.png">
+                <img src="/images/215451966.png" alt="Premium Rental Logo">
                 <h2>Pre<span class="danger">Rental</span></h2>
             </div>
             <div class="close" id="close-btn">
-                    <span class="material-icons-sharp">
-                        close
-                    </span>
+                <span class="material-icons-sharp">close</span>
             </div>
         </div>
 
         <div class="sidebar">
             <a href="../../car1.html" class="active">
-                    <span class="material-icons-sharp">
-                        dashboard
-                    </span>
+                <span class="material-icons-sharp">dashboard</span>
                 <h3>Dashboard</h3>
             </a>
             <a href="MemberManage.html">
-                    <span class="material-icons-sharp">
-                        person_outline
-                    </span>
+                <span class="material-icons-sharp">person_outline</span>
                 <h3>Members</h3>
             </a>
             <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/AdminDashBoard/customer.html">
@@ -88,29 +538,37 @@
                 <span class="material-icons-sharp">event</span>
                 <h3>Bookings</h3>
             </a>
-            <a href="#">
+            <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/AdminDashBoard/AdminPayment.html">
                 <span class="material-icons-sharp">payments</span>
                 <h3>Payments</h3>
                 <span class="message-count">27</span>
             </a>
-            <a href="#">
+            <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/AdminDashBoard/AdminVehicle.html">
                 <span class="material-icons-sharp">directions_car</span>
                 <h3>Vehicle</h3>
             </a>
-            <a href="#">
-                    <span class="material-icons-sharp">
-                        logout
-                    </span>
+            <a href="#" id="logout-btn">
+                <span class="material-icons-sharp">logout</span>
                 <h3>Logout</h3>
             </a>
         </div>
     </aside>
-    <!-- End of Sidebar Section -->
 
-    <!-- Main Content -->
     <main>
-        <h1>Analytics</h1>
-        <!-- Analyses -->
+        <div class="dashboard-header">
+            <h1>Analytics Dashboard</h1>
+            <div class="header-actions">
+                <a  style="text-decoration: none" href="../../../../Second_Sem_Final_Project/Front_End_PreRental/car1.html" class="back-btn" id="back-btn">
+                    <span class="material-icons-sharp">arrow_back</span>
+                    Back To Home
+                </a>
+                <div class="real-time-clock">
+                    <i class="fas fa-clock"></i>
+                    <span id="clock">00:00:00</span>
+                </div>
+            </div>
+        </div>
+
         <div class="analyse">
             <div class="sales">
                 <div class="status">
@@ -132,7 +590,7 @@
                 <div class="status">
                     <div class="info">
                         <h3>Site Visit</h3>
-                        <h1>24,981</h1>na n
+                        <h1>24,981</h1>
                     </div>
                     <div class="progresss">
                         <svg>
@@ -161,191 +619,192 @@
                 </div>
             </div>
         </div>
-        <!-- End of Analyses -->
 
-        <!-- New Users Section -->
         <div class="new-users">
             <h2>New Users</h2>
             <div class="user-list">
-                <div class="user">
-                    <img src="images/profile-2.jpg">
-                    <h2>Jack</h2>
-                </div>
-                <div class="user">
-                    <img src="images/profile-3.jpg">
-                    <h2>Amir</h2>
-                </div>
-                <div class="user">
-                    <img src="images/profile-4.jpg">
-                    <h2>Ember</h2>
-                </div>
-                <div class="user">
-                    <img src="images/plus.png">
-                    <h2>More</h2>
+                <div class="loading-spinner">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden"></span>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- End of New Users Section -->
 
-        <!-- Recent Orders Table -->
         <div class="recent-orders">
-            <h2>Ongoing Bookings</h2>
+            <h2>Recent Bookings</h2>
             <table>
                 <thead>
                 <tr>
-                    <th>Car Name</th>
-                    <th>Contact Number</th>
-                    <th>Payment</th>
+                    <th>Booking ID</th>
+                    <th>Vehicle</th>
+                    <th>Date</th>
                     <th>Status</th>
-                    <th></th>
                 </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="recentBooking">
+                <tr>
+                    <td colspan="4" class="text-center">
+                        <div class="loading-spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
             </table>
-            <a href="#">Show All</a>
+            <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/AdminDashBoard/AllBookings.html">Show All</a>
         </div>
-        <!-- End of Recent Orders -->
-
     </main>
-    <!-- End of Main Content -->
-
-    <!-- Right Section -->
-    <div class="right-section">
-        <div class="nav">
-            <button id="menu-btn">
-                    <span class="material-icons-sharp">
-                        menu
-                    </span>
-            </button>
-            <div class="dark-mode">
-                    <span class="material-icons-sharp active">
-                        light_mode
-                    </span>
-                <span class="material-icons-sharp">
-                        dark_mode
-                    </span>
-            </div>
-
-            <div class="profile">
-                <div class="info">
-                    <p>Hey, <b>Guest</b></p> <!-- Default text, will be replaced by the script -->
-                    <small class="text-muted">Member</small>
-                </div>
-            </div>
-            <div class="profile-photo">
-                <img id="profilePhoto" src="images/profile-1.jpg" alt="Profile Picture">
-            </div>
-
-        </div>
-        <!-- End of Nav -->
-
-        <div class="user-profile">
-            <div class="logo">
-                <img src="images/logo.png">
-                <h2>Vishan Chathuranga</h2>
-                <p>Fullstack Web Developer</p>
-            </div>
-        </div>
-
-        <div class="reminders">
-            <div class="header">
-                <h2>Reminders</h2>
-                <span class="material-icons-sharp">
-                        notifications_none
-                    </span>
-            </div>
-
-            <div class="notification">
-                <div class="icon">
-                        <span class="material-icons-sharp">
-                            volume_up
-                        </span>
-                </div>
-                <div class="content">
-                    <div class="info">
-                        <h3>Workshop</h3>
-                        <small class="text_muted">
-                            08:00 AM - 12:00 PM
-                        </small>
-                    </div>
-                    <span class="material-icons-sharp">
-                            more_vert
-                        </span>
-                </div>
-            </div>
-
-            <div class="notification deactive">
-                <div class="icon">
-                        <span class="material-icons-sharp">
-                            edit
-                        </span>
-                </div>
-                <div class="content">
-                    <div class="info">
-                        <h3>Workshop</h3>
-                        <small class="text_muted">
-                            08:00 AM - 12:00 PM
-                        </small>
-                    </div>
-                    <span class="material-icons-sharp">
-                            more_vert
-                        </span>
-                </div>
-            </div>
-
-            <div class="notification add-reminder">
-                <div>
-                        <span class="material-icons-sharp">
-                            add
-                        </span>
-                    <h3>Add Reminder</h3>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-<script src="index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    get4LastUsers();
-    // get last add 4 users
-    function get4LastUsers(){
-        $.ajax({
-            url: "http://localhost:8080/api/v1/user/get4Users",
-            method: "GET",
-            async:true,
-            headers:{
-                'Authorization': 'Bearer '+ localStorage.getItem('token')
-            },
-            success: function(response){
-                let users = response.data;
-                console.log(users);
+    $(document).ready(function() {
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            $('#clock').text(timeString);
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
 
-                let last4Users = users.slice(-4);
+        $('#menu-btn').click(function() {
+            $('aside').toggleClass('active');
+        });
+
+        $('#close-btn').click(function() {
+            $('aside').removeClass('active');
+        });
+
+        $('#back-btn').click(function() {
+            window.history.back();
+        });
+
+        $('#logout-btn').click(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Logout?',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4361ee',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('token');
+                    window.location.href = '../../../../Second_Sem_Final_Project/Front_End_PreRental/html/login.html';
+                }
+            });
+        });
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '../../../../Second_Sem_Final_Project/Front_End_PreRental/html/login.html';
+        }
+
+        get4LastUsers();
+        loadOngoingBookings();
+    });
+
+    function get4LastUsers() {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/user/getAllUsers",
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            success: function(response) {
+                const users = response.data || [];
                 let html = '';
+                const last4Users = users.slice(-4);
+
                 last4Users.forEach(user => {
                     html += `
                         <div class="user">
-                            <img src="${user.profilePicture}">
+                            <img src="../../../../Second_Sem_Final_Project/uploads/${user.fileName || 'images/profile-1.jpg'}" alt="${user.name}">
                             <h2>${user.name}</h2>
                         </div>
                     `;
                 });
-                $('.user-list').html(html);
+
+                if (users.length > 4) {
+                    html += `
+                        <div class="user" onclick="window.location.href='../../../../Second_Sem_Final_Project/Front_End_PreRental/html/AdminDashBoard/customer.html'">
+                            <img src="/images/plus-symbol-button.png" alt="More users">
+                            <h2>More</h2>
+                        </div>
+                    `;
+                }
+
+                $('.user-list').html(html || '<p>No users found</p>');
             },
-            error: function(error){
-                console.error(error);
+            error: function() {
+                $('.user-list').html('<p>Error loading users</p>');
             }
         });
     }
 
+    function loadOngoingBookings() {
+        $.ajax({
+            method: 'GET',
+            url: 'http://localhost:8080/api/v1/booking/grtAllBookings',
+            headers: {
+                'Authorization': 'Bearer '+ localStorage.getItem('token')
+            },
+            success: function(response) {
+                const bookings = response.data || [];
+                const last5Bookings = bookings.slice(-5);
+                let html = '';
+                let payTotal = 0;
+
+                bookings.forEach(booking => {
+                    let payAmount = booking.paymentAmount || 0;
+                    payTotal += parseFloat(payAmount);
+                    $('.sales .info h1').text('$' + payTotal.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
+                })
+
+
+                        last5Bookings.forEach(booking => {
+
+
+
+                    html += `
+                        <tr>
+                            <td>${booking.id}</td>
+                            <td>${booking.plateNumber}</td>
+                            <td>${new Date(booking.pickupDate).toLocaleDateString()}</td>
+                            <td><span class="status-badge">${booking.status}</span></td>
+                        </tr>
+                    `;
+                });
+
+                $('#recentBooking').html(html || `
+                    <tr>
+                        <td colspan="4" class="text-center py-3 text-muted">
+                            No recent bookings found
+                        </td>
+                    </tr>
+                `);
+            },
+            error: function() {
+                $('#recentBooking').html(`
+                    <tr>
+                        <td colspan="4" class="text-center py-3 text-danger">
+                            Failed to load bookings
+                        </td>
+                    </tr>
+                `);
+            }
+        });
+    }
 </script>
 </body>
-
 </html>

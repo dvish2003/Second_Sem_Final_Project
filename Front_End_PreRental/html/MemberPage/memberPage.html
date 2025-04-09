@@ -664,3 +664,547 @@ function LoadAllBookingsHome(){
 </script>
 </body>
 </html>
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMBER DASHBOARD | PREMIUM RENTAL</title>
+
+    &lt;!&ndash; Google Fonts &ndash;&gt;
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+
+    &lt;!&ndash; CSS Libraries &ndash;&gt;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        :root {
+            &#45;&#45;primary: #4361ee;
+            &#45;&#45;primary-light: #e0e7ff;
+            &#45;&#45;secondary: #3f37c9;
+            &#45;&#45;accent: #4cc9f0;
+            &#45;&#45;danger: #e63946;
+            &#45;&#45;success: #2a9d8f;
+            &#45;&#45;warning: #f4a261;
+            &#45;&#45;dark: #212529;
+            &#45;&#45;light: #f8f9fa;
+            &#45;&#45;gray: #6c757d;
+            &#45;&#45;border-radius: 12px;
+            &#45;&#45;box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            &#45;&#45;transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(&#45;&#45;dark);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        aside {
+            background: white;
+            box-shadow: var(&#45;&#45;box-shadow);
+            z-index: 10;
+        }
+
+        .toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .logo h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .danger {
+            color: var(&#45;&#45;danger);
+        }
+
+        .sidebar {
+            padding: 1rem 0;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            margin: 0.25rem 0;
+            color: var(&#45;&#45;gray);
+            text-decoration: none;
+            transition: var(&#45;&#45;transition);
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: var(&#45;&#45;primary-light);
+            color: var(&#45;&#45;primary);
+        }
+
+        .sidebar a.active {
+            border-left: 4px solid var(&#45;&#45;primary);
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 2rem;
+            background-color: #f5f7fa;
+        }
+
+        main h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(&#45;&#45;dark);
+            font-weight: 700;
+        }
+
+        /* Analytics Cards */
+        .analyse {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analyse > div {
+            background: white;
+            border-radius: var(&#45;&#45;border-radius);
+            padding: 1.5rem;
+            box-shadow: var(&#45;&#45;box-shadow);
+            transition: var(&#45;&#45;transition);
+        }
+
+        .analyse > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .info h3 {
+            font-size: 1rem;
+            color: var(&#45;&#45;gray);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .info h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(&#45;&#45;dark);
+        }
+
+        /* Recent Bookings Table */
+        .recent-orders {
+            background: white;
+            border-radius: var(&#45;&#45;border-radius);
+            padding: 1.5rem;
+            box-shadow: var(&#45;&#45;box-shadow);
+        }
+
+        .recent-orders h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(&#45;&#45;dark);
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(&#45;&#45;primary-light);
+            color: var(&#45;&#45;primary);
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #e8f5e9;
+            color: var(&#45;&#45;success);
+        }
+
+        .status-pending {
+            background-color: #fff8e1;
+            color: var(&#45;&#45;warning);
+        }
+
+        .status-cancelled {
+            background-color: #ffebee;
+            color: var(&#45;&#45;danger);
+        }
+
+        /* Right Section Styles */
+        .right-section {
+            background: white;
+            box-shadow: var(&#45;&#45;box-shadow);
+            padding: 1.5rem;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile .info p {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .profile .info small {
+            font-size: 0.8rem;
+            color: var(&#45;&#45;gray);
+        }
+
+        .profile-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(&#45;&#45;primary-light);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* User Profile Card */
+        .user-profile-card {
+            background: white;
+            border-radius: var(&#45;&#45;border-radius);
+            padding: 1.5rem;
+            box-shadow: var(&#45;&#45;box-shadow);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(&#45;&#45;gray);
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1200px) {
+            .container {
+                grid-template-columns: 240px 1fr;
+            }
+            .right-section {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .analyse {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    &lt;!&ndash; Sidebar Section &ndash;&gt;
+    <aside>
+        <div class="toggle">
+            <div class="logo">
+                <img src="/images/215451966.png" alt="Premium Rental Logo">
+                <h2>Pre<span class="danger">Rental</span></h2>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <a href="../../car.html" class="active">
+                <span class="material-icons-sharp">dashboard</span>
+                <h3>Dashboard</h3>
+            </a>
+            <a href="accountSettings.html">
+                <span class="material-icons-sharp">settings</span>
+                <h3>Account Settings</h3>
+            </a>
+            <a href="bookingPage.html">
+                <span class="material-icons-sharp">event</span>
+                <h3>Bookings</h3>
+            </a>
+            <a href="payments.html">
+                <span class="material-icons-sharp">payments</span>
+                <h3>Payments</h3>
+            </a>
+            <a href="ads.html">
+                <span class="material-icons-sharp">post_add</span>
+                <h3>All Ads</h3>
+            </a>
+            <a href="postAddVehicle.html">
+                <span class="material-icons-sharp">add_box</span>
+                <h3>Post Ads</h3>
+            </a>
+        </div>
+    </aside>
+
+    &lt;!&ndash; Main Content &ndash;&gt;
+    <main>
+        <h1>Member Dashboard</h1>
+
+        &lt;!&ndash; Analytics Cards &ndash;&gt;
+        <div class="analyse">
+            <div class="sales">
+                <div class="status">
+                    <div class="info">
+                        <h3>Total Bookings</h3>
+                        <h1 id="totalBookings">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="visits">
+                <div class="status">
+                    <div class="info">
+                        <h3>Active Bookings</h3>
+                        <h1 id="activeBookings">0</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="searches">
+                <div class="status">
+                    <div class="info">
+                        <h3>Pending Payments</h3>
+                        <h1 id="pendingPayments">0</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        &lt;!&ndash; Recent Bookings Table &ndash;&gt;
+        <div class="recent-orders">
+            <h2>Recent Bookings</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Vehicle</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody id="recentBooking">
+                </tbody>
+            </table>
+            <a href="bookingPage.html">Show All</a>
+        </div>
+    </main>
+
+    &lt;!&ndash; Right Section &ndash;&gt;
+    <div class="right-section">
+        <div class="nav">
+            <div class="profile">
+                <div class="info">
+                    <p id="greeting">Hey, <b>Guest</b></p>
+                    <small class="text-muted" id="userRole">Member</small>
+                </div>
+                <div class="profile-photo">
+                    <img id="profilePhoto" src="images/profile-1.jpg" alt="Profile Picture">
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile-card">
+            <img id="profilePhoto2" src="images/profile-1.jpg" alt="Profile Photo" class="profile-avatar">
+            <h2 class="profile-name" id="userName">Loading...</h2>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-value">4.9</span>
+                    <span class="stat-label">Rating</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="totalVehicles">0</span>
+                    <span class="stat-label">Vehicles</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+&lt;!&ndash; Scripts &ndash;&gt;
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script src="MemberScript.js"></script>
+<script>
+
+    $(document).ready(function() {
+        // Load user data from JWT token
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decoded = jwt_decode(token);
+                $('#greeting b').text(decoded.name || 'User');
+                $('#userRole').text(decoded.role || 'Member');
+                $('#userName').text(decoded.name || 'User');
+                if (decoded.profilePicture) {
+                    $('#profilePhoto').attr('src', decoded.profilePicture);
+                    $('#profilePhoto2').attr('src', decoded.profilePicture);
+                }
+            } catch (e) {
+                console.error('Error decoding token:', e);
+            }
+        }
+
+        // Load dashboard data
+        loadDashboardData();
+    });
+
+    function loadDashboardData() {
+        const token = localStorage.getItem('token');
+        const decoded = jwt_decode(token);
+        const memberEmail = decoded.email;
+
+        // Load bookings
+        $.ajax({
+            method: 'POST',
+            contentType: 'application/json',
+            url: 'http://localhost:8080/api/v1/booking/getMemberBookings',
+            data: JSON.stringify({ "email": memberEmail }),
+            headers: { 'Authorization': 'Bearer '+ token },
+            success: function(response) {
+                if(response.code === 200) {
+                    const bookings = response.data;
+                    $('#totalBookings').text(bookings.length);
+
+                    // Count active bookings
+                    const activeBookings = bookings.filter(b => b.status === 'ACTIVE').length;
+                    $('#activeBookings').text(activeBookings);
+
+                    // Display recent bookings
+                    const recentBookings = bookings.slice(0, 5);
+                    let html = '';
+                    recentBookings.forEach(booking => {
+                        html += `
+                            <tr>
+                                <td>${booking.id}</td>
+                                <td>${booking.plateNumber}</td>
+                                <td>${new Date(booking.pickupDate).toLocaleDateString()}</td>
+                                <td><span class="status-badge status-${booking.status.toLowerCase()}">${booking.status}</span></td>
+                            </tr>
+                        `;
+                    });
+                    $('#recentBooking').html(html);
+                }
+            }
+        });
+
+        // Load member stats
+        $.ajax({
+            method: 'GET',
+            url: `http://localhost:8080/api/v1/member/stats?email=${memberEmail}`,
+            headers: { 'Authorization': 'Bearer '+ token },
+            success: function(response) {
+                if(response.code === 200) {
+                    $('#totalVehicles').text(response.data.vehicleCount || 0);
+                    $('#pendingPayments').text(response.data.pendingPayments || 0);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>-->

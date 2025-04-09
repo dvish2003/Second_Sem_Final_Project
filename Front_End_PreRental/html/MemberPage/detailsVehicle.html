@@ -50,6 +50,86 @@
             border-radius: 20px;
             padding: 10px 15px;
         }
+
+        /* Custom Calendar Styles */
+        .custom-datepicker {
+            position: relative;
+            width: 100%;
+        }
+        .datepicker-input {
+            background-color: white;
+            cursor: pointer;
+        }
+        .calendar-container {
+            display: none;
+            position: absolute;
+            width: 300px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            font-size: 0.8rem;
+        }
+        .calendar-day {
+            text-align: center;
+            padding: 8px 5px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        .calendar-day:hover {
+            background-color: #f0f0f0;
+        }
+        .calendar-day.booked {
+            background-color: #ffdddd;
+            color: #cc0000;
+            text-decoration: line-through;
+            cursor: not-allowed;
+        }
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        .calendar-day.selected {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .calendar-day.today {
+            font-weight: bold;
+            border: 1px solid #0d6efd;
+        }
+        .calendar-nav {
+            cursor: pointer;
+            padding: 0 10px;
+            font-size: 1.2rem;
+        }
+        .month-year {
+            font-weight: bold;
+        }
+        .date-alert {
+            font-size: 0.8rem;
+            color: #dc3545;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -75,20 +155,25 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="mb-4" id="mainImageContainer">
+                <!-- Vehicle image will be loaded here -->
             </div>
 
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3" id="titleContainer">
+                        <!-- Vehicle title will be loaded here -->
                     </div>
 
                     <div class="d-flex align-items-center mb-4" id="basicInfoContainer">
+                        <!-- Basic info will be loaded here -->
                     </div>
 
                     <div class="mb-4" id="featuresContainer">
+                        <!-- Features will be loaded here -->
                     </div>
 
                     <div class="d-flex align-items-center mb-4 owner-badge" id="ownerContainer">
+                        <!-- Owner info will be loaded here -->
                     </div>
 
                     <div class="mb-4">
@@ -101,10 +186,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <ul class="list-unstyled" id="specsLeftContainer">
+                                    <!-- Left specs will be loaded here -->
                                 </ul>
                             </div>
                             <div class="col-md-6">
                                 <ul class="list-unstyled" id="specsRightContainer">
+                                    <!-- Right specs will be loaded here -->
                                 </ul>
                             </div>
                         </div>
@@ -113,12 +200,14 @@
                     <div class="mb-4">
                         <h5 class="section-title">Rental Terms</h5>
                         <ul id="rentalTermsContainer">
+                            <!-- Rental terms will be loaded here -->
                         </ul>
                     </div>
 
                     <div>
                         <h5 class="section-title">Reviews</h5>
                         <div class="mb-4" id="reviewsContainer">
+                            <!-- Reviews will be loaded here -->
                         </div>
                         <a href="#" class="btn btn-outline-primary">See all reviews</a>
                     </div>
@@ -131,20 +220,27 @@
             <div class="card booking-card sticky-top" style="top: 20px;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3" id="priceContainer">
+                        <!-- Price will be loaded here -->
                     </div>
                     <div class="d-flex justify-content-between mb-3" id="weeklyRateContainer">
+                        <!-- Weekly rate will be loaded here -->
                     </div>
                     <div class="d-flex justify-content-between mb-4" id="monthlyRateContainer">
+                        <!-- Monthly rate will be loaded here -->
                     </div>
 
                     <form id="bookingForm">
-                        <div class="mb-3">
+                        <div class="mb-3 custom-datepicker">
                             <label for="pickupDate" class="form-label">Pickup Date</label>
-                            <input type="date" class="form-control" id="pickupDate">
+                            <input type="text" class="form-control datepicker-input" id="pickupDate" readonly placeholder="Select pickup date">
+                            <div class="calendar-container" id="pickupCalendar"></div>
+                            <div class="date-alert" id="pickupDateAlert"></div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 custom-datepicker">
                             <label for="returnDate" class="form-label">Return Date</label>
-                            <input type="date" class="form-control" id="returnDate">
+                            <input type="text" class="form-control datepicker-input" id="returnDate" readonly placeholder="Select return date">
+                            <div class="calendar-container" id="returnCalendar"></div>
+                            <div class="date-alert" id="returnDateAlert"></div>
                         </div>
                         <div class="mb-3">
                             <label for="pickupLocation" class="form-label">Pickup Location</label>
@@ -156,7 +252,7 @@
 
                         <div class="bg-light p-3 rounded mb-4">
                             <div class="form-group">
-                                <label for="rentalDays">days rental</label>
+                                <label for="rentalDays">Days rental</label>
                                 <input type="text" class="form-control" id="rentalDays" placeholder="$00.00" readonly>
                             </div>
 
@@ -165,22 +261,23 @@
                                 <input type="text" class="form-control" id="serviceFee" placeholder="$00.00" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="total" class="font-weight-bold">Booking Deposit (Its refund Vehicle Return Date)</label>
+                                <label for="total2" class="font-weight-bold">Booking Deposit (Refundable)</label>
                                 <input type="text" class="form-control font-weight-bold" id="total2" placeholder="$00.00" readonly>
-                            </div> </div>
-
-                            <hr>
-
-                            <div class="form-group">
-                                <label for="total">Total</label>
-                                <input type="text" class="form-control" id="total" placeholder="$00.00" readonly>
                             </div>
+                        </div>
 
-                            <br>
+                        <hr>
 
-                            <button type="button" class="btn btn-primary w-100 py-3 mb-3" id="payhere-payment" onclick="bookingBtn()">
-                                <i class="bi bi-check-circle"></i> Book Now
-                            </button>
+                        <div class="form-group">
+                            <label for="total">Total</label>
+                            <input type="text" class="form-control" id="total" placeholder="$00.00" readonly>
+                        </div>
+
+                        <br>
+
+                        <button type="button" class="btn btn-primary w-100 py-3 mb-3" id="payhere-payment" onclick="bookingBtn()">
+                            <i class="bi bi-check-circle"></i> Book Now
+                        </button>
                     </form>
                 </div>
             </div>
@@ -215,7 +312,7 @@
                     <li class="mb-2"><a href="#" class="text-white text-decoration-none">About</a></li>
                     <li class="mb-2"><a href="#" class="text-white text-decoration-none">Services</a></li>
                     <li class="mb-2"><a href="#" class="text-white text-decoration-none">Terms & Conditions</a></li>
-                    <li class=BHG2345"mb-2"><a href="#" class="text-white text-decoration-none">Pricing</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Pricing</a></li>
                     <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
                 </ul>
             </div>
@@ -266,14 +363,589 @@
         </div>
     </div>
 </footer>
-<script src="details.js"></script>
-<script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    let bookedDateRanges = [];
+    let vehicleDTO;
+    let pickupCalendar, returnCalendar;
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const plateNumber = getQueryParam('plate');
+        if (plateNumber) {
+            fetchVehicleDetails(plateNumber);
+            getExistBookingDate(plateNumber);
+        } else {
+            console.error('No plate number provided in URL');
+        }
+
+        pickupCalendar = new CustomCalendar('pickupDate', 'pickupCalendar', 'pickupDateAlert');
+        returnCalendar = new CustomCalendar('returnDate', 'returnCalendar', 'returnDateAlert');
+    });
+
+    // Custom Calendar Class
+    class CustomCalendar {
+        constructor(inputId, calendarId, alertId) {
+            this.input = document.getElementById(inputId);
+            this.calendar = document.getElementById(calendarId);
+            this.alert = document.getElementById(alertId);
+            this.currentMonth = new Date().getMonth();
+            this.currentYear = new Date().getFullYear();
+            this.bookedDates = [];
+
+            this.init();
+        }
+
+        init() {
+            this.today = new Date();
+            this.today.setHours(0, 0, 0, 0);
+
+            this.input.addEventListener('click', () => this.toggleCalendar());
+            document.addEventListener('click', (e) => {
+                if (!this.input.contains(e.target) && !this.calendar.contains(e.target)) {
+                    this.calendar.style.display = 'none';
+                }
+            });
+
+            this.renderCalendar();
+        }
+
+        setBookedDates(bookedRanges) {
+            this.bookedDates = [];
+            bookedRanges.forEach(range => {
+                const current = new Date(range.start);
+                while (current <= range.end) {
+                    this.bookedDates.push(new Date(current));
+                    current.setDate(current.getDate() + 1);
+                }
+            });
+            this.renderCalendar();
+        }
+
+        toggleCalendar() {
+            const isVisible = this.calendar.style.display === 'block';
+            document.querySelectorAll('.calendar-container').forEach(cal => {
+                cal.style.display = 'none';
+            });
+            this.calendar.style.display = isVisible ? 'none' : 'block';
+
+            if (!isVisible) {
+                this.renderCalendar();
+            }
+        }
+
+        renderCalendar() {
+            const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
+            const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+            const prevMonthDays = new Date(this.currentYear, this.currentMonth, 0).getDate();
+
+            let calendarHTML = `
+            <div class="calendar-header">
+                <span class="calendar-nav" onclick="document.getElementById('${this.calendar.id}').calendarInstance.changeMonth(-1)">❮</span>
+                <span class="month-year">${new Date(this.currentYear, this.currentMonth).toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+                <span class="calendar-nav" onclick="document.getElementById('${this.calendar.id}').calendarInstance.changeMonth(1)">❯</span>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-day-header">Sun</div>
+                <div class="calendar-day-header">Mon</div>
+                <div class="calendar-day-header">Tue</div>
+                <div class="calendar-day-header">Wed</div>
+                <div class="calendar-day-header">Thu</div>
+                <div class="calendar-day-header">Fri</div>
+                <div class="calendar-day-header">Sat</div>
+        `;
+
+            for (let i = firstDay - 1; i >= 0; i--) {
+                calendarHTML += `<div class="calendar-day disabled">${prevMonthDays - i}</div>`;
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const date = new Date(this.currentYear, this.currentMonth, i);
+                const isBooked = this.isDateBooked(date);
+                const isDisabled = date < this.today;
+                const isToday = date.toDateString() === this.today.toDateString();
+                const isSelected = this.input.value === this.formatDate(date);
+
+                let classes = 'calendar-day';
+                if (isBooked) classes += ' booked';
+                if (isDisabled) classes += ' disabled';
+                if (isToday) classes += ' today';
+                if (isSelected) classes += ' selected';
+
+                calendarHTML += `<div class="${classes}" onclick="document.getElementById('${this.calendar.id}').calendarInstance.selectDate(${i})">${i}</div>`;
+            }
+
+            const daysToShow = 42 - (firstDay + daysInMonth);
+            for (let i = 1; i <= daysToShow; i++) {
+                calendarHTML += `<div class="calendar-day disabled">${i}</div>`;
+            }
+
+            calendarHTML += `</div>`;
+            this.calendar.innerHTML = calendarHTML;
+            this.calendar.calendarInstance = this;
+        }
+
+        changeMonth(offset) {
+            this.currentMonth += offset;
+            if (this.currentMonth > 11) {
+                this.currentMonth = 0;
+                this.currentYear++;
+            } else if (this.currentMonth < 0) {
+                this.currentMonth = 11;
+                this.currentYear--;
+            }
+            this.renderCalendar();
+        }
+
+        selectDate(day) {
+            const selectedDate = new Date(this.currentYear, this.currentMonth, day);
+
+            if (this.isDateBooked(selectedDate)) {
+                this.showAlert('This date is already booked');
+                return;
+            }
+
+            if (selectedDate < this.today) {
+                this.showAlert('Cannot select a date in the past');
+                return;
+            }
+
+            if (this.input.id === 'returnDate') {
+                const pickupDate = new Date(document.getElementById('pickupDate').value);
+                if (!pickupDate || isNaN(pickupDate.getTime())) {
+                    this.showAlert('Please select pickup date first');
+                    return;
+                }
+                if (selectedDate <= pickupDate) {
+                    this.showAlert('Return date must be after pickup date');
+                    return;
+                }
+            }
+
+            this.input.value = this.formatDate(selectedDate);
+            this.calendar.style.display = 'none';
+            this.hideAlert();
+
+            if (this.input.id === 'pickupDate') {
+                const returnDateInput = document.getElementById('returnDate');
+                const returnDate = new Date(returnDateInput.value);
+
+                if (!returnDateInput.value || returnDate < selectedDate) {
+                    returnDateInput.value = '';
+                }
+
+                returnCalendar.setMinDate(selectedDate);
+            }
+        }
+
+        setMinDate(minDate) {
+            this.minDate = minDate;
+            this.renderCalendar();
+        }
+
+        isDateBooked(date) {
+            return this.bookedDates.some(bookedDate =>
+                date.getFullYear() === bookedDate.getFullYear() &&
+                date.getMonth() === bookedDate.getMonth() &&
+                date.getDate() === bookedDate.getDate()
+            );
+        }
+
+        formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        showAlert(message) {
+            this.alert.textContent = message;
+            this.alert.style.display = 'block';
+        }
+
+        hideAlert() {
+            this.alert.style.display = 'none';
+        }
+    }
+
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    function fetchVehicleDetails(plateNumber) {
+        localStorage.setItem('plateNumber', plateNumber);
+
+        $.ajax({
+            method: "POST",
+            url: 'http://localhost:8080/api/v1/vehicle/getVehicle',
+            contentType: "application/json",
+            async: true,
+            data: JSON.stringify({
+                plate_number: plateNumber
+            }),
+            success: function(response) {
+                if (response.data) {
+                    console.log(response.data);
+                    VehicleDetails1(response.data);
+                    VehicleDetails2(response.data);
+                    vehicleDTO = response.data;
+                    document.getElementById('total2').value = vehicleDTO.depositAmount;
+                    document.getElementById('pickupLocation').value = vehicleDTO.city;
+                } else {
+                    console.error('No vehicle data received');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching vehicle details:', error);
+            }
+        });
+    }
+
+    function getExistBookingDate(plateNumber1) {
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/booking/getExistsBookingDate',
+            method: 'POST',
+            contentType: 'application/json',
+            async: true,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
+            data: JSON.stringify({
+                plateNumber: plateNumber1,
+            }),
+            success: function(response) {
+                console.log("Existing booking dates:", response);
+                if (response.data && response.data.length > 0) {
+                    bookedDateRanges = response.data.map(booking => ({
+                        start: new Date(booking.pickupDate),
+                        end: new Date(booking.returnDate)
+                    }));
+
+                    // Update calendars with booked dates
+                    pickupCalendar.setBookedDates(bookedDateRanges);
+                    returnCalendar.setBookedDates(bookedDateRanges);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching booked dates:', error);
+            }
+        });
+    }
+
+    function VehicleDetails1(vehicle) {
+        const email = vehicle.owner.email;
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/user/getUser',
+            method: 'GET',
+            contentType: 'application/json',
+            async: true,
+            headers: {
+                'Authorization': 'Bearer '+ localStorage.getItem('token')
+            },
+            data: {
+                email: email,
+            },
+            success: function(response) {
+                const fileName = response.data.fileName;
+                const email = vehicle.owner.email;
+                const phoneNumber = vehicle.owner.contact;
+                const ownerContainer = document.getElementById('ownerContainer');
+                ownerContainer.innerHTML = `
+                <img src="/uploads/${fileName}" class="rounded-circle me-3" width="50" height="50" alt="Owner">
+                <div>
+                    <h6 class="mb-0">Rented by ${vehicle.owner?.name || 'Owner'}</h6>
+                    <small class="text-muted">Member since ${vehicle.owner?.joinDate || '2020'}</small>
+                </div>
+                <div class="ms-auto">
+                    <button class="btn btn-outline-primary btn-sm" id="contactOwnerBtn">
+                        <i class="bi bi-chat"></i> Contact
+                    </button>
+                </div>
+            `;
+                document.getElementById('contactOwnerBtn').addEventListener('click', function() {
+                    Swal.fire({
+                        title: `${vehicle.owner?.name || 'Owner'}`,
+                        html: `
+                        <div class="text-start">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-envelope-fill text-primary me-2 fs-4"></i>
+                                <a href="mailto:${email}" class="text-decoration-none">${email}</a>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone-fill text-success me-2 fs-4"></i>
+                                <a href="tel:${phoneNumber}" class="text-decoration-none">${phoneNumber}</a>
+                            </div>
+                        </div>
+                    `,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        width: '450px',
+                        padding: '2rem',
+                        customClass: {
+                            popup: 'border-radius-15',
+                            htmlContainer: 'text-start'
+                        },
+                        background: '#f8f9fa'
+                    });
+                });
+            }
+        });
+    }
+
+    function VehicleDetails2(vehicle) {
+        const mainImageContainer = document.getElementById('mainImageContainer');
+        mainImageContainer.innerHTML = `
+        <img id="mainImage" src="/uploads/${vehicle.fileName}"
+             onerror="this.onerror=null;this.src='https://via.placeholder.com/800x600?text=Vehicle+Image'"
+             class="vehicle-image" alt="${vehicle.brand} ${vehicle.model}">
+    `;
+
+        const titleContainer = document.getElementById('titleContainer');
+        titleContainer.innerHTML = `
+        <h1 class="mb-0">${vehicle.brand} ${vehicle.model} ${vehicle.year}</h1>
+        <span class="badge bg-success fs-6">
+            <i class="bi bi-star-fill"></i> 4.8 (24 reviews)
+        </span>
+    `;
+
+        const basicInfoContainer = document.getElementById('basicInfoContainer');
+        basicInfoContainer.innerHTML = `
+        <i class="bi bi-geo-alt me-2"></i>
+        <span class="me-3">${vehicle.owner?.address || 'Location not specified'}</span>
+        <i class="bi bi-car-front me-2"></i>
+        <span>${vehicle.vehicleType} • ${vehicle.color} • ${vehicle.transmission}</span>
+    `;
+
+        const featuresContainer = document.getElementById('featuresContainer');
+        let featuresHTML = '';
+        if (vehicle.airCondition) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-snow"></i> Air Conditioning</span>`;
+        if (vehicle.bluetooth) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-bluetooth"></i> Bluetooth</span>`;
+        if (vehicle.Navigation) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-signpost"></i> Navigation</span>`;
+        if (vehicle.sunroof) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-sun"></i> Sunroof</span>`;
+        if (vehicle.cruiseControl) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-speedometer2"></i> Cruise Control</span>`;
+        if (vehicle.backCamera) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-camera-video"></i> Backup Camera</span>`;
+        if (vehicle.heatedSeat) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-thermometer-sun"></i> Heated Seats</span>`;
+        if (vehicle.childSeat) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-emoji-angry"></i> Child Seat</span>`;
+        if (vehicle.tollPass) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-pass"></i> Toll Pass</span>`;
+        if (vehicle.gpsTracker) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-geo-alt"></i> GPS Tracker</span>`;
+        if (vehicle.wifiHotspot) featuresHTML += `<span class="badge bg-light text-dark feature-badge"><i class="bi bi-wifi"></i> WiFi Hotspot</span>`;
+        featuresContainer.innerHTML = featuresHTML;
+
+        document.getElementById('descriptionContainer').innerHTML = vehicle.description || 'No description provided.';
+
+        const specsLeftContainer = document.getElementById('specsLeftContainer');
+        specsLeftContainer.innerHTML = `
+        <li class="mb-2"><strong>Brand:</strong> ${vehicle.brand}</li>
+        <li class="mb-2"><strong>Model:</strong> ${vehicle.model}</li>
+        <li class="mb-2"><strong>Year:</strong> ${vehicle.year}</li>
+        <li class="mb-2"><strong>Color:</strong> ${vehicle.color}</li>
+        <li class="mb-2"><strong>Plate Number:</strong> ${vehicle.plateNumber}</li>
+    `;
+
+        const specsRightContainer = document.getElementById('specsRightContainer');
+        specsRightContainer.innerHTML = `
+        <li class="mb-2"><strong>Fuel Type:</strong> ${vehicle.fuelType}</li>
+        <li class="mb-2"><strong>Engine:</strong> ${vehicle.engineCapacity}</li>
+        <li class="mb-2"><strong>Transmission:</strong> ${vehicle.transmission}</li>
+        <li class="mb-2"><strong>Seats:</strong> ${vehicle.seatingCapacity}</li>
+        <li class="mb-2"><strong>Mileage:</strong> ${vehicle.mileage} km</li>
+    `;
+
+        const rentalTermsContainer = document.getElementById('rentalTermsContainer');
+        rentalTermsContainer.innerHTML = `
+        <li>Minimum rental period: ${vehicle.minRentalDays} day(s)</li>
+        <li>Security deposit: $${vehicle.depositAmount} (refundable)</li>
+        <li>Free cancellation up to 24 hours before pickup</li>
+        <li>Mileage limit: 200 km/day (additional $0.30/km after)</li>
+        <li>No smoking in the vehicle</li>
+        <li>Pets allowed with prior approval</li>
+        <li>Must be returned with same fuel level</li>
+    `;
+
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        reviewsContainer.innerHTML = `
+        <div class="mb-4">
+            <div class="d-flex mb-2">
+                <img src="https://source.unsplash.com/random/40x40?person" class="rounded-circle me-3" width="40" height="40" alt="Reviewer">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-0">Sarah M.</h6>
+                        <div>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                    </div>
+                    <small class="text-muted">March 15, 2023</small>
+                    <p class="mt-2 mb-0">Great car! Very clean and comfortable. Owner was easy to communicate with and flexible with pickup/dropoff times.</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+        document.getElementById('priceContainer').innerHTML = `
+        <span class="price-highlight">$${vehicle.dailyRate}/day</span>
+        <span class="badge bg-success">
+            <i class="bi bi-lightning-charge"></i> Instant Book
+        </span>
+    `;
+
+        document.getElementById('weeklyRateContainer').innerHTML = `
+        <span>Weekly rate:</span>
+        <span><strong>$${vehicle.weeklyRate}/week</strong> (save $${Math.round(vehicle.dailyRate * 7 - vehicle.weeklyRate)})</span>
+    `;
+
+        document.getElementById('monthlyRateContainer').innerHTML = `
+        <span>Monthly rate:</span>
+        <span><strong>$${vehicle.monthlyRate}/month</strong> (save $${Math.round(vehicle.dailyRate * 30 - vehicle.monthlyRate)})</span>
+    `;
+    }
+
+    function prepareBooking() {
+        const pickupDate = document.getElementById('pickupDate').value;
+        const returnDate = document.getElementById('returnDate').value;
+
+        if (!pickupDate || !returnDate) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Dates',
+                text: 'Please select both pickup and return dates',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+
+        const pickup = new Date(pickupDate);
+        const returnD = new Date(returnDate);
+        const days = Math.ceil((returnD - pickup) / (1000 * 60 * 60 * 24));
+
+        if (days <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Dates',
+                text: 'Return date must be after pickup date',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+
+        // Check if any date in the range is booked
+        let current = new Date(pickup);
+        while (current <= returnD) {
+            if (bookedDateRanges.some(range => current >= range.start && current <= range.end)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Date Not Available',
+                    html: 'The selected dates include a period when the vehicle is already booked.<br><br>Booked dates are marked in <span style="color:#cc0000">red</span> on the calendar.',
+                    confirmButtonColor: '#0d6efd'
+                });
+                return;
+            }
+            current.setDate(current.getDate() + 1);
+        }
+
+        const dayRental = vehicleDTO.dailyRate;
+        const weeklyRental = vehicleDTO.weeklyRate;
+        const monthlyRental = vehicleDTO.monthlyRate;
+
+        let daysPerFee = 0;
+        let total = 0;
+        if (days < 7) {
+            daysPerFee = days * dayRental;
+            total = daysPerFee;
+        }
+        else if (days >= 7 && days < 30) {
+            const newValue = weeklyRental / 7;
+            daysPerFee = days * newValue;
+            total = daysPerFee;
+        }
+        else if (days >= 30) {
+            const newValue2 = monthlyRental / 30;
+            daysPerFee = days * newValue2;
+            total = daysPerFee;
+        }
+
+        const serviceFee = daysPerFee * 0.1;
+        total += serviceFee;
+        total += vehicleDTO.depositAmount;
+
+        document.getElementById('rentalDays').value = daysPerFee.toFixed(2);
+        document.getElementById('serviceFee').value = serviceFee.toFixed(2);
+        document.getElementById('total').value = total.toFixed(2);
+    }
+
+    function bookingBtn() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Not Logged In',
+                text: 'Please login to make a booking',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+
+        const decodedToken = jwt_decode(token);
+        const UserEmail = decodedToken.email;
+        const totalAmount = document.getElementById('total').value;
+        const serviceFee = document.getElementById('serviceFee').value;
+        const depositCharge = document.getElementById('total2').value;
+        const startDate = document.getElementById('pickupDate').value;
+        const endDate = document.getElementById('returnDate').value;
+
+        if (!startDate || !endDate) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Dates',
+                text: 'Please select both pickup and return dates',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/transaction/transactionalSave',
+            method: 'POST',
+            contentType: 'application/json',
+            async: true,
+            headers: {
+                'Authorization': 'Bearer '+ token
+            },
+            data: JSON.stringify({
+                userEmail: UserEmail,
+                totalAmount: totalAmount,
+                serviceFee: serviceFee,
+                depositCharge: depositCharge,
+                startDate: startDate,
+                endDate: endDate,
+                vehicleDTO1: vehicleDTO
+            }),
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Booking Successful!',
+                    text: 'Your vehicle has been booked successfully',
+                    confirmButtonColor: '#0d6efd'
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Booking Failed',
+                    text: 'There was an error processing your booking. Please try again.',
+                    confirmButtonColor: '#0d6efd'
+                });
+            }
+        });
+    }
 </script>
 </body>
 </html>

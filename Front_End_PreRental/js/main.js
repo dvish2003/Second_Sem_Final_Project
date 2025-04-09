@@ -661,21 +661,7 @@ function register() {
 		success: function (response) {
 			console.log("Registration successful", response);
 			localStorage.setItem("token", response.data.token);
-			Swal.fire({
-				icon: 'success',
-				title: 'Registration Successful!',
-				text: 'Your account has been created successfully.A verification email has been sent to your email. Check your mail box ',
-				showConfirmButton: true,
-				confirmButtonText: 'Verify Email',
-			}).then((result) => {
-				if (result.isConfirmed) {
-					// Hide the register modal
-					$('#registerModal').modal('hide');
 
-					// Show the verification modal
-					$('#verificationModal').modal('show');
-				}
-			});
 			/*
                             localStorage.setItem("verifyEmail", email);
             */

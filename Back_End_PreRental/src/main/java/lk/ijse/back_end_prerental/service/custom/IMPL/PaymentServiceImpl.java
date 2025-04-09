@@ -67,6 +67,26 @@ public int savePayment(PaymentDTO paymentDTO){
         return paymentDTOTmList;
     }
     @Override
+    public List<PaymentDTOTm> getAllPayment(){
+        List<Payment> paymentList = paymentRepository.findAll();
+        List<PaymentDTOTm> paymentDTOTmList = new ArrayList<>();
+        for (Payment payment : paymentList) {
+            PaymentDTOTm paymentDTOTm = new PaymentDTOTm();
+            paymentDTOTm.setId(payment.getId());
+            paymentDTOTm.setBookingId(payment.getBooking().getId());
+            paymentDTOTm.setPaymentMethod(payment.getPaymentMethod());
+            paymentDTOTm.setAmount(payment.getAmount());
+            paymentDTOTm.setPaymentDate(payment.getPaymentDate());
+            paymentDTOTm.setCurrency(payment.getCurrency());
+            paymentDTOTm.setDepositAmount(payment.getDepositAmount());
+            paymentDTOTm.setServiceCharge(payment.getServiceCharge());
+            paymentDTOTm.setCustomerEmail(payment.getCustomerEmail());
+            paymentDTOTm.setMemberEmail(payment.getMemberEmail());
+            paymentDTOTmList.add(paymentDTOTm);
+        }
+        return paymentDTOTmList;
+    }
+    @Override
     public List<PaymentDTOTm> getPaymentDTOByCustomerEmail(String customerEmail){
         List<Payment> paymentList = paymentRepository.findAllByCustomerEmail(customerEmail);
         List<PaymentDTOTm> paymentDTOTmList = new ArrayList<>();

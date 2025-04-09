@@ -31,14 +31,18 @@ public class TransactionServiceImpl implements TransactionService {
     private BookingRepository bookingRepository;
     @Autowired
     private AdminPaymentRepository adminPaymentRepository;
+    @Autowired
+    private BookingEmailService bookingEmailService;
 @Override
 public int saveTransaction(TransactionDTO transactionDTO){
         try{
             Booking booking = bookingRepository.save(modelMapper.map(transactionDTO.getBookingDTO(),Booking.class));
+            transactionDTO.getBookingDTO().setId(booking.getId());
             if(booking != null){
                 Payment payment = modelMapper.map(transactionDTO.getPaymentDTO(),Payment.class);
                 payment.setBooking(booking);
                 paymentRepository.save(payment);
+                transactionDTO.getPaymentDTO().setId(payment.getId());
 
                 if (payment != null){
                     AdminPayment  adminPayment = modelMapper.map(transactionDTO.getAdminPaymentDTO(),AdminPayment.class);
@@ -46,6 +50,7 @@ public int saveTransaction(TransactionDTO transactionDTO){
                     adminPaymentRepository.save(adminPayment);
                     if (adminPayment != null){
                         System.out.println("payment Successfully saved");
+                        bookingEmailService.sendEmail(transactionDTO);
                         return VarList.Created;
 
                     }

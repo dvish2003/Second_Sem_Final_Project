@@ -43,6 +43,19 @@ public class PaymentController {
         return ResponseEntity.ok(
                 new ResponseDTO(OK, "Payment List",paymentDTOTmList));
     }
+    @GetMapping(value = "/getPayments")
+    public ResponseEntity<ResponseDTO> getAll() {
+        System.out.println("Payment List fetch..........................................");
+        List<PaymentDTOTm> paymentDTOTmList = paymentService.getAllPayment();
+        for (int i = 0; i < paymentDTOTmList.size(); i++) {
+            System.out.println(paymentDTOTmList.get(i).getCustomerEmail());
+            System.out.println(paymentDTOTmList.get(i).getBookingId());
+            System.out.println(paymentDTOTmList.get(i).getPaymentMethod());
+        }
+        System.out.println(paymentDTOTmList.size());
+        return ResponseEntity.ok(
+                new ResponseDTO(OK, "Payment List",paymentDTOTmList));
+    }
     @PostMapping(value = "/getPaymentsByCustomer")
     public ResponseEntity<ResponseDTO> getMemberBookings(@RequestBody PaymentDTO paymentDTO) {
         System.out.println("Payment List fetch..........................................");

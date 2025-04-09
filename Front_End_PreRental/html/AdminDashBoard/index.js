@@ -1,5 +1,5 @@
-getName();
-getProfilePicture();
+/*getName();
+getProfilePicture();*/
 
 
 const sideMenu = document.querySelector('aside');
@@ -50,10 +50,12 @@ function getProfilePicture() {
     const userEmail = decodedToken.email;
     //get password use decorded token
     console.log(userEmail);
+/*
     fetchAndSetProfilePicture(userEmail);
+*/
 
 }
-function getName() {
+/*function getName() {
     //get token in local storage
     const token = localStorage.getItem('token');
     //decoding token
@@ -94,17 +96,14 @@ function fetchAndSetProfilePicture(userEmail) {
         }
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch profile picture');
-            }
-            return response.blob();
+          const html = `
+           <div class="user-profile">
+            <div class="logo">
+                <img id="user-profile-photo" src="../../../../Second_Sem_Final_Project/uploads/${response.data.fileName}" alt="User Profile">
+                <h2 id="user-name">${response.data.name}</h2>
+                <p id="user-title">Fullstack Web Developer</p>
+            </div>
+        </div>
+          `;
         })
-        .then(blob => {
-            const imageUrl = URL.createObjectURL(blob);
-            profilePhotoElement.src = imageUrl;
-        })
-        .catch(error => {
-            console.error('Error fetching profile picture:', error);
-            profilePhotoElement.src = 'images/profile-1.jpg';
-        });
-}
+}*/

@@ -19,8 +19,5 @@ import java.util.UUID;
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findBookingsByPickupDate(Date pickupDate);
 
-/*
-    @Query(value = "select * from bookings Where member_email : memberEmail" ,nativeQuery = true)
-*/
     List<Booking> findByMemberEmail(String memberEmail);
 }
