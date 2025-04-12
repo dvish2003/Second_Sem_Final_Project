@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.util.UUID;
+
 /**
  * Author: vishmee
  * Date: 3/29/25
@@ -14,12 +17,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TransactionDTO {
-    private VehicleDTO vehicleDTO;
-    private BookingDTO bookingDTO;
-    private UserDTO userDTO;
-    private PaymentDTO paymentDTO;
-    private  PaySuDTO paySuDTO;
-    private  AdminPaymentDTO adminPaymentDTO;
-
+public class PaymentDTO2 {
+    private String cardNumber;
+    private String expiryDate;
+    private String cvv;
+    private String cardName;
+    private String userEmail;
 }

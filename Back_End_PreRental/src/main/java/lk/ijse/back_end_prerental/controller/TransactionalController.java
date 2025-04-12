@@ -1,11 +1,10 @@
 package lk.ijse.back_end_prerental.controller;
 
-import lk.ijse.back_end_prerental.Entity.Booking;
-import lk.ijse.back_end_prerental.Entity.Payment;
 import lk.ijse.back_end_prerental.dto.*;
 import lk.ijse.back_end_prerental.repo.BookingRepository;
 import lk.ijse.back_end_prerental.repo.PaymentRepository;
 import lk.ijse.back_end_prerental.service.custom.*;
+import lk.ijse.back_end_prerental.util.JwtUtil;
 import lk.ijse.back_end_prerental.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Author: vishmee
@@ -45,6 +43,8 @@ public class TransactionalController {
 
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping(value = "/transactionalSave")
     public ResponseEntity<ResponseDTO> shareAllDetails(@RequestBody FBTransactionalDTO fbTransactionalDTO) {
@@ -53,7 +53,11 @@ public class TransactionalController {
         Date pickUpDate = fbTransactionalDTO.getStartDate();
         Date returnDate = fbTransactionalDTO.getEndDate();
         double total = fbTransactionalDTO.getTotalAmount();
-        String paymentMethod = "PayHere";
+        String cardName = fbTransactionalDTO.getCardName();
+        String expiryDate = fbTransactionalDTO.getExpiryDate();
+        String cvv = fbTransactionalDTO.getCvv();
+        String cardNumber = fbTransactionalDTO.getCardNumber();
+        String paymentMethod = "Bank Card";
         String currency = "$";
         Date localDate = Date.valueOf(LocalDate.now());
         double ServiceFee = fbTransactionalDTO.getServiceFee();
@@ -68,7 +72,25 @@ public class TransactionalController {
         bookingDTO.setTotalAmount(total);
         bookingDTO.setMemberEmail(vehicleDTO.getOwner().getEmail());
         bookingDTO.setCustomer(userService.searchUser(userEmail));
+        bookingDTO.setLocalDate(localDate);
         /*================================================================================*/
+
+     PaymentDTO2 paymentDTO2 = new PaymentDTO2();
+     paymentDTO2.setCardNumber(cardNumber);
+     paymentDTO2.setCvv(cvv);
+     paymentDTO2.setExpiryDate(expiryDate);
+     paymentDTO2.setCardName(cardName);
+     paymentDTO2.setUserEmail(userEmail);
+
+     String token = jwtUtil.generateTokenPay(paymentDTO2);
+
+       PaySuDTO paySu = new PaySuDTO();
+       paySu.setToken(token);
+       paySu.setCvv(cvv);
+       paySu.setExpiryDate(expiryDate);
+       paySu.setCardName(cardName);
+       paySu.setUserEmail(userEmail);
+     /*============================================================================*/
         PaymentDTO paymentDTO = new PaymentDTO();
         paymentDTO.setAmount(total);
         paymentDTO.setCurrency(currency);
@@ -78,6 +100,8 @@ public class TransactionalController {
         paymentDTO.setServiceCharge(ServiceFee);
         paymentDTO.setMemberEmail(vehicleDTO.getOwner().getEmail());
         paymentDTO.setCustomerEmail(userEmail);
+
+
 
         /*================================================================================*/
         AdminPaymentDTO adminPaymentDTO = new AdminPaymentDTO();
@@ -89,6 +113,7 @@ public class TransactionalController {
         transactionDTO.setPaymentDTO(paymentDTO);
         transactionDTO.setAdminPaymentDTO(adminPaymentDTO);
         transactionDTO.setVehicleDTO(vehicleDTO);
+        transactionDTO.setPaySuDTO(paySu);
 
         try {
             int res = transactionService.saveTransaction(transactionDTO);

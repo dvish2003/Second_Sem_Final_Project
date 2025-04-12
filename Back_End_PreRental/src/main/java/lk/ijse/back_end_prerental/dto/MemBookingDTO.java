@@ -34,4 +34,6 @@ public class MemBookingDTO {
     private String customerContact2;
     private String vehicleFileName;
     private Date localDate;
+    private Date LocalDate2;
+
 }

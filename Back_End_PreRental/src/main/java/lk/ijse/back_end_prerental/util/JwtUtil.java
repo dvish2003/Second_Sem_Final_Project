@@ -3,6 +3,8 @@ package lk.ijse.back_end_prerental.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lk.ijse.back_end_prerental.dto.PaymentDTO;
+import lk.ijse.back_end_prerental.dto.PaymentDTO2;
 import lk.ijse.back_end_prerental.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -66,6 +68,11 @@ public class JwtUtil implements Serializable {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email",userDTO.getEmail());
         return doGenerateToken(claims, userDTO.getEmail());
+    }
+    public String generateTokenPay(PaymentDTO2 paymentDTO) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("cardNumber",paymentDTO.getCardNumber());
+        return doGenerateToken(claims, paymentDTO.getCardNumber());
     }
 
     //while creating the token -

@@ -22,6 +22,6 @@ public class WishList {
     private UUID id;
     @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String plateNumber;
 }

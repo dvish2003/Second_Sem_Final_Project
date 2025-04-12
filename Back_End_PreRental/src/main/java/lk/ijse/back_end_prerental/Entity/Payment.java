@@ -1,6 +1,7 @@
 package lk.ijse.back_end_prerental.Entity;
 
 import jakarta.persistence.*;
+import lk.ijse.back_end_prerental.dto.PaySuDTO;
 import lombok.*;
 
 import java.sql.Date;
@@ -54,4 +55,8 @@ public class Payment {
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private AdminPayment adminPayment;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private PaySuEntity paySu;
+
 }

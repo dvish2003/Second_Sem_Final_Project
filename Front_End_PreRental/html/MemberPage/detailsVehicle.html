@@ -4,146 +4,489 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Details | Rent-A-Ride</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
         .vehicle-image {
             height: 400px;
             object-fit: cover;
             width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
+
+        .vehicle-image:hover {
+            transform: scale(1.02);
+        }
+
         .thumbnail {
             height: 80px;
             width: 100%;
             object-fit: cover;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
             border: 2px solid transparent;
             transition: all 0.3s;
         }
+
         .thumbnail:hover, .thumbnail.active {
-            border-color: #0d6efd;
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
         }
+
         .feature-badge {
             margin-right: 8px;
             margin-bottom: 8px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
+
         .section-title {
-            border-bottom: 2px solid #0d6efd;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+            font-weight: 600;
         }
+
         .booking-card {
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            overflow: hidden;
+            background: white;
         }
+
         .price-highlight {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #0d6efd;
-        }
-        .owner-badge {
-            background-color: #f8f9fa;
-            border-radius: 20px;
-            padding: 10px 15px;
+            color: var(--primary-color);
         }
 
-        /* Custom Calendar Styles */
+        .owner-badge {
+            background-color: var(--light-color);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
         .custom-datepicker {
             position: relative;
             width: 100%;
         }
+
         .datepicker-input {
             background-color: white;
             cursor: pointer;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s;
         }
+
+        .datepicker-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+
         .calendar-container {
             display: none;
             position: absolute;
-            width: 300px;
+            width: 320px;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
             z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
+
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
         }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 8px;
         }
+
         .calendar-day-header {
             text-align: center;
             font-weight: bold;
-            padding: 5px;
-            font-size: 0.8rem;
+            padding: 8px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
         }
+
         .calendar-day {
             text-align: center;
-            padding: 8px 5px;
+            padding: 10px 8px;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 8px;
             font-size: 0.9rem;
+            transition: all 0.2s;
         }
+
         .calendar-day:hover {
-            background-color: #f0f0f0;
+            background-color: #f0f4ff;
         }
+
         .calendar-day.booked {
-            background-color: #ffdddd;
-            color: #cc0000;
+            background-color: #ffebee;
+            color: #f44336;
             text-decoration: line-through;
             cursor: not-allowed;
         }
+
         .calendar-day.disabled {
-            color: #ccc;
+            color: #e0e0e0;
             cursor: not-allowed;
         }
+
         .calendar-day.selected {
-            background-color: #0d6efd;
+            background-color: var(--primary-color);
             color: white;
+            font-weight: bold;
         }
+
         .calendar-day.today {
             font-weight: bold;
-            border: 1px solid #0d6efd;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
         }
+
         .calendar-nav {
             cursor: pointer;
-            padding: 0 10px;
+            padding: 0 12px;
             font-size: 1.2rem;
+            color: var(--primary-color);
+            transition: all 0.2s;
         }
+
+        .calendar-nav:hover {
+            color: var(--secondary-color);
+        }
+
         .month-year {
             font-weight: bold;
+            color: var(--dark-color);
         }
+
         .date-alert {
             font-size: 0.8rem;
-            color: #dc3545;
+            color: var(--warning-color);
             margin-top: 5px;
             display: none;
+        }
+
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            overflow-y: auto;
+        }
+
+        .payment-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+            overflow: hidden;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .payment-body {
+            padding: 25px;
+        }
+
+        .payment-footer {
+            padding: 20px;
+            background-color: var(--light-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .payment-method {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            background-color: #f8faff;
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary-color);
+            background-color: #f0f7ff;
+        }
+
+        .payment-method-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        .payment-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+
+        .payment-summary-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding-top: 15px;
+            margin-top: 15px;
+            color: var(--primary-color);
+        }
+
+        .card-input-group {
+            position: relative;
+        }
+
+        .card-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #2b2d42, #1a1a2e);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        footer a {
+            color: #adb5bd;
+            transition: all 0.2s;
+        }
+
+        footer a:hover {
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .invalid-feedback {
+            color: var(--warning-color);
+            font-size: 0.85rem;
+        }
+
+        .is-invalid {
+            border-color: var(--warning-color) !important;
+        }
+
+        .is-invalid:focus {
+            box-shadow: 0 0 0 0.25rem rgba(247, 37, 133, 0.25);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .sticky-top {
+            top: 20px;
+        }
+
+        .list-unstyled li {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+
+        .list-unstyled li:last-child {
+            border-bottom: none;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .bg-light {
+            background-color: var(--light-color) !important;
+        }
+
+        .bg-success {
+            background-color: var(--success-color) !important;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .text-success {
+            color: var(--success-color) !important;
+        }
+
+        .border-radius-15 {
+            border-radius: 15px !important;
+        }
+
+        .small {
+            font-size: 0.85rem !important;
+        }
+
+        .font-weight-bold {
+            font-weight: 600 !important;
         }
     </style>
 </head>
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <i class="bi bi-car-front"></i>PreRental - Happy Ride
+            <i class="bi bi-car-front"></i> PreRental - Happy Ride
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="d-flex">
+            <div class="d-flex ms-auto">
                 <a href="../../../Front_End_PreRental/car.html" class="btn btn-light">
                     <i class="bi bi-car-front"></i> Back to Vehicles
                 </a>
@@ -151,34 +494,50 @@
         </div>
     </div>
 </nav>
+
 <div class="container my-5">
     <div class="row">
         <div class="col-lg-8">
             <div class="mb-4" id="mainImageContainer">
-                <!-- Vehicle image will be loaded here -->
+                <img id="mainImage" src="https://via.placeholder.com/800x600?text=Loading+Vehicle+Image" class="vehicle-image" alt="Vehicle Image">
             </div>
 
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3" id="titleContainer">
-                        <!-- Vehicle title will be loaded here -->
+                        <h1 class="mb-0">Loading Vehicle...</h1>
+                        <span class="badge bg-success fs-6">
+                            <i class="bi bi-star-fill"></i> 4.8 (24 reviews)
+                        </span>
                     </div>
 
                     <div class="d-flex align-items-center mb-4" id="basicInfoContainer">
-                        <!-- Basic info will be loaded here -->
+                        <i class="bi bi-geo-alt me-2"></i>
+                        <span class="me-3">Loading location...</span>
+                        <i class="bi bi-car-front me-2"></i>
+                        <span>Loading details...</span>
                     </div>
 
                     <div class="mb-4" id="featuresContainer">
-                        <!-- Features will be loaded here -->
+                        <span class="badge bg-light text-dark feature-badge">Loading features...</span>
                     </div>
 
                     <div class="d-flex align-items-center mb-4 owner-badge" id="ownerContainer">
-                        <!-- Owner info will be loaded here -->
+                        <img src="https://via.placeholder.com/50x50?text=Owner" class="rounded-circle me-3" width="50" height="50" alt="Owner">
+                        <div>
+                            <h6 class="mb-0">Loading owner...</h6>
+                            <small class="text-muted">Member since 2020</small>
+                        </div>
+                        <div class="ms-auto">
+                            <button class="btn btn-outline-primary btn-sm" id="contactOwnerBtn">
+                                <i class="bi bi-chat"></i> Contact
+                            </button>
+                        </div>
                     </div>
 
                     <div class="mb-4">
                         <h5 class="section-title">Description</h5>
-                        <p id="descriptionContainer"></p>
+                        <p id="descriptionContainer">Loading description...</p>
                     </div>
 
                     <div class="mb-4">
@@ -186,12 +545,20 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <ul class="list-unstyled" id="specsLeftContainer">
-                                    <!-- Left specs will be loaded here -->
+                                    <li><strong>Brand:</strong> Loading...</li>
+                                    <li><strong>Model:</strong> Loading...</li>
+                                    <li><strong>Year:</strong> Loading...</li>
+                                    <li><strong>Color:</strong> Loading...</li>
+                                    <li><strong>Plate Number:</strong> Loading...</li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
                                 <ul class="list-unstyled" id="specsRightContainer">
-                                    <!-- Right specs will be loaded here -->
+                                    <li><strong>Fuel Type:</strong> Loading...</li>
+                                    <li><strong>Engine:</strong> Loading...</li>
+                                    <li><strong>Transmission:</strong> Loading...</li>
+                                    <li><strong>Seats:</strong> Loading...</li>
+                                    <li><strong>Mileage:</strong> Loading...</li>
                                 </ul>
                             </div>
                         </div>
@@ -200,14 +567,30 @@
                     <div class="mb-4">
                         <h5 class="section-title">Rental Terms</h5>
                         <ul id="rentalTermsContainer">
-                            <!-- Rental terms will be loaded here -->
+                            <li>Loading rental terms...</li>
                         </ul>
                     </div>
 
                     <div>
                         <h5 class="section-title">Reviews</h5>
                         <div class="mb-4" id="reviewsContainer">
-                            <!-- Reviews will be loaded here -->
+                            <div class="d-flex mb-2">
+                                <img src="https://via.placeholder.com/40x40?text=User" class="rounded-circle me-3" width="40" height="40" alt="Reviewer">
+                                <div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-0">Loading review...</h6>
+                                        <div>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">Loading date...</small>
+                                    <p class="mt-2 mb-0">Loading review content...</p>
+                                </div>
+                            </div>
                         </div>
                         <a href="#" class="btn btn-outline-primary">See all reviews</a>
                     </div>
@@ -215,18 +598,22 @@
             </div>
         </div>
 
-        <!-- Booking Card -->
         <div class="col-lg-4">
-            <div class="card booking-card sticky-top" style="top: 20px;">
+            <div class="card booking-card sticky-top">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3" id="priceContainer">
-                        <!-- Price will be loaded here -->
+                        <span class="price-highlight">$0/day</span>
+                        <span class="badge bg-success">
+                            <i class="bi bi-lightning-charge"></i> Instant Book
+                        </span>
                     </div>
                     <div class="d-flex justify-content-between mb-3" id="weeklyRateContainer">
-                        <!-- Weekly rate will be loaded here -->
+                        <span>Weekly rate:</span>
+                        <span><strong>$0/week</strong> (save $0)</span>
                     </div>
                     <div class="d-flex justify-content-between mb-4" id="monthlyRateContainer">
-                        <!-- Monthly rate will be loaded here -->
+                        <span>Monthly rate:</span>
+                        <span><strong>$0/month</strong> (save $0)</span>
                     </div>
 
                     <form id="bookingForm">
@@ -251,12 +638,12 @@
                         </button>
 
                         <div class="bg-light p-3 rounded mb-4">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="rentalDays">Days rental</label>
                                 <input type="text" class="form-control" id="rentalDays" placeholder="$00.00" readonly>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="serviceFee">Service fee</label>
                                 <input type="text" class="form-control" id="serviceFee" placeholder="$00.00" readonly>
                             </div>
@@ -268,19 +655,108 @@
 
                         <hr>
 
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label for="total">Total</label>
                             <input type="text" class="form-control" id="total" placeholder="$00.00" readonly>
                         </div>
 
-                        <br>
-
-                        <button type="button" class="btn btn-primary w-100 py-3 mb-3" id="payhere-payment" onclick="bookingBtn()">
+                        <button type="button" class="btn btn-primary w-100 py-3 mb-3" id="payhere-payment" onclick="openPaymentModal()">
                             <i class="bi bi-check-circle"></i> Book Now
                         </button>
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="payment-modal" id="paymentModal">
+    <div class="payment-modal-content">
+        <div class="payment-header">
+            <h5 class="mb-0">Complete Your Payment</h5>
+            <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+        </div>
+
+        <div class="payment-body">
+            <div class="mb-4">
+                <h6 class="mb-3">Order Summary</h6>
+                <div class="payment-summary-item">
+                    <span id="rentalDaysLabel">Vehicle Rental (<span id="daysDisplay">0</span> days)</span>
+                    <span id="rentalDaysValue">$0.00</span>
+                </div>
+                <div class="payment-summary-item">
+                    <span>Service Fee (10%)</span>
+                    <span id="serviceFeeValue">$0.00</span>
+                </div>
+                <div class="payment-summary-item">
+                    <span>Booking Deposit (Refundable)</span>
+                    <span id="depositAmountValue">$0.00</span>
+                </div>
+                <div class="payment-summary-item payment-summary-total">
+                    <span>Total Amount</span>
+                    <span id="totalAmountValue">$0.00</span>
+                </div>
+            </div>
+
+            <h6 class="mb-3">Select Payment Method</h6>
+
+            <div class="payment-method selected" onclick="selectPaymentMethod(this, 'card')">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-credit-card payment-method-icon"></i>
+                    <div>
+                        <h6 class="mb-1">Credit/Debit Card</h6>
+                        <p class="mb-0 text-muted small">Pay with Visa, MasterCard, or American Express</p>
+                    </div>
+                </div>
+
+                <div class="mt-3" id="cardPaymentForm">
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <div class="card-input-group">
+                            <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                            <i class="bi bi-credit-card-2-front card-icon"></i>
+                        </div>
+                        <div class="invalid-feedback" id="cardNumberError">Please enter a valid card number</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="expiryDate" class="form-label">Expiry Date</label>
+                            <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" maxlength="5" oninput="formatExpiryDate(this)">
+                            <div class="invalid-feedback" id="expiryDateError">Please enter a valid expiry date (MM/YY)</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <div class="card-input-group">
+                                <input type="text" class="form-control" id="cvv" placeholder="123" maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                <i class="bi bi-question-circle card-icon" title="3-digit code on back of card"></i>
+                            </div>
+                            <div class="invalid-feedback" id="cvvError">Please enter a valid CVV</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cardName" class="form-label">Name on Card</label>
+                        <input type="text" class="form-control" id="cardName" placeholder="John Doe">
+                        <div class="invalid-feedback" id="cardNameError">Please enter the name on card</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="termsCheck" checked>
+                <label class="form-check-label small" for="termsCheck">
+                    I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
+                </label>
+                <div class="invalid-feedback" id="termsError">You must agree to the terms and conditions</div>
+            </div>
+        </div>
+
+        <div class="payment-footer">
+            <button class="btn btn-secondary me-2" onclick="closePaymentModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="validatePayment()">
+                <i class="bi bi-lock-fill me-2"></i>Pay Now
+            </button>
         </div>
     </div>
 </div>
@@ -293,15 +769,15 @@
                     <i class="bi bi-car-front fs-1 text-success me-2"></i>
                     <h2 class="h4 mb-0">
                         <a href="#" class="text-decoration-none">
-                            <span class="text-black">PRE</span><span class="text-success">RENTAL</span>
+                            <span class="text-white">PRE</span><span class="text-success">RENTAL</span>
                         </a>
                     </h2>
                 </div>
                 <p>Your trusted platform for vehicle rentals. Find the perfect vehicle for your needs at competitive prices.</p>
                 <div class="social-icons mt-4">
-                    <a href="#" class="text-white me-3"><i class="bi bi-twitter fs-5"></i></a>
-                    <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-5"></i></a>
-                    <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="#" class="text-white me-2"><i class="bi bi-twitter fs-5"></i></a>
+                    <a href="#" class="text-white me-2"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="#" class="text-white me-2"><i class="bi bi-instagram fs-5"></i></a>
                     <a href="#" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
                 </div>
             </div>
@@ -386,7 +862,6 @@
         returnCalendar = new CustomCalendar('returnDate', 'returnCalendar', 'returnDateAlert');
     });
 
-    // Custom Calendar Class
     class CustomCalendar {
         constructor(inputId, calendarId, alertId) {
             this.input = document.getElementById(inputId);
@@ -593,6 +1068,7 @@
                     VehicleDetails1(response.data);
                     VehicleDetails2(response.data);
                     vehicleDTO = response.data;
+                    document.getElementById('depositAmountValue').textContent ='$'+ vehicleDTO.depositAmount;
                     document.getElementById('total2').value = vehicleDTO.depositAmount;
                     document.getElementById('pickupLocation').value = vehicleDTO.city;
                 } else {
@@ -625,7 +1101,6 @@
                         end: new Date(booking.returnDate)
                     }));
 
-                    // Update calendars with booked dates
                     pickupCalendar.setBookedDates(bookedDateRanges);
                     returnCalendar.setBookedDates(bookedDateRanges);
                 }
@@ -816,7 +1291,7 @@
                 icon: 'error',
                 title: 'Missing Dates',
                 text: 'Please select both pickup and return dates',
-                confirmButtonColor: '#0d6efd'
+                confirmButtonColor: '#4361ee'
             });
             return;
         }
@@ -830,12 +1305,11 @@
                 icon: 'error',
                 title: 'Invalid Dates',
                 text: 'Return date must be after pickup date',
-                confirmButtonColor: '#0d6efd'
+                confirmButtonColor: '#4361ee'
             });
             return;
         }
 
-        // Check if any date in the range is booked
         let current = new Date(pickup);
         while (current <= returnD) {
             if (bookedDateRanges.some(range => current >= range.start && current <= range.end)) {
@@ -843,7 +1317,7 @@
                     icon: 'error',
                     title: 'Date Not Available',
                     html: 'The selected dates include a period when the vehicle is already booked.<br><br>Booked dates are marked in <span style="color:#cc0000">red</span> on the calendar.',
-                    confirmButtonColor: '#0d6efd'
+                    confirmButtonColor: '#4361ee'
                 });
                 return;
             }
@@ -878,6 +1352,129 @@
         document.getElementById('rentalDays').value = daysPerFee.toFixed(2);
         document.getElementById('serviceFee').value = serviceFee.toFixed(2);
         document.getElementById('total').value = total.toFixed(2);
+        document.getElementById('daysDisplay').textContent = days;
+        document.getElementById('rentalDaysValue').textContent = '$' + daysPerFee.toFixed(2);
+        document.getElementById('serviceFeeValue').textContent = '$' + serviceFee.toFixed(2);
+        document.getElementById('totalAmountValue').textContent = '$' + total.toFixed(2);
+    }
+
+    function openPaymentModal() {
+        const total = document.getElementById('total').value;
+        if (!total || total === '$0.00' || total === '$00.00') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Incomplete Booking',
+                text: 'Please prepare your booking first by selecting dates and clicking "Prepare Booking"',
+                confirmButtonColor: '#4361ee'
+            });
+            return;
+        }
+        document.getElementById('paymentModal').style.display = 'block';
+    }
+
+    function closePaymentModal() {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    function selectPaymentMethod(element, method) {
+        document.querySelectorAll('.payment-method').forEach(el => {
+            el.classList.remove('selected');
+        });
+        element.classList.add('selected');
+    }
+
+    function formatCardNumber(input) {
+        let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        let formatted = '';
+        for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                formatted += ' ';
+            }
+            formatted += value[i];
+        }
+        input.value = formatted;
+    }
+
+    function formatExpiryDate(input) {
+        let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (value.length > 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        input.value = value;
+    }
+
+    function validatePayment() {
+        let isValid = true;
+
+        // Validate card number
+        const cardNumber = document.getElementById('cardNumber');
+        const cardNumberValue = cardNumber.value.replace(/\s+/g, '');
+        if (cardNumberValue.length < 16 || !/^\d+$/.test(cardNumberValue)) {
+            cardNumber.classList.add('is-invalid');
+            document.getElementById('cardNumberError').style.display = 'block';
+            isValid = false;
+        } else {
+            cardNumber.classList.remove('is-invalid');
+            document.getElementById('cardNumberError').style.display = 'none';
+        }
+
+        // Validate expiry date
+        const expiryDate = document.getElementById('expiryDate');
+        const expiryDateValue = expiryDate.value;
+        const [month, year] = expiryDateValue.split('/');
+        const currentYear = new Date().getFullYear() % 100;
+        const currentMonth = new Date().getMonth() + 1;
+
+        if (!expiryDateValue ||
+            !/^\d{2}\/\d{2}$/.test(expiryDateValue) ||
+            parseInt(month) < 1 ||
+            parseInt(month) > 12 ||
+            parseInt(year) < currentYear ||
+            (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+            expiryDate.classList.add('is-invalid');
+            document.getElementById('expiryDateError').style.display = 'block';
+            isValid = false;
+        } else {
+            expiryDate.classList.remove('is-invalid');
+            document.getElementById('expiryDateError').style.display = 'none';
+        }
+
+        // Validate CVV
+        const cvv = document.getElementById('cvv');
+        const cvvValue = cvv.value;
+        if (!cvvValue || cvvValue.length < 3 || !/^\d+$/.test(cvvValue)) {
+            cvv.classList.add('is-invalid');
+            document.getElementById('cvvError').style.display = 'block';
+            isValid = false;
+        } else {
+            cvv.classList.remove('is-invalid');
+            document.getElementById('cvvError').style.display = 'none';
+        }
+
+        // Validate card name
+        const cardName = document.getElementById('cardName');
+        const cardNameValue = cardName.value.trim();
+        if (!cardNameValue || cardNameValue.length < 3) {
+            cardName.classList.add('is-invalid');
+            document.getElementById('cardNameError').style.display = 'block';
+            isValid = false;
+        } else {
+            cardName.classList.remove('is-invalid');
+            document.getElementById('cardNameError').style.display = 'none';
+        }
+
+        // Validate terms checkbox
+        const termsCheck = document.getElementById('termsCheck');
+        if (!termsCheck.checked) {
+            document.getElementById('termsError').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('termsError').style.display = 'none';
+        }
+
+        if (isValid) {
+            bookingBtn();
+        }
     }
 
     function bookingBtn() {
@@ -887,7 +1484,7 @@
                 icon: 'error',
                 title: 'Not Logged In',
                 text: 'Please login to make a booking',
-                confirmButtonColor: '#0d6efd'
+                confirmButtonColor: '#4361ee'
             });
             return;
         }
@@ -895,6 +1492,10 @@
         const decodedToken = jwt_decode(token);
         const UserEmail = decodedToken.email;
         const totalAmount = document.getElementById('total').value;
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+        const cardName = document.getElementById('cardName').value;
         const serviceFee = document.getElementById('serviceFee').value;
         const depositCharge = document.getElementById('total2').value;
         const startDate = document.getElementById('pickupDate').value;
@@ -905,7 +1506,7 @@
                 icon: 'error',
                 title: 'Missing Dates',
                 text: 'Please select both pickup and return dates',
-                confirmButtonColor: '#0d6efd'
+                confirmButtonColor: '#4361ee'
             });
             return;
         }
@@ -920,6 +1521,10 @@
             },
             data: JSON.stringify({
                 userEmail: UserEmail,
+                cardNumber: cardNumber,
+                expiryDate: expiryDate,
+                cvv: cvv,
+                cardName: cardName,
                 totalAmount: totalAmount,
                 serviceFee: serviceFee,
                 depositCharge: depositCharge,
@@ -928,12 +1533,28 @@
                 vehicleDTO1: vehicleDTO
             }),
             success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Booking Successful!',
-                    text: 'Your vehicle has been booked successfully',
-                    confirmButtonColor: '#0d6efd'
-                });
+                if(response.code === 201){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Booking Successful!',
+                        html: `Your ${vehicleDTO.brand} ${vehicleDTO.model} has been booked successfully.<br><br>
+                              <strong>Booking ID:</strong> ${response.data.bookingId}<br>
+                              <strong>Pickup Date:</strong> ${startDate}<br>
+                              <strong>Return Date:</strong> ${endDate}<br>
+                              <strong>Total Paid:</strong> $${totalAmount}`,
+                        confirmButtonColor: '#4361ee'
+                    }).then(() => {
+                        closePaymentModal();
+                        window.location.href = '../../../Front_End_PreRental/car.html';
+                    });
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Booking Failed',
+                        text: 'There was an error processing your booking. Please try again.',
+                        confirmButtonColor: '#4361ee'
+                    });
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
@@ -941,7 +1562,7 @@
                     icon: 'error',
                     title: 'Booking Failed',
                     text: 'There was an error processing your booking. Please try again.',
-                    confirmButtonColor: '#0d6efd'
+                    confirmButtonColor: '#4361ee'
                 });
             }
         });

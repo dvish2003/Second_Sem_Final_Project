@@ -17,6 +17,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class FBTransactionalDTO {
     private String userEmail;
+    private String cardNumber;
+    private String expiryDate;
+    private String cvv;
+    private String cardName;
     private double totalAmount;
     private double serviceFee;
     private double depositCharge;

@@ -1,3 +1,4 @@
+/*
 let vehicleDTO;
 let bookedDates = [];
 function getQueryParam(name) {
@@ -241,7 +242,7 @@ document.getElementById('pickupDate').addEventListener('change', function() {
     document.getElementById('returnDate').min = this.value;
 });
 
-/*  date = return date - pickup date
+/!*  date = return date - pickup date
     date < 7 = day * date
     date > 7 = week / 7  = new value (new value * date)
     date > 30 = month / 30 = new value 2 (new value 2 * date)
@@ -250,7 +251,7 @@ document.getElementById('pickupDate').addEventListener('change', function() {
 
     total = dat rental + service fee
 
- */
+ *!/
 function BookingForm(vehicle){
 
 }
@@ -554,7 +555,7 @@ function validateSelectedDates() {
         current.setDate(current.getDate() + 1);
     }
 }
-/*
+/!*
 function getExistBookingDate(plateNumber1){
     $.ajax({
         url: 'http://localhost:8080/api/v1/booking/getExistsBookingDate',
@@ -581,4 +582,5 @@ function getExistBookingDate(plateNumber1){
             console.log('Booking failed!');
         }
     })
-}*/
+}*!/
+*/

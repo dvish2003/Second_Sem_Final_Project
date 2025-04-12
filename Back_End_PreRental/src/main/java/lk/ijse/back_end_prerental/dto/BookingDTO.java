@@ -30,4 +30,6 @@ public class BookingDTO {
     private UserDTO customer;
     private VehicleDTO vehicle;
     private String MemberEmail;
+    private Date LocalDate;
+
 }

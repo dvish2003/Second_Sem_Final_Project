@@ -100,6 +100,7 @@ public int saveBooking(BookingDTO bookingDTO){
             memBookingDTO.setPlateNumber(bookingDTO.getVehicle().getPlateNumber());
             memBookingDTO.setVehicleFileName(bookingDTO.getVehicle().getFileName());
             memBookingDTO.setLocalDate(localDate);
+            memBookingDTO.setLocalDate2(bookingDTO.getLocalDate());
             memBookingDTOList.add(memBookingDTO);
 
         }

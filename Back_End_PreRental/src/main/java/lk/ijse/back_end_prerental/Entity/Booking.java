@@ -42,4 +42,6 @@ public class Booking {
 
     @Column(name = "member_email")
     private String memberEmail;
+
+    private Date localDate;
 }

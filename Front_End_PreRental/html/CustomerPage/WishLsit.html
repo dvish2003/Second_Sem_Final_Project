@@ -2,16 +2,557 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist | Premium Vehicle Rentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
-/**
-* Author: vishmee
-* Date: 4/6/25
-* Time: 10:15 AM
-* Description:
-*/
+<style>
+    :root {
+        --primary-color: #3a86ff;
+        --secondary-color: #8338ec;
+        --dark-color: #212529;
+        --light-color: #f8f9fa;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+    }
+
+    .navbar-brand {
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .vehicle-card {
+        transition: all 0.3s ease;
+        height: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: none;
+    }
+
+    .vehicle-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .vehicle-img {
+        height: 220px;
+        object-fit: cover;
+        width: 100%;
+        transition: transform 0.5s ease;
+    }
+
+    .vehicle-card:hover .vehicle-img {
+        transform: scale(1.05);
+    }
+
+    .badge-rating {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--dark-color);
+        font-weight: 600;
+    }
+
+    .feature-badge {
+        background-color: rgba(58, 134, 255, 0.1);
+        color: var(--primary-color);
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    .empty-wishlist {
+        background-color: white;
+        border-radius: 12px;
+        padding: 3rem;
+        text-align: center;
+    }
+
+    .price-tag {
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .wishlist-icon {
+        color: #ff4757;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .pagination .page-link {
+        color: var(--primary-color);
+    }
+
+    .section-title {
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        border-radius: 3px;
+    }
+
+    .loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        color: var(--primary-color);
+    }
+</style>
 
 <body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-car-front-fill me-2"></i>Premium Rental
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../../../Second_Sem_Final_Project/Front_End_PreRental/car.html">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-5 fw-bold mb-3 animate__animated animate__fadeInDown">My Wishlist</h1>
+        <p class="lead mb-0 animate__animated animate__fadeInUp">Your favorite vehicles all in one place</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="vehicle-listing py-4">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h3 class="fw-bold section-title">Saved Vehicles</h3>
+                <p class="text-muted">Vehicles you've added to your wishlist</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-dark" id="refreshWishlist">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" id="clearWishlist">
+                        <i class="bi bi-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading your wishlist...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-wishlist animate__animated animate__fadeIn" id="emptyWishlist" style="display: none;">
+            <div class="mb-4">
+                <i class="bi bi-heart text-danger" style="font-size: 3rem;"></i>
+            </div>
+            <h4 class="mb-3">Your wishlist is empty</h4>
+            <p class="text-muted mb-4">Start adding vehicles to your wishlist by clicking the heart icon on any vehicle</p>
+            <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/car.html" class="btn btn-primary px-4">
+                <i class="bi bi-car-front me-2"></i>Browse Vehicles
+            </a>
+        </div>
+
+        <!-- Vehicle Grid -->
+        <div class="row g-4" id="vehicleContainer"></div>
+
+        <!-- Pagination -->
+        <div class="row mt-5" id="paginationContainer">
+            <div class="col">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+<script>
+    let currentUser = null;
+
+    $(document).ready(function() {
+        checkAuth();
+        loadUserProfile();
+        loadWishlist();
+
+        $('#refreshWishlist').click(loadWishlist);
+        $('#clearWishlist').click(clearWishlist);
+        $('#logoutBtn').click(logout);
+    });
+
+    function checkAuth() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "../../Second_Sem_Final_Project/Front_End_PreRental/html/login.html";
+            return;
+        }
+
+        try {
+            const decoded = jwt_decode(token);
+            currentUser = decoded;
+        } catch (error) {
+            console.error('Token decode error:', error);
+            localStorage.removeItem("token");
+            window.location.href = "../../Second_Sem_Final_Project/Front_End_PreRental/html/login.html";
+        }
+    }
+
+    function loadUserProfile() {
+        if (currentUser) {
+            $('#usernameNav').text(currentUser.name || currentUser.email.split('@')[0]);
+        }
+    }
+
+    function loadWishlist() {
+        $('#loadingSpinner').show();
+        $('#vehicleContainer').empty();
+        $('#emptyWishlist').hide();
+        $('#paginationContainer').hide();
+
+        if (!currentUser) return;
+
+        $.ajax({
+            method: 'POST',
+            contentType: 'application/json',
+            url: 'http://localhost:8080/api/v1/wishList/getAll',
+            async: true,
+            data: JSON.stringify({
+                "email": currentUser.email,
+            }),
+            headers: {
+                'Authorization': 'Bearer '+ localStorage.getItem("token")
+            },
+            success: function(response) {
+                $('#loadingSpinner').hide();
+
+                if (response.data && response.data.length > 0) {
+                    $('#paginationContainer').show();
+                    processWishlistItems(response.data);
+                } else {
+                    $('#emptyWishlist').show();
+                }
+            },
+            error: function(error) {
+                $('#loadingSpinner').hide();
+                $('#emptyWishlist').show();
+                console.error('Error fetching wishlist:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to load wishlist. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+
+    function processWishlistItems(wishlistItems) {
+        const vehicleContainer = $('#vehicleContainer');
+        let processedCount = 0;
+
+        wishlistItems.forEach(wishItem => {
+            const plateNumber = wishItem.plateNumber;
+
+            $.ajax({
+                method: "POST",
+                url: 'http://localhost:8080/api/v1/vehicle/getVehicle',
+                contentType: "application/json",
+                async: true,
+                data: JSON.stringify({
+                    plate_number: plateNumber
+                }),
+                success: function(response) {
+                    processedCount++;
+                    const vehicle = response.data;
+
+                    if (vehicle.active === true) {
+                        renderVehicleCard(vehicle);
+                    }
+
+                    if (processedCount === wishlistItems.length && $('#vehicleContainer').children().length === 0) {
+                        $('#emptyWishlist').show();
+                        $('#paginationContainer').hide();
+                    }
+                },
+                error: function(error) {
+                    processedCount++;
+                    console.error('Error fetching vehicle:', plateNumber, error);
+
+                    if (processedCount === wishlistItems.length && $('#vehicleContainer').children().length === 0) {
+                        $('#emptyWishlist').show();
+                        $('#paginationContainer').hide();
+                    }
+                }
+            });
+        });
+    }
+
+    function renderVehicleCard(vehicle) {
+        const allFeatures = [
+            { name: 'AC', value: vehicle.airCondition, icon: 'bi-snow' },
+            { name: 'Bluetooth', value: vehicle.bluetooth, icon: 'bi-bluetooth' },
+            { name: 'Navigation', value: vehicle.Navigation, icon: 'bi-geo-alt' },
+            { name: 'Sunroof', value: vehicle.sunroof, icon: 'bi-sun' },
+            { name: 'Cruise Control', value: vehicle.cruiseControl, icon: 'bi-speedometer2' },
+            { name: 'Backup Cam', value: vehicle.backCamera, icon: 'bi-camera' },
+            { name: 'Heated Seats', value: vehicle.heatedSeat, icon: 'bi-thermometer-sun' },
+            { name: 'Child Seat', value: vehicle.childSeat, icon: 'bi-child' },
+            { name: 'Toll Pass', value: vehicle.tollPass, icon: 'bi-credit-card' },
+            { name: 'GPS Tracker', value: vehicle.gpsTracker, icon: 'bi-pin-map' },
+            { name: 'WiFi Hotspot', value: vehicle.wifiHotspot, icon: 'bi-wifi' }
+        ].filter(feature => feature.value);
+
+        const shuffledFeatures = [...allFeatures].sort(() => 0.5 - Math.random());
+        const featuresToShow = shuffledFeatures.slice(0, Math.min(3, Math.max(1, Math.floor(Math.random() * 3) + 1)));
+
+        let featuresHTML = featuresToShow.map(feature => `
+                <span class="feature-badge me-1 mb-1">
+                    <i class="bi ${feature.icon} me-1"></i>${feature.name}
+                </span>
+            `).join('');
+
+        if (allFeatures.length > featuresToShow.length) {
+            featuresHTML += `
+                    <span class="feature-badge me-1 mb-1">
+                        +${allFeatures.length - featuresToShow.length} more
+                    </span>
+                `;
+        }
+
+        const vehicleCard = `
+            <div class="col-lg-4 col-md-6 animate__animated animate__fadeIn">
+                <div class="card vehicle-card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <div class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner rounded-top">
+                                <div class="carousel-item active">
+                                    <img src="../../../../Second_Sem_Final_Project/uploads/${vehicle.fileName}" class="d-block w-100 vehicle-img" alt="${vehicle.brand}" style="height: 220px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+                        <span class="badge badge-rating position-absolute top-0 end-0 m-2">
+                            <i class="bi bi-star-fill text-warning me-1"></i> ${(Math.random() * 0.7 + 4.2).toFixed(1)}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0 fw-bold">${vehicle.brand} ${vehicle.model} ${vehicle.year}</h5>
+                            <span class="badge ${vehicle.availableNow ? 'bg-success' : 'bg-secondary'}">
+                                ${vehicle.availableNow ? 'Available' : 'Unavailable'}
+                            </span>
+                        </div>
+                        <p class="text-muted mb-3">
+                            <small>
+                                <i class="bi bi-car-front me-1"></i>
+                                ${vehicle.vehicleType} • ${vehicle.color} • ${vehicle.transmission}
+                            </small>
+                        </p>
+
+                        <div class="features mb-3">
+                            ${featuresHTML}
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <div>
+                                <span class="h5 price-tag fw-bold">$${vehicle.dailyRate}<small class="text-muted fw-normal">/day</small></span>
+                                <span class="d-block text-muted small">$${vehicle.weeklyRate}/week</span>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFromWishlist('${vehicle.plateNumber}', this)">
+                                    <i class="bi bi-heart-fill wishlist-icon"></i>
+                                </button>
+                                <a href="../../../../Second_Sem_Final_Project/Front_End_PreRental/html/MemberPage/detailsVehicle.html?plate=${vehicle.plateNumber}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-eye me-1"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+        $('#vehicleContainer').append(vehicleCard);
+    }
+
+    function removeFromWishlist(plateNumber, button) {
+        if (!currentUser) return;
+
+        $(button).prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+        $.ajax({
+            type: 'DELETE',
+            contentType: 'application/json',
+            url: 'http://localhost:8080/api/v1/wishList/deleteWishLsit',
+            async: true,
+            data: JSON.stringify({
+                "email": currentUser.email,
+                "plateNumber": plateNumber
+            }),
+            headers: {
+                'Authorization': 'Bearer '+ localStorage.getItem("token")
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: 'Removed!',
+                    text: 'Vehicle has been removed from your wishlist.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    $(button).closest('.col-lg-4').animate({
+                        opacity: 0
+                    }, 300, function() {
+                        $(this).remove();
+
+                        if ($('#vehicleContainer').children().length === 0) {
+                            $('#emptyWishlist').show();
+                            $('#paginationContainer').hide();
+                        }
+                    });
+                });
+            },
+            error: function(error) {
+                console.error('Error removing from wishlist:', error);
+                $(button).prop('disabled', false).html('<i class="bi bi-heart-fill wishlist-icon"></i>');
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to remove vehicle from wishlist. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+
+    function clearWishlist() {
+        if (!currentUser) return;
+
+        Swal.fire({
+            title: 'Clear Wishlist?',
+            text: "Are you sure you want to remove all vehicles from your wishlist?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, clear it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#loadingSpinner').show();
+
+                $.ajax({
+                    method: 'POST',
+                    contentType: 'application/json',
+                    url: 'http://localhost:8080/api/v1/wishList/clear',
+                    async: true,
+                    data: JSON.stringify({
+                        "email": currentUser.email
+                    }),
+                    headers: {
+                        'Authorization': 'Bearer '+ localStorage.getItem("token")
+                    },
+                    success: function(response) {
+                        $('#loadingSpinner').hide();
+                        Swal.fire({
+                            title: 'Cleared!',
+                            text: 'Your wishlist has been cleared.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            $('#vehicleContainer').empty();
+                            $('#emptyWishlist').show();
+                            $('#paginationContainer').hide();
+                        });
+                    },
+                    error: function(error) {
+                        $('#loadingSpinner').hide();
+                        console.error('Error clearing wishlist:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to clear wishlist. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+</script>
 </body>
 </html>

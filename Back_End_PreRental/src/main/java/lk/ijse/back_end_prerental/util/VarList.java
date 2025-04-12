@@ -28,6 +28,7 @@ public class VarList {
     public static final int Proxy_Authentication_Required = 407;
     public static final int Request_Timeout = 408;
     public static final int Conflict = 409;
+    public static final int All_Ready_Added = 512;
     public static final int Gone = 410;
     public static final int Length_Required = 411;
     public static final int Precondition_Failed = 412;

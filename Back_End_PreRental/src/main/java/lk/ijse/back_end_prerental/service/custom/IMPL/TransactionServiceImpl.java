@@ -2,10 +2,12 @@ package lk.ijse.back_end_prerental.service.custom.IMPL;
 
 import lk.ijse.back_end_prerental.Entity.AdminPayment;
 import lk.ijse.back_end_prerental.Entity.Booking;
+import lk.ijse.back_end_prerental.Entity.PaySuEntity;
 import lk.ijse.back_end_prerental.Entity.Payment;
 import lk.ijse.back_end_prerental.dto.TransactionDTO;
 import lk.ijse.back_end_prerental.repo.AdminPaymentRepository;
 import lk.ijse.back_end_prerental.repo.BookingRepository;
+import lk.ijse.back_end_prerental.repo.PaySuRepo;
 import lk.ijse.back_end_prerental.repo.PaymentRepository;
 import lk.ijse.back_end_prerental.service.custom.TransactionService;
 import lk.ijse.back_end_prerental.util.VarList;
@@ -32,6 +34,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private AdminPaymentRepository adminPaymentRepository;
     @Autowired
+    private PaySuRepo paySuRepo;
+    @Autowired
     private BookingEmailService bookingEmailService;
 @Override
 public int saveTransaction(TransactionDTO transactionDTO){
@@ -39,7 +43,11 @@ public int saveTransaction(TransactionDTO transactionDTO){
             Booking booking = bookingRepository.save(modelMapper.map(transactionDTO.getBookingDTO(),Booking.class));
             transactionDTO.getBookingDTO().setId(booking.getId());
             if(booking != null){
+                PaySuEntity paySuEntity = modelMapper.map(transactionDTO.getPaySuDTO(),PaySuEntity.class);
+                paySuRepo.save(paySuEntity);
+
                 Payment payment = modelMapper.map(transactionDTO.getPaymentDTO(),Payment.class);
+                payment.setPaySu(paySuEntity);
                 payment.setBooking(booking);
                 paymentRepository.save(payment);
                 transactionDTO.getPaymentDTO().setId(payment.getId());

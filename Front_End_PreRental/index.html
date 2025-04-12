@@ -1050,109 +1050,122 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    loadAllMemberBookingForUpdate2();
+    function loadAllMemberBookingForUpdate2(){
+        const token = localStorage.getItem('token');
+        const decord = jwt_decode(token);
+        const memberEmail = decord.email;
 
-   /* function register() {
-        // Prevent form submission if it's inside a form
-        event.preventDefault();
-
-        let Firstname = document.getElementById("registerFirstName").value;
-        let Secondname = document.getElementById("registerLastName").value;
-        let name = Firstname + " " + Secondname;
-        let email = document.getElementById("registerEmail").value.toLowerCase();
-        let password = document.getElementById("registerPassword").value;
-        let confirmPassword = document.getElementById("confirmPassword").value;
-
-        // Validations
-        if (!validateEmail(email)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Email',
-                text: 'Please enter a valid email address.',
-                showConfirmButton: true
-            });
-            return false;
-        }
-
-        if (!validatePassword(password)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Password',
-                text: 'Password must be at least 6 characters long.',
-                showConfirmButton: true
-            });
-            return false;
-        }
-
-        if (password !== confirmPassword) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Password Mismatch',
-                text: 'Passwords do not match. Please try again.',
-                showConfirmButton: true
-            });
-            return false;
-        }
-
+        console.log("Member Email:", memberEmail)
         $.ajax({
-            method: 'POST',
-            contentType: 'application/json',
-            url: 'http://localhost:8080/api/v1/user/register',
+            method: 'GET',
+            url: 'http://localhost:8080/api/v1/booking/grtAllBookings',
             async: true,
-            data: JSON.stringify({
-                "email": email,
-                "name": name,
-                "password": password,
-                "role": "user"
-            }),
-            success: function (response) {
-                console.log("Registration successful", response);
-                localStorage.setItem("token", response.data.token);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Registration Successful!',
-                    text: 'Your account has been created successfully.A verification email has been sent to your email. Check your mail box ',
-                    showConfirmButton: true,
-                    confirmButtonText: 'Verify Email',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Hide the register modal
-                        $('#registerModal').modal('hide');
-
-                        // Show the verification modal
-                        $('#verificationModal').modal('show');
-                    }
-                });
-/!*
-                localStorage.setItem("verifyEmail", email);
-*!/
+            headers: {
+                'Authorization': 'Bearer '+ token,
             },
-            error: function (xhr, status, error) {
-                console.error("Registration failed", xhr.responseText);
-                let errorMsg = "Registration failed. Please try again.";
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMsg = xhr.responseJSON.message;
+            success: function (response) {
+                console.log("All member bookings loaded successfully", response);
+                if (response.code === 200){
+                    response.data.forEach(booking => {
+                        let bookingId = booking.id;
+                        let customerEmail = booking.customerEmail;
+                        let vehiclePLateNumber = booking.plateNumber;
+                        let startDate = booking.pickupDate;
+                        let endDate = booking.returnDate;
+                        let status = booking.status;
+                        let customerFileName2 = booking.customerFileName;
+                        let vehicleFileName2 = booking.vehicleFileName;
+                        let customerName2 = booking.customerName;
+                        let customerContactPrimary = booking.customerContact;
+                        let customerContactSecondory = booking.customerContact2;
+                        let vehicleName;
+                        let amount = booking.paymentAmount;
+                        let LocalDate = booking.localDate;
+
+
+                        if( startDate <= LocalDate   && LocalDate <= endDate ){
+                            let booked = "Ongoing Booking";
+                            $.ajax({
+                                method: 'PUT',
+                                contentType: 'application/json',
+                                url: 'http://localhost:8080/api/v1/booking/updateBooking',
+                                async: true,
+                                data: JSON.stringify({
+                                    "id": bookingId,
+                                    "status": booked,
+                                }),
+                                headers: {
+                                    'Authorization': 'Bearer '+ token,
+                                },
+                                success: function (response) {
+                                    console.log("Booking updated successfully", response);
+                                    if (response.code === 201){
+                                        console.log("Booking updated successfully");
+                                    } else {
+                                        console.error("Failed to update booking");
+                                    }
+                                }
+
+                            })
+                        }
+                        if(LocalDate >= endDate ){
+                            console.log("Expire Booking");
+                            let booked = "Expire Booking";
+                            $.ajax({
+                                method: 'PUT',
+                                contentType: 'application/json',
+                                url: 'http://localhost:8080/api/v1/booking/updateBooking',
+                                async: true,
+                                data: JSON.stringify({
+                                    "id": bookingId,
+                                    "status": booked,
+                                }),
+                                headers: {
+                                    'Authorization': 'Bearer '+ token,
+                                },
+                                success: function (response) {
+                                    console.log("Booking updated successfully", response);
+                                    if (response.code === 201){
+                                        console.log("Booking updated successfully");
+                                    } else {
+                                        console.error("Failed to update booking");
+                                    }
+                                }
+                            })
+                        }
+
+                        if (startDate > LocalDate) {
+                            console.log("Pending Booking");
+                            let booked = "Pending Booking";
+                            $.ajax({
+                                method: 'PUT',
+                                contentType: 'application/json',
+                                url: 'http://localhost:8080/api/v1/booking/updateBooking',
+                                async: true,
+                                data: JSON.stringify({
+                                    "id": bookingId,
+                                    "status": booked,
+                                }),
+                                headers: {
+                                    'Authorization': 'Bearer '+ token,
+                                },
+                                success: function (response) {
+                                    console.log("Booking updated successfully", response);
+                                    if (response.code === 201){
+                                        console.log("Booking updated successfully");
+                                    } else {
+                                        console.error("Failed to update booking");
+                                    }
+                                }
+                            })
+                        }
+
+                    })
                 }
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Registration Failed',
-                    text: errorMsg,
-                    showConfirmButton: true
-                });
             }
-        });
+        })
     }
-
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    function validatePassword(password) {
-        return password.length >= 6;
-    }*/
-
-
-
 </script>
 </body>
 </html>

@@ -399,6 +399,7 @@
 		  <div class="collapse navbar-collapse" id="ftco-nav">
 			  <ul class="navbar-nav ml-auto">
 				  <li class="nav-item"><a href="#" class="nav-link" id="homeLink">Home</a></li>
+				  <li class="nav-item"><a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/CustomerPage/WishLsit.html" class="nav-link" id="homeLink">WishList</a></li>
 				  <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" id="filterLink" data-target="#filterModal">Filter</a></li>
 				  <li class="nav-item"><a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/CustomerPage/customerBooking.html" class="nav-link" id="bbokingLink">Bookings</a></li>
 				  <li class="nav-item"><a class="nav-link" id="memberLink">Member</a></li>
@@ -752,6 +753,9 @@
 	loadAllMemberBookingForUpdate();
 
 	function getAllVehicle() {
+		const token = localStorage.getItem("token");
+		const decorde = jwt_decode(token);
+		const userEmail = decorde.email;
 		$.ajax({
 			method: 'GET',
 			url: 'http://localhost:8080/api/v1/vehicle/getAllVehicle',
@@ -848,10 +852,12 @@
                                         <span class="d-block text-muted small">$${vehicle.weeklyRate}/week</span>
                                     </div>
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="bi bi-heart"></i></a>
-                                       <a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/MemberPage/detailsVehicle.html?plate=${vehicle.plateNumber}" class="btn btn-sm btn-primary">
-    <i class="bi bi-eye me-1"></i> View
-    </a>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addToWishList('${vehicle.plateNumber}')">
+                    <i class="bi bi-heart"></i>
+                </button>
+                <a href="../../Second_Sem_Final_Project/Front_End_PreRental/html/MemberPage/detailsVehicle.html?plate=${vehicle.plateNumber}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-eye me-1"></i> View
+                </a>
                                     </div>
                                 </div>
                             </div>
@@ -878,13 +884,298 @@
 			}
 		});
 	}
+	function addToWishList(plateNumber) {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			Swal.fire({
+				title: 'Login Required',
+				text: 'Please login to add vehicles to your wishlist',
+				icon: 'warning',
+				confirmButtonText: 'OK'
+			});
+			return;
+		}
+
+		const loadingSwal = Swal.fire({
+			title: 'Adding to Wishlist',
+			html: 'Please wait...',
+			allowOutsideClick: false,
+			didOpen: () => Swal.showLoading()
+		});
+
+		try {
+			const decoded = jwt_decode(token);
+			const userEmail = decoded.email;
+
+			$.ajax({
+				url: 'http://localhost:8080/api/v1/wishList/saveWishLsit',
+				method: 'POST',
+				contentType: 'application/json',
+				headers: {
+					'Authorization': 'Bearer ' + token
+				},
+				data: JSON.stringify({
+					email: userEmail,
+					plateNumber: plateNumber
+				}),
+				success: function(response) {
+					loadingSwal.close();
+
+					if (response.code === 201) {
+						Swal.fire({
+							title: 'Success!',
+							text: 'Vehicle added to your wishlist',
+							icon: 'success',
+							confirmButtonText: 'OK'
+						});
+					} else if (response.code === 409) {
+						Swal.fire({
+							title: 'Already Added',
+							text: 'This vehicle is already in your wishlist',
+							icon: 'info',
+							confirmButtonText: 'OK'
+						});
+					} else {
+						Swal.fire({
+							title: 'Error!',
+							text: response.message || 'Failed to add to wishlist',
+							icon: 'error',
+							confirmButtonText: 'OK'
+						});
+					}
+				},
+				error: function(xhr) {
+					loadingSwal.close();
+					const errorMsg = xhr.responseJSON?.message || 'Failed to add vehicle to wishlist';
+					Swal.fire({
+						title: 'Error!',
+						text: errorMsg,
+						icon: 'error',
+						confirmButtonText: 'OK'
+					});
+				}
+			});
+		} catch (error) {
+			loadingSwal.close();
+			Swal.fire({
+				title: 'Error!',
+				text: 'An unexpected error occurred',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			});
+			console.error('Error processing wishlist:', error);
+		}
+	}
+/*	function addToWishList(plateNumber) {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			Swal.fire({
+				title: 'Login Required',
+				text: 'Please login to add vehicles to your wishlist',
+				icon: 'warning',
+				confirmButtonText: 'OK'
+			}).then(() => {
+				window.location.href = '/login';
+			});
+			return;
+		}
+
+		try {
+			const decoded = jwt_decode(token);
+			const userEmail = decoded.email;
+
+			Swal.fire({
+				title: 'Adding to Wishlist',
+				html: 'Please wait...',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading();
+				}
+			});
+
+			$.ajax({
+				url: 'http://localhost:8080/api/v1/wishList/saveWishList',
+				method: 'POST',
+				contentType: 'application/json',
+				async: true,
+				headers: {
+					'Authorization': 'Bearer ' + token
+				},
+				data: JSON.stringify({
+					email: userEmail,
+					plateNumber: plateNumber
+				}),
+				success: function(response) {
+					Swal.close();
+
+					if (response.code === 200) {
+						Swal.fire({
+							title: 'Success!',
+							text: 'Vehicle added to your wishlist',
+							icon: 'success',
+							confirmButtonText: 'OK'
+						});
+					} else if (response.code === 409) {
+						Swal.fire({
+							title: 'Already Added',
+							text: 'This vehicle is already in your wishlist',
+							icon: 'info',
+							confirmButtonText: 'OK'
+						});
+					} else {
+						throw new Error(response.message || 'Failed to add to wishlist');
+					}
+				},
+				error: function(xhr, status, error) {
+					Swal.close();
+
+					let errorMessage = 'Failed to add vehicle to wishlist';
+					if (xhr.responseJSON && xhr.responseJSON.message) {
+						errorMessage = xhr.responseJSON.message;
+					}
+
+					Swal.fire({
+						title: 'Error!',
+						text: errorMessage,
+						icon: 'error',
+						confirmButtonText: 'OK'
+					});
+				}
+			});
+		} catch (error) {
+			Swal.close();
+			console.error('Error processing wishlist:', error);
+			Swal.fire({
+				title: 'Error!',
+				text: 'An unexpected error occurred',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			});
+		}
+	}*/
+/*
+	function addToWishList(plateNumber) {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			Swal.fire({
+				title: 'Login Required',
+				text: 'Please login to add vehicles to your wishlist',
+				icon: 'warning',
+				confirmButtonText: 'OK'
+			}).then(() => {
+				window.location.href = 'index.html';
+			});
+			return;
+		}
+
+		try {
+			const decoded = jwt_decode(token);
+			const userEmail = decoded.email;
+
+			Swal.fire({
+				title: 'Adding to Wishlist',
+				html: 'Please wait...',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading();
+				}
+			});
+
+			$.ajax({
+				url: 'http://localhost:8080/api/v1/wishList/saveWishList',
+				method: 'POST',
+				contentType: 'application/json',
+				async: true,
+				headers: {
+					'Authorization': 'Bearer ' + token
+				},
+				data: JSON.stringify({
+					email: userEmail,
+					plateNumber: plateNumber
+				}),
+				success: function(response) {
+					Swal.close();
+
+					if (response.code === 201) {
+						Swal.fire({
+							title: 'Success!',
+							text: 'Vehicle added to your wishlist',
+							icon: 'success',
+							confirmButtonText: 'OK'
+						});
+					} else if (response.code === 409) {
+						Swal.fire({
+							title: 'Already Added',
+							text: 'This vehicle is already in your wishlist',
+							icon: 'info',
+							confirmButtonText: 'OK'
+						});
+					} else {
+						throw new Error(response.message || 'Failed to add to wishlist');
+					}
+				},
+				error: function(xhr, status, error) {
+					Swal.close();
+
+					let errorMessage = 'Failed to add vehicle to wishlist';
+					if (xhr.responseJSON && xhr.responseJSON.message) {
+						errorMessage = xhr.responseJSON.message;
+					}
+
+					Swal.fire({
+						title: 'Error!',
+						text: errorMessage,
+						icon: 'error',
+						confirmButtonText: 'OK'
+					});
+				}
+			});
+		} catch (error) {
+			Swal.close();
+			console.error('Error processing wishlist:', error);
+			Swal.fire({
+				title: 'Error!',
+				text: 'An unexpected error occurred',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			});
+		}
+	}
+*/
+/*	function addToWishList(plateNumber){
+		const token = localStorage.getItem("token");
+		const decorde = jwt_decode(token);
+		const userEmail = decorde.email;
+$.ajax({
+	url: 'http://localhost:8080/api/v1/wishList/saveWishLsit',
+	method: 'POST',
+	contentType: 'application/json',
+	async: true,
+	headers: {
+		'Authorization': 'Bearer ' + localStorage.getItem("token")
+	},
+	data: JSON.stringify({
+		email:userEmail,
+		plateNumber: plateNumber
+	}),
+	success: function(response) {
+		//add saval fire
+	},
+	error: function(xhr, status, error) {
+		console.error('Error fetching booked dates:', error);
+	}
+})
+	}*/
+
+
 
 	function loadAllMemberBookingForUpdate(){
 		const token = localStorage.getItem('token');
 		const decord = jwt_decode(token);
-		const memberEmail = decord.email;
 
-		console.log("Member Email:", memberEmail)
 		$.ajax({
 			method: 'GET',
 			url: 'http://localhost:8080/api/v1/booking/grtAllBookings',
