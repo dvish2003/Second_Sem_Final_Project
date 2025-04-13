@@ -519,7 +519,6 @@ function verifyTheAccount() {
 
 	console.log("email ",email);
 
-	// Get the OTP code from the input field
 	const code = document.getElementById("otp").value;
 	// Send verification request to the server
 	$.ajax({
@@ -656,31 +655,67 @@ function register() {
 			"email": email,
 			"name": name,
 			"password": password,
-			"role": "admin"
+			"role": "user"
 		}),
 		success: function (response) {
 			console.log("Registration successful", response);
 			localStorage.setItem("token", response.data.token);
 
-			/*
-                            localStorage.setItem("verifyEmail", email);
-            */
+			Swal.fire({
+				icon: 'success',
+				title: 'Registration Successful',
+				html: `
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 15px;">Your account has been created successfully!</p>
+                    <p style="font-weight: 500; color: #2c3e50;">Please verify your email address to proceed.</p>
+                </div>
+            `,
+				showConfirmButton: true,
+				confirmButtonText: 'Continue to Verification',
+				confirmButtonColor: '#3085d6',
+				backdrop: `
+                rgba(52, 152, 219, 0.1)
+                url("/images/nyan-cat.gif")
+                center top
+                no-repeat
+            `,
+				timer: 3000,
+				timerProgressBar: true,
+				willClose: () => {
+					$('#registerModal').modal('hide');
+					$('#verificationModal').modal('show');
+				}
+			});
 		},
 		error: function (xhr, status, error) {
 			console.error("Registration failed", xhr.responseText);
-			let errorMsg = "Registration failed. Please try again.";
+			let errorMsg = "An unexpected error occurred. Please try again later.";
 			if (xhr.responseJSON && xhr.responseJSON.message) {
 				errorMsg = xhr.responseJSON.message;
 			}
+
 			Swal.fire({
 				icon: 'error',
-				title: 'Registration Failed',
-				text: errorMsg,
-				showConfirmButton: true
+				title: '<span style="color: #e74c3c">Registration Failed</span>',
+				html: `
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 15px;">${errorMsg}</p>
+                    <p style="font-size: 14px; color: #7f8c8d;">If the problem persists, contact our support team.</p>
+                </div>
+            `,
+				showConfirmButton: true,
+				confirmButtonText: 'Try Again',
+				confirmButtonColor: '#e74c3c',
+				showCancelButton: true,
+				cancelButtonText: 'Close',
+				cancelButtonColor: '#95a5a6',
+				focusConfirm: false,
+				customClass: {
+					popup: 'animated pulse'
+				}
 			});
 		}
-	});
-}
+	});}
 
 function validateEmail(email) {
 	const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

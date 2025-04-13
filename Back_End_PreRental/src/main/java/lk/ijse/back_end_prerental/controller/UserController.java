@@ -14,6 +14,7 @@ import lk.ijse.back_end_prerental.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -121,7 +123,6 @@ public class UserController {
     @PutMapping(value = "/updateUser2")
     public ResponseEntity<ResponseDTO> updateUser2(@RequestParam String email, @RequestBody @Valid UserDTO userDTO) {
         try{
-            // update user email or Password then create new token
             int res = userService.updateUser2(userDTO);
             switch (res) {
                 case VarList.Created -> {
@@ -153,17 +154,17 @@ public class UserController {
         System.out.println("Update User: " + userDTO.getEmail());
 
         try {
-            if (!file.isEmpty()) {
-                Path filePath = Paths.get(System.getProperty("user.dir") + "/uploads/" + file.getOriginalFilename());
-                try {
-                    Files.copy(file.getInputStream(), filePath);
-                    System.out.println("File uploaded successfully.");
-                } catch (IOException e) {
-                    System.out.println("Error uploading file: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body(new ResponseDTO(VarList.Internal_Server_Error, "Error uploading file", null));
+            if (file != null && !file.isEmpty()) {
+                Path uploadDir = Paths.get(System.getProperty("user.dir") + "/uploads/");
+                if (!Files.exists(uploadDir)) {
+                    Files.createDirectories(uploadDir);
                 }
-                userDTO.setProfilePicture(file.getOriginalFilename());
+
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                Path filePath = uploadDir.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                userDTO.setProfilePicture(fileName);
             }
             //get local date
             Date localDate = Date.valueOf(LocalDate.now());

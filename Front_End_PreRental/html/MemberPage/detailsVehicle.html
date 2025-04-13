@@ -1451,7 +1451,6 @@
             document.getElementById('cvvError').style.display = 'none';
         }
 
-        // Validate card name
         const cardName = document.getElementById('cardName');
         const cardNameValue = cardName.value.trim();
         if (!cardNameValue || cardNameValue.length < 3) {
@@ -1463,7 +1462,6 @@
             document.getElementById('cardNameError').style.display = 'none';
         }
 
-        // Validate terms checkbox
         const termsCheck = document.getElementById('termsCheck');
         if (!termsCheck.checked) {
             document.getElementById('termsError').style.display = 'block';
@@ -1538,7 +1536,6 @@
                         icon: 'success',
                         title: 'Booking Successful!',
                         html: `Your ${vehicleDTO.brand} ${vehicleDTO.model} has been booked successfully.<br><br>
-                              <strong>Booking ID:</strong> ${response.data.bookingId}<br>
                               <strong>Pickup Date:</strong> ${startDate}<br>
                               <strong>Return Date:</strong> ${endDate}<br>
                               <strong>Total Paid:</strong> $${totalAmount}`,
